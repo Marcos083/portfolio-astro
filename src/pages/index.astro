@@ -1,257 +1,126 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/Hero.astro';
-import HeroExit from '@/components/HeroExit.astro';
-import Bio from '@/components/Bio.astro';
-import WorkTransition from '@/components/WorkTransition.astro';
-import MyWork from '@/components/MyWork.astro';
-import Services from '@/components/Services.astro';
-import Statement from '@/components/Statement.astro';
-import CtaFooter from '@/components/CtaFooter.astro';
+/**
+ * template-test.astro — Teste da skill figma-to-astro
+ * Implementação da página Home do template do Figma (nó 277:134)
+ *
+ * Fluid scaling (técnica victor.work):
+ *   html { font-size: X vw } → todo rem escala proporcionalmente com o viewport.
+ *   1rem = 10px @ 1280px (design base).
+ */
+import TemplateNav from '@/components/template/TemplateNav.astro';
+import HomeHero from '@/components/home/HomeHero.astro';
+import HomeManifesto from '@/components/home/HomeManifesto.astro';
+import TemplateWork from '@/components/template/TemplateWork.astro';
+import CaseConnect from '@/components/case/CaseConnect.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import GlobalEffects from '@/components/GlobalEffects.astro';
+import PageTransition from '@/components/PageTransition.astro';
+import SmoothScroll from '@/components/SmoothScroll.astro';
+import GrainOverlay from '@/components/GrainOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/template-tokens.css';
 ---
 
-<BaseLayout>
-  <Hero />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marcos Costa | Webdesigner & Webflow  Developer</title>
 
-  <!--
-    ════════════════════════════════════════════════════════════════════════
-    3D SCENE — Andrew Reff-style two-phase transition
-    ════════════════════════════════════════════════════════════════════════
-    Architecture:
-      .scene-3d (relative, height = camera + pin distance)
-        └── .camera-track   (pinned by GSAP → position: fixed during pin)
-            ├── .hero-artboard (exit panel, identity at pin start, tilts out)
-            └── .bio-artboard  (enters from far/tilted/below)
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
 
-    Pin engages exactly when the user reaches the end of the natural Hero
-    scroll. The .camera-track then fixes to the viewport for `--pin-vh` of
-    additional scroll, during which the two artboards exchange positions in
-    3D space following the two-phase choreography measured from andrewreff.com.
-  -->
-  <section class="scene-3d" data-3d-scene>
-    <div class="camera-track">
-      <div class="artboard hero-artboard">
-        <HeroExit />
-      </div>
-      <div class="artboard bio-artboard">
-        <Bio />
-      </div>
-    </div>
-  </section>
+  <body>
+    <PageTransition />
+    <TemplateNav />
+    <HomeHero />
+    <HomeManifesto />
+    <TemplateWork />
+    <CaseConnect />
+    <TemplateFooter />
+    <GlobalEffects />
+    <SmoothScroll />
+    <GrainOverlay opacity={0.28} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
 
-  <!-- Pill-zoom transition: Bio → MY WORK -->
-  <WorkTransition />
-
-  <!-- MY WORK — bg matches the circle zoom's final color (seamless reveal) -->
-  <MyWork />
-
-  <Services />
-
-  <Statement />
-
-  <CtaFooter />
-</BaseLayout>
-
-<style>
-  /* ================================================
-     3D SCENE — pin + perspective + artboards
-     ================================================ */
-  .scene-3d {
-    position: relative;
-    /* NO fixed height. With pinSpacing:true, GSAP injects a .pin-spacer child
-       sized to (camera-track height + pin distance ≈ 3.4×vh). The scene must
-       grow to contain it, otherwise the next section overlaps the pin area.
-       min-height keeps it ≥ 1 viewport before the pin is created on init. */
-    min-height: 100vh;
-    background-color: var(--color-normal);
+<style is:global>
+  :root {
+    color-scheme: light only;
   }
 
-  .camera-track {
-    /* GSAP will turn this into position: fixed during the pin range */
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    perspective: 1500px;
-    perspective-origin: 50% 50%;
-    /* NO overflow:hidden — artboards must be allowed to float beyond bounds */
-    background-color: var(--color-normal);
+  /* ============================================================
+     FLUID SCALING (técnica victor.work)
+     1rem escala proporcionalmente com a viewport.
+       Desktop (≥1024): 1rem = 10px @ 1280 (0.78125vw)
+       Tablet (580-1023): 1rem = 10px @ 800  (1.25vw)
+       Mobile (<580):    1rem = 10px @ 375  (2.66667vw)
+     Todo CSS dos componentes é em rem — nunca px (exceto hairlines 1px).
+     ============================================================ */
+  html {
+    font-size: 2.66667vw;
   }
 
-  .artboard {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    transform-origin: 50% 50%;
-    will-change: transform, opacity;
-    /* Backface visibility matters when the rotation goes past 90° */
-    backface-visibility: hidden;
+  @media (min-width: 580px) and (max-width: 1023px) {
+    html {
+      font-size: 1.25vw;
+    }
   }
 
-  /* ================================================
-     PLACEHOLDERS
-     ================================================ */
-  .section-placeholder {
-    height: 100vh;
+  @media (min-width: 1024px) {
+    html {
+      font-size: 0.78125vw;
+    }
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ============================================================
+     Hero shell — Header + Intro juntos ocupam a altura restante
+     do viewport no desktop (nav é 4.6rem sticky no topo).
+     ============================================================ */
+  .hero_shell {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column-reverse; /* mobile: H1 primeiro, foto depois */
+    justify-content: space-between;
   }
 
-  .text-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
+  @media (min-width: 580px) {
+    .hero_shell {
+      flex-direction: column; /* tablet/desktop: foto primeiro, H1 depois */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero_shell {
+      min-height: calc(100vh - 4.6rem);
+      justify-content: space-between;
+    }
   }
 </style>
-
-<script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  /**
-   * 3D scene transition — replicates andrewreff.com hero → next section.
-   *
-   * Two phases (measured from his live site):
-   *   Phase A (0 → 48% of pin scroll): "Approach"
-   *     • Hero rotates + scales down + lifts slightly (rotateX 0→45°,
-   *       rotateZ 0→-10°, scale 1→0.6, yPercent 0→-15) with power2.out
-   *     • Bio rises from below + comes closer in Z + half-fades-in
-   *       (yPercent 150→15, z -500→-200, opacity 0→0.5) with power2.out
-   *     • Both artboards converge at a "passing point" where they share the
-   *       same rotation (45°, -10°) and similar scale (0.6 vs 0.5)
-   *
-   *   Phase B (48% → 100% of pin scroll): "Replacement"
-   *     • Hero locks rotation/scale, then flies forward + up + fades
-   *       (yPercent -15→-149, z 0→+500, opacity 1→0) ~linear
-   *     • Bio "untilts" into place: rotation 45°→0, scale 0.5→1,
-   *       y/z settle to 0, opacity 0.5→1 with power3.in
-   *
-   * Pin distance: 200vh of scroll (matches A. Reff's ratio of ~1.2× viewport).
-   */
-  function init3DScene() {
-    // Idempotency — destroy any prior triggers (handles Barba transitions)
-    ScrollTrigger.getAll().forEach((t) => {
-      const id = (t.vars as { id?: string }).id;
-      if (id?.startsWith('scene3d-')) t.kill();
-    });
-
-    const scene = document.querySelector<HTMLElement>('.scene-3d');
-    const hero = document.querySelector<HTMLElement>('.hero-artboard');
-    const bio = document.querySelector<HTMLElement>('.bio-artboard');
-    if (!scene || !hero || !bio) return;
-
-    // ---- Initial 3D states (set once at idle) ----
-    gsap.set(hero, {
-      xPercent: 0, yPercent: 0,
-      z: 0,
-      rotateX: 0, rotateY: 0, rotateZ: 0,
-      scale: 1,
-      opacity: 1,
-    });
-
-    gsap.set(bio, {
-      xPercent: 0, yPercent: 150,  // 1.5 viewport heights below — out of view
-      z: -500,                       // far from the camera
-      rotateX: 45, rotateY: 0, rotateZ: -10,
-      scale: 0.5,
-      opacity: 0,
-    });
-
-    // Scroll choreography (viewport-relative):
-    //   HOLD     0   → 40vh   — hero-bottom sits still (user reads it)
-    //   PHASE A  40  → 136vh  — "Approach"
-    //   PHASE B  136 → 240vh  — "Replacement"
-    const h = () => window.innerHeight;
-    const HOLD = 0.4;
-    const PHASE_A_END = 1.36;
-    const PIN_END = 2.4;
-
-    // ---- PIN — fixes camera-track in viewport for the entire transition ----
-    ScrollTrigger.create({
-      id: 'scene3d-pin',
-      trigger: scene,
-      start: 'top top',
-      end: () => `+=${h() * PIN_END}`,
-      pin: '.camera-track',
-      pinSpacing: true,
-      anticipatePin: 1,
-      // Higher priority → measured before the work-transition pin below it,
-      // so its pin-spacer is in place when the work pin computes its start.
-      refreshPriority: 2,
-    });
-
-    // ---- PHASE A — "Approach" (40vh → 136vh) ----
-    gsap.timeline({
-      scrollTrigger: {
-        id: 'scene3d-phase-a',
-        trigger: scene,
-        start: () => `top top-=${h() * HOLD}`,
-        end: () => `top top-=${h() * PHASE_A_END}`,
-        scrub: 1, // ~1s smoothing — matches Lenis feel
-      },
-    })
-      // HERO: rotates + scales DOWN + lifts slightly. opacity stays 1.
-      .to(hero, {
-        rotateX: 45,
-        rotateZ: -10,
-        scale: 0.6,
-        yPercent: -15,
-        ease: 'power2.out',
-      }, 0)
-      // BIO: rises from below + slides closer in Z + half-fades.
-      // Rotation/scale stay LOCKED at the pre-tilted state set above.
-      .to(bio, {
-        yPercent: 15,
-        z: -200,
-        opacity: 0.5,
-        ease: 'power2.out',
-      }, 0);
-
-    // ---- PHASE B — "Replacement" (136vh → 240vh) ----
-    gsap.timeline({
-      scrollTrigger: {
-        id: 'scene3d-phase-b',
-        trigger: scene,
-        start: () => `top top-=${h() * PHASE_A_END}`,
-        end: () => `top top-=${h() * PIN_END}`,
-        scrub: 1,
-      },
-    })
-      // HERO: flies OUT — forward in Z (toward camera), up in Y, fade out.
-      // Rotation + scale stay locked at Phase A end values (handled by GSAP).
-      .to(hero, {
-        yPercent: -149,
-        z: 500,
-        opacity: 0,
-        ease: 'none',
-      }, 0)
-      // BIO: untilts into identity. Position settles after rotation finishes.
-      .to(bio, {
-        rotateX: 0,
-        rotateZ: 0,
-        scale: 1,
-        yPercent: 0,
-        z: 0,
-        opacity: 1,
-        ease: 'power3.in',
-      }, 0);
-
-    // ---- Refresh on resize so vh-based values stay accurate ----
-    ScrollTrigger.refresh();
-  }
-
-  document.addEventListener('DOMContentLoaded', init3DScene);
-  document.addEventListener('astro:after-swap', init3DScene);
-
-  // Re-init on resize (debounced)
-  let resizeTimer: number | null = null;
-  window.addEventListener('resize', () => {
-    if (resizeTimer) window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(() => ScrollTrigger.refresh(), 200);
-  });
-</script>
