@@ -1,65 +1,94 @@
 ---
 /**
- * GrainOverlay — grain analógico altamente otimizado para performance.
- * Substitui o SVG feTurbulence (pesado) por um CSS background animado.
+ * GrainOverlay — grain analógico via SVG feTurbulence.
+ * Fixed overlay full-viewport, non-interactive.
+ *
+ * Props:
+ *   opacity  — 0.35 default
+ *   blend    — mix-blend-mode (multiply default)
+ *   animated — anima seed do feTurbulence pra dar vibração de filme (default true)
+ *   speed    — duração do ciclo em segundos (default 0.6, menor = mais nervoso)
+ *   frames   — quantos frames de noise diferentes (default 8, mais = mais aleatório)
  */
 
 interface Props {
   opacity?: number;
   blend?: 'multiply' | 'overlay' | 'soft-light' | 'screen' | 'normal';
   animated?: boolean;
-  speed?: number; // legacy prop
-  frames?: number; // legacy prop
+  speed?: number;
+  frames?: number;
 }
 
 const {
-  opacity = 0.08,
+  opacity = 0.35,
   blend = 'multiply',
   animated = true,
-  // speed and frames ignored in the new CSS approach
+  speed = 0.6,
+  frames = 8,
 } = Astro.props;
 
+const seedValues = animated
+  ? Array.from({ length: frames }, (_, i) => i + 1).join(';')
+  : null;
 ---
 
 <div
-  class={`grain-overlay ${animated ? 'is-animated' : ''}`}
+  class="grain-overlay"
   aria-hidden="true"
   style={`--grain-opacity: ${opacity}; --grain-blend: ${blend};`}
 >
+  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <filter id="grain-filter">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.85"
+        numOctaves="2"
+        stitchTiles="stitch"
+        seed="1"
+      >
+        {animated && (
+          <animate
+            attributeName="seed"
+            values={seedValues}
+            dur={`${speed}s`}
+            repeatCount="indefinite"
+          />
+        )}
+      </feTurbulence>
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="1.4" intercept="-0.2" />
+      </feComponentTransfer>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)" opacity="1"></rect>
+  </svg>
 </div>
 
 <style>
   .grain-overlay {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 9998;
     pointer-events: none;
-    opacity: var(--grain-opacity, 0.08);
+    opacity: var(--grain-opacity, 0.35);
     mix-blend-mode: var(--grain-blend, multiply);
-    
-    /* Base64 noise image (extremely lightweight, ~200 bytes) */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
   }
 
-  .grain-overlay.is-animated {
-    animation: grainAnimation 1s steps(4) infinite;
-  }
-
-  @keyframes grainAnimation {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(-5%, -5%); }
-    50% { transform: translate(-10%, 5%); }
-    75% { transform: translate(5%, -10%); }
-    100% { transform: translate(-5%, 5%); }
+  .grain-overlay svg {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .grain-overlay.is-animated {
-      animation: none;
+    .grain-overlay {
+      opacity: calc(var(--grain-opacity, 0.35) * 0.6);
+    }
+    /* pausar animação */
+    .grain-overlay animate {
+      display: none;
     }
   }
 </style>
