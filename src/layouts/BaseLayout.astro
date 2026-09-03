@@ -6,7 +6,7 @@ interface Props {
 
 const {
   title = 'Home | Marcos Costa',
-  description = 'Creative developer crafting digital experiences that move businesses forward. Webflow development, web design, and SEO.',
+  description = "Hey, I'm Marcos. I design and develop websites where every detail is intentional.",
 } = Astro.props;
 ---
 
@@ -18,6 +18,17 @@ const {
   <meta name="description" content={description} />
 
   <title>{title}</title>
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://www.marcosscosta.com.br/og-image.webp" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://www.marcosscosta.com.br/og-image.webp" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
