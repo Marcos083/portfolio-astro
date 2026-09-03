@@ -15,7 +15,7 @@ const polaroids = [
   { src: '/src/assets/about/polaroid-5.webp', alt: 'Marcos portrait',           anchor: { top: 3,     left: 44 },    width: 12,   max: 210, tilt: 1 },
 ];
 
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/about/*.{jpeg,jpg,png,gif,webp}');
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/about/*.{jpeg,jpg,png,gif,webp}', { eager: true });
 
 const posCss = (p: typeof polaroids[number]) =>
   Object.entries(p.anchor).map(([k, v]) => `${k}:${v}%`).join(';');
@@ -31,15 +31,15 @@ const posCss = (p: typeof polaroids[number]) =>
   </div>
 
   {polaroids.map((p) => {
-    const imageResolver = images[p.src];
+    const imageModule = images[p.src];
     return (
       <div
         class="about_bio-polaroid"
         data-polaroid
         style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
       >
-        {imageResolver ? (
-          <Image src={imageResolver()} alt={p.alt} loading="eager" decoding="async" draggable="false" />
+        {imageModule ? (
+          <Image src={imageModule.default} alt={p.alt} loading="eager" decoding="async" draggable="false" />
         ) : null}
       </div>
     );

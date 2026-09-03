@@ -14,12 +14,12 @@ interface MediaItem {
   src: string;
 }
 
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}');
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}', { eager: true });
 
 const resolveImage = (src: string) => {
   if (!src.startsWith('/cases/')) return null;
-  const resolver = images[`/src/assets${src}`];
-  return resolver ? resolver() : null;
+  const imageModule = images[`/src/assets${src}`];
+  return imageModule ? imageModule.default : null;
 };
 
 interface CaseDetail {

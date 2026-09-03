@@ -23,12 +23,12 @@ const [m1, m2, m3, m4, m5, m6] = media;
 
 const isVideo = (m: CaseMedia) => m.type === 'video';
 
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}');
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}', { eager: true });
 
 const resolveImage = (m: CaseMedia) => {
   if (m.type === 'video' || !m.src.startsWith('/cases/')) return null;
-  const resolver = images[`/src/assets${m.src}`];
-  return resolver ? resolver() : null;
+  const imageModule = images[`/src/assets${m.src}`];
+  return imageModule ? imageModule.default : null;
 };
 ---
 
