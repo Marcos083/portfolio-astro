@@ -38,7 +38,7 @@ const resolveImage = (m: CaseMedia) => {
       {isVideo(m1) ? (
         <video muted loop playsinline preload="metadata" autoplay><source src={m1.src} type="video/mp4" /></video>
       ) : resolveImage(m1) ? (
-        <Image src={resolveImage(m1)!} alt={m1.alt || ''} loading="lazy" />
+        <Image src={resolveImage(m1)!} alt={m1.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m1)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m1)!.width}px`} loading="lazy" />
       ) : null}
     </div>
 
@@ -47,14 +47,14 @@ const resolveImage = (m: CaseMedia) => {
         {isVideo(m2) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m2.src} type="video/mp4" /></video>
         ) : resolveImage(m2) ? (
-          <Image src={resolveImage(m2)!} alt={m2.alt || ''} loading="lazy" />
+          <Image src={resolveImage(m2)!} alt={m2.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m2)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m2)!.width}px`} loading="lazy" />
         ) : null}
       </div>
       <div class="case_image case_image--half">
         {isVideo(m3) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m3.src} type="video/mp4" /></video>
         ) : resolveImage(m3) ? (
-          <Image src={resolveImage(m3)!} alt={m3.alt || ''} loading="lazy" />
+          <Image src={resolveImage(m3)!} alt={m3.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m3)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m3)!.width}px`} loading="lazy" />
         ) : null}
       </div>
     </div>
@@ -63,7 +63,7 @@ const resolveImage = (m: CaseMedia) => {
       {isVideo(m4) ? (
         <video muted loop playsinline preload="metadata" autoplay><source src={m4.src} type="video/mp4" /></video>
       ) : resolveImage(m4) ? (
-        <Image src={resolveImage(m4)!} alt={m4.alt || ''} loading="lazy" />
+        <Image src={resolveImage(m4)!} alt={m4.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m4)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m4)!.width}px`} loading="lazy" />
       ) : null}
     </div>
 
@@ -72,14 +72,14 @@ const resolveImage = (m: CaseMedia) => {
         {isVideo(m5) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m5.src} type="video/mp4" /></video>
         ) : resolveImage(m5) ? (
-          <Image src={resolveImage(m5)!} alt={m5.alt || ''} loading="lazy" />
+          <Image src={resolveImage(m5)!} alt={m5.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m5)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m5)!.width}px`} loading="lazy" />
         ) : null}
       </div>
       <div class="case_image case_image--half">
         {isVideo(m6) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m6.src} type="video/mp4" /></video>
         ) : resolveImage(m6) ? (
-          <Image src={resolveImage(m6)!} alt={m6.alt || ''} loading="lazy" />
+          <Image src={resolveImage(m6)!} alt={m6.alt || ''} widths={[240, 540, 720, 1080, resolveImage(m6)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 1080px, ${resolveImage(m6)!.width}px`} loading="lazy" />
         ) : null}
       </div>
     </div>

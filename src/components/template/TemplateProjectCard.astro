@@ -49,7 +49,7 @@ const resolveImage = (src: string) => {
       {media.map((item) => (
         <div class="project_image">
           {item.type === 'image' && resolveImage(item.src) ? (
-            <Image src={resolveImage(item.src)!} alt={item.alt || projectName} loading="lazy" decoding="async" />
+            <Image src={resolveImage(item.src)!} alt={item.alt || projectName} widths={[240, 540, 720, resolveImage(item.src)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${resolveImage(item.src)!.width}px`} loading="lazy" decoding="async" />
           ) : item.type === 'video' ? (
             <video muted loop playsinline preload="metadata" data-autoplay>
               <source src={item.src} type="video/mp4" />
@@ -61,7 +61,7 @@ const resolveImage = (src: string) => {
       {media.map((item) => (
         <div class="project_image" aria-hidden="true">
           {item.type === 'image' && resolveImage(item.src) ? (
-            <Image src={resolveImage(item.src)!} alt="" loading="lazy" decoding="async" />
+            <Image src={resolveImage(item.src)!} alt="" widths={[240, 540, 720, resolveImage(item.src)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${resolveImage(item.src)!.width}px`} loading="lazy" decoding="async" />
           ) : item.type === 'video' ? (
             <video muted loop playsinline preload="metadata" data-autoplay>
               <source src={item.src} type="video/mp4" />

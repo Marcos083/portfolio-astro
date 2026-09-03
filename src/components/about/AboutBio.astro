@@ -39,7 +39,7 @@ const posCss = (p: typeof polaroids[number]) =>
         style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
       >
         {imageModule ? (
-          <Image src={imageModule.default} alt={p.alt} loading="eager" decoding="async" draggable="false" />
+          <Image src={imageModule.default} alt={p.alt} widths={[240, 540, 720]} sizes="(max-width: 720px) 240px, 540px" loading="eager" decoding="async" draggable="false" />
         ) : null}
       </div>
     );

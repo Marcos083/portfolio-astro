@@ -37,6 +37,8 @@ const resolveImage = (src?: string) => {
         class="case_nav-logo-img"
         src={resolveImage(logoSrc)!}
         alt={logoAlt || logoText || ''}
+        widths={[240, 540]}
+        sizes="(max-width: 720px) 240px, 540px"
         style={`--logo-h-desktop: ${logoHeight}rem; --logo-h-tablet: ${tabletHeight}rem; --logo-h-mobile: ${mobileHeight}rem;`}
       />
     ) : (
