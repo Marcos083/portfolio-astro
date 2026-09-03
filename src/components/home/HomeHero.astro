@@ -55,7 +55,7 @@ const introWords = introText.split(' ');
 
       <aside class="home-hero_right">
         <div class="home-hero_photo">
-          <Image src={heroPhoto} alt="Marcos Costa" widths={[240, 540, 720, heroPhoto.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${heroPhoto.width}px`} fetchpriority="high" loading="eager" />
+          <Image src={heroPhoto} alt="Marcos Costa" widths={[320, 480]} sizes="(max-width: 579px) 320px, 480px" quality={80} fetchpriority="high" loading="eager" />
         </div>
         <p class="home-hero_intro intro-reveal">
           {introWords.map((word, index) => (

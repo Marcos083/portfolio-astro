@@ -38,7 +38,7 @@ const resolveImage = (src: string) => {
         <a class="case_other-card" href={p.href}>
           <div class="case_other-image">
             {resolveImage(p.imageSrc) ? (
-              <Image src={resolveImage(p.imageSrc)!} alt={p.imageAlt} widths={[240, 540, 720, resolveImage(p.imageSrc)!.width]} sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${resolveImage(p.imageSrc)!.width}px`} loading="lazy" />
+              <Image src={resolveImage(p.imageSrc)!} alt={p.imageAlt} widths={[360, 540, 720, 1080]} sizes="(max-width: 360px) 360px, (max-width: 720px) 540px, (max-width: 1600px) 720px, 1080px" quality={80} loading="lazy" />
             ) : null}
           </div>
           <div class="case_other-meta">
