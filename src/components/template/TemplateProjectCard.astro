@@ -11,6 +11,7 @@ interface MediaItem {
   alt?: string;
 }
 
+import { Image } from 'astro:assets';
 import ArrowRight from '../ArrowRight.astro';
 
 interface Props {
@@ -32,6 +33,13 @@ const {
   ctaHref = '#',
   media,
 } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/template/**/*.{jpeg,jpg,png,webp}');
+
+const resolveImage = (src: string) => {
+  const resolver = images[`/src/assets${src}`];
+  return resolver ? resolver() : null;
+};
 ---
 
 <article class="project_item">
@@ -40,25 +48,25 @@ const {
       {/* Original set */}
       {media.map((item) => (
         <div class="project_image">
-          {item.type === 'image' ? (
-            <img src={item.src} alt={item.alt || projectName} loading="lazy" decoding="async" />
-          ) : (
+          {item.type === 'image' && resolveImage(item.src) ? (
+            <Image src={resolveImage(item.src)!} alt={item.alt || projectName} loading="lazy" decoding="async" />
+          ) : item.type === 'video' ? (
             <video muted loop playsinline preload="metadata" data-autoplay>
               <source src={item.src} type="video/mp4" />
             </video>
-          )}
+          ) : null}
         </div>
       ))}
       {/* Duplicate set for seamless loop */}
       {media.map((item) => (
         <div class="project_image" aria-hidden="true">
-          {item.type === 'image' ? (
-            <img src={item.src} alt="" loading="lazy" decoding="async" />
-          ) : (
+          {item.type === 'image' && resolveImage(item.src) ? (
+            <Image src={resolveImage(item.src)!} alt="" loading="lazy" decoding="async" />
+          ) : item.type === 'video' ? (
             <video muted loop playsinline preload="metadata" data-autoplay>
               <source src={item.src} type="video/mp4" />
             </video>
-          )}
+          ) : null}
         </div>
       ))}
     </div>

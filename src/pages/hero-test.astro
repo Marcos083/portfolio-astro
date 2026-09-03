@@ -17,6 +17,9 @@
  *   Gap foto→intro 24 / Padding nav→content 120
  */
 import GrainOverlay from '@/components/GrainOverlay.astro';
+import { Image } from 'astro:assets';
+import navPhoto from '@/assets/template/marcos-nav.webp';
+import '../styles/fonts.css';
 ---
 
 <!DOCTYPE html>
@@ -66,7 +69,7 @@ import GrainOverlay from '@/components/GrainOverlay.astro';
 
         <aside class="ht-body-right">
           <div class="ht-photo">
-            <img src="/template/marcos-nav.webp" alt="Marcos Costa" />
+            <Image src={navPhoto} alt="Marcos Costa" />
           </div>
           <p class="ht-intro">
             Hey, I'm Marcos. I design and develop websites where every detail is intentional.

@@ -4,6 +4,7 @@
  * Reusa TemplateNav no topo + adiciona um big case logo (147×91) abaixo.
  * Props: logoSrc (path pro logo do case), logoAlt.
  */
+import { Image } from 'astro:assets';
 import TemplateNav from '../template/TemplateNav.astro';
 
 interface Props {
@@ -19,15 +20,22 @@ const { logoSrc, logoAlt, logoText, logoHeight = 9.1 } = Astro.props;
 // Escala relativa pra manter proporção em tablet e mobile
 const tabletHeight = logoHeight * (6 / 9.1);
 const mobileHeight = logoHeight * (4.4 / 9.1);
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}');
+const resolveImage = (src?: string) => {
+  if (!src || !src.startsWith('/cases/')) return null;
+  const resolver = images[`/src/assets${src}`];
+  return resolver ? resolver() : null;
+};
 ---
 
 <TemplateNav />
 <div class="case_nav-logo">
   <div class="case_nav-logo-contain">
-    {logoSrc ? (
-      <img
+    {logoSrc && resolveImage(logoSrc) ? (
+      <Image
         class="case_nav-logo-img"
-        src={logoSrc}
+        src={resolveImage(logoSrc)!}
         alt={logoAlt || logoText || ''}
         style={`--logo-h-desktop: ${logoHeight}rem; --logo-h-tablet: ${tabletHeight}rem; --logo-h-mobile: ${mobileHeight}rem;`}
       />

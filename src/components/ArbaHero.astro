@@ -14,12 +14,14 @@
  *       Text: Poppins Medium, 16px, #1B1C1C
  *       Icon box: bg white, rounded-8, 50×50, arrow 24×24 centered
  */
+import { Image } from 'astro:assets';
+import heroBg from '@/assets/arba/hero-bg.png';
 ---
 
 <section class="section_hero">
-  <img
+  <Image
     class="section_hero-bg"
-    src="/arba/hero-bg.png"
+    src={heroBg}
     alt="Equipe em reunião corporativa"
     loading="eager"
   />

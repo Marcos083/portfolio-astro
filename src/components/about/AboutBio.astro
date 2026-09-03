@@ -5,13 +5,17 @@
  * arrastáveis. Fica no topo da About, abaixo do nav.
  */
 
+import { Image } from 'astro:assets';
+
 const polaroids = [
-  { src: '/about/polaroid-1.png',  alt: 'Marcos with a friend',      anchor: { top: 16,    left: 10 },    width: 17,   max: 275, tilt: -3 },
-  { src: '/about/polaroid-2.png',  alt: 'Marcos at a waterfall',     anchor: { top: 20,    right: 9 },    width: 15,   max: 250, tilt: 4 },
-  { src: '/about/polaroid-3.png',  alt: 'Marcos walking outdoors',   anchor: { bottom: 4,  left: 12 },    width: 15,   max: 250, tilt: 3 },
-  { src: '/about/polaroid-4.png',  alt: 'Marcos giving a thumbs up', anchor: { bottom: 5,  right: 9 },    width: 15,   max: 250, tilt: -4 },
-  { src: '/about/polaroid-5.webp', alt: 'Marcos portrait',           anchor: { top: 3,     left: 44 },    width: 12,   max: 210, tilt: 1 },
+  { src: '/src/assets/about/polaroid-1.png',  alt: 'Marcos with a friend',      anchor: { top: 16,    left: 10 },    width: 17,   max: 275, tilt: -3 },
+  { src: '/src/assets/about/polaroid-2.png',  alt: 'Marcos at a waterfall',     anchor: { top: 20,    right: 9 },    width: 15,   max: 250, tilt: 4 },
+  { src: '/src/assets/about/polaroid-3.png',  alt: 'Marcos walking outdoors',   anchor: { bottom: 4,  left: 12 },    width: 15,   max: 250, tilt: 3 },
+  { src: '/src/assets/about/polaroid-4.png',  alt: 'Marcos giving a thumbs up', anchor: { bottom: 5,  right: 9 },    width: 15,   max: 250, tilt: -4 },
+  { src: '/src/assets/about/polaroid-5.webp', alt: 'Marcos portrait',           anchor: { top: 3,     left: 44 },    width: 12,   max: 210, tilt: 1 },
 ];
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/about/*.{jpeg,jpg,png,gif,webp}');
 
 const posCss = (p: typeof polaroids[number]) =>
   Object.entries(p.anchor).map(([k, v]) => `${k}:${v}%`).join(';');
@@ -26,15 +30,20 @@ const posCss = (p: typeof polaroids[number]) =>
     </p>
   </div>
 
-  {polaroids.map((p) => (
-    <div
-      class="about_bio-polaroid"
-      data-polaroid
-      style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
-    >
-      <img src={p.src} alt={p.alt} loading="eager" decoding="async" draggable="false" />
-    </div>
-  ))}
+  {polaroids.map((p) => {
+    const imageResolver = images[p.src];
+    return (
+      <div
+        class="about_bio-polaroid"
+        data-polaroid
+        style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
+      >
+        {imageResolver ? (
+          <Image src={imageResolver()} alt={p.alt} loading="eager" decoding="async" draggable="false" />
+        ) : null}
+      </div>
+    );
+  })}
 </section>
 
 <style>

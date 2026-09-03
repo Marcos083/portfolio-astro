@@ -5,6 +5,7 @@
  * Cards têm imagem cover + nome do projeto + "See Project →" link.
  */
 
+import { Image } from 'astro:assets';
 import ArrowRight from '../ArrowRight.astro';
 
 interface OtherProject {
@@ -19,6 +20,14 @@ interface Props {
 }
 
 const { projects } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}');
+
+const resolveImage = (src: string) => {
+  if (!src.startsWith('/cases/')) return null;
+  const resolver = images[`/src/assets${src}`];
+  return resolver ? resolver() : null;
+};
 ---
 
 <section class="case_other">
@@ -28,7 +37,9 @@ const { projects } = Astro.props;
       {projects.map((p) => (
         <a class="case_other-card" href={p.href}>
           <div class="case_other-image">
-            <img src={p.imageSrc} alt={p.imageAlt} loading="lazy" />
+            {resolveImage(p.imageSrc) ? (
+              <Image src={resolveImage(p.imageSrc)!} alt={p.imageAlt} loading="lazy" />
+            ) : null}
           </div>
           <div class="case_other-meta">
             <span class="case_other-name">{p.name}</span>

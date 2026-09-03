@@ -6,6 +6,8 @@
  * Tablet/Mobile: tudo empilha em coluna única (imagens full-width, mantendo ratio).
  */
 
+import { Image } from 'astro:assets';
+
 interface CaseMedia {
   type?: 'image' | 'video';
   src: string;
@@ -20,6 +22,14 @@ const { media } = Astro.props;
 const [m1, m2, m3, m4, m5, m6] = media;
 
 const isVideo = (m: CaseMedia) => m.type === 'video';
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/cases/**/*.{jpeg,jpg,png,webp}');
+
+const resolveImage = (m: CaseMedia) => {
+  if (m.type === 'video' || !m.src.startsWith('/cases/')) return null;
+  const resolver = images[`/src/assets${m.src}`];
+  return resolver ? resolver() : null;
+};
 ---
 
 <section class="case_images-section">
@@ -27,50 +37,50 @@ const isVideo = (m: CaseMedia) => m.type === 'video';
     <div class="case_image case_image--full">
       {isVideo(m1) ? (
         <video muted loop playsinline preload="metadata" autoplay><source src={m1.src} type="video/mp4" /></video>
-      ) : (
-        <img src={m1.src} alt={m1.alt || ''} loading="lazy" />
-      )}
+      ) : resolveImage(m1) ? (
+        <Image src={resolveImage(m1)!} alt={m1.alt || ''} loading="lazy" />
+      ) : null}
     </div>
 
     <div class="case_image-row">
       <div class="case_image case_image--half">
         {isVideo(m2) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m2.src} type="video/mp4" /></video>
-        ) : (
-          <img src={m2.src} alt={m2.alt || ''} loading="lazy" />
-        )}
+        ) : resolveImage(m2) ? (
+          <Image src={resolveImage(m2)!} alt={m2.alt || ''} loading="lazy" />
+        ) : null}
       </div>
       <div class="case_image case_image--half">
         {isVideo(m3) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m3.src} type="video/mp4" /></video>
-        ) : (
-          <img src={m3.src} alt={m3.alt || ''} loading="lazy" />
-        )}
+        ) : resolveImage(m3) ? (
+          <Image src={resolveImage(m3)!} alt={m3.alt || ''} loading="lazy" />
+        ) : null}
       </div>
     </div>
 
     <div class="case_image case_image--full">
       {isVideo(m4) ? (
         <video muted loop playsinline preload="metadata" autoplay><source src={m4.src} type="video/mp4" /></video>
-      ) : (
-        <img src={m4.src} alt={m4.alt || ''} loading="lazy" />
-      )}
+      ) : resolveImage(m4) ? (
+        <Image src={resolveImage(m4)!} alt={m4.alt || ''} loading="lazy" />
+      ) : null}
     </div>
 
     <div class="case_image-row">
       <div class="case_image case_image--half">
         {isVideo(m5) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m5.src} type="video/mp4" /></video>
-        ) : (
-          <img src={m5.src} alt={m5.alt || ''} loading="lazy" />
-        )}
+        ) : resolveImage(m5) ? (
+          <Image src={resolveImage(m5)!} alt={m5.alt || ''} loading="lazy" />
+        ) : null}
       </div>
       <div class="case_image case_image--half">
         {isVideo(m6) ? (
           <video muted loop playsinline preload="metadata" autoplay><source src={m6.src} type="video/mp4" /></video>
-        ) : (
-          <img src={m6.src} alt={m6.alt || ''} loading="lazy" />
-        )}
+        ) : resolveImage(m6) ? (
+          <Image src={resolveImage(m6)!} alt={m6.alt || ''} loading="lazy" />
+        ) : null}
       </div>
     </div>
   </div>

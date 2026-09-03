@@ -3,18 +3,20 @@
  * TemplateFooter.astro — Footer section (277:187)
  * Content grid 625 | 616 = 62.5rem | 61.6rem.
  */
+import { Image } from 'astro:assets';
+import navPhoto from '@/assets/template/marcos-nav.webp';
 ---
 
 <footer class="footer_section">
   <div class="footer_contain">
     <div class="footer_content">
       <div class="footer_logo">
-        <img
+        <Image
           class="footer_logo-photo"
-          src="/template/marcos-nav.webp"
+          src={navPhoto}
           alt="Marcos Costa"
-          width="134"
-          height="134"
+          width={134}
+          height={134}
         />
       </div>
 
