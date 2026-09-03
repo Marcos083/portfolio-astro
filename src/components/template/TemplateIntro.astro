@@ -1,0 +1,77 @@
+---
+/**
+ * TemplateIntro.astro — Headline "Hey, I'm Marcos...".
+ * Desktop (277:152): H1 6.4rem, alinhado à direita, max 82rem, padding-bottom grande.
+ * Tablet   (1:267):  H1 6.4rem, full-width, sem alinhamento à direita.
+ * Mobile   (1:379):  H1 6.4rem, full-width, ANTES da foto (column-reverse no shell).
+ */
+---
+
+<section class="intro_section">
+  <div class="intro_contain">
+    <div class="intro_content">
+      <h1 class="intro_h1 fadeUp-mask">
+        <span class="fadeUp">Hey, I'm Marcos. I design and develop websites where every detail is intentional.</span>
+      </h1>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro_section {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .intro_contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  /* Mobile: gap com foto embaixo (32px = 3.2rem) + padding-bottom 60px pré-border-bottom */
+  .intro_content {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 4rem;
+    padding-bottom: 3.2rem;
+  }
+
+  .intro_h1 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 4.4rem; /* mobile — 44px, cabe em ~4 linhas no viewport de 375 */
+    font-weight: var(--type-h1-weight);
+    line-height: 1;
+    letter-spacing: var(--type-h1-ls);
+    color: var(--color-text);
+  }
+
+  /* Tablet: full-width, sem alinhamento à direita, padding suave, H1 64px */
+  @media (min-width: 580px) {
+    .intro_content {
+      justify-content: flex-start;
+      padding-top: 1.5rem;
+      padding-bottom: 2rem;
+    }
+    .intro_h1 {
+      font-size: var(--type-h1-size); /* 64px */
+      line-height: var(--type-h1-lh);
+      max-width: 100%;
+    }
+  }
+
+  /* Desktop: H1 alinhado à direita, max 82rem, padding-bottom generoso */
+  @media (min-width: 1024px) {
+    .intro_section {
+      padding: 0 1.5rem 12rem 0;
+    }
+    .intro_content {
+      justify-content: flex-end;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .intro_h1 {
+      max-width: 82rem;
+    }
+  }
+</style>

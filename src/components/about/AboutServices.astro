@@ -1,0 +1,195 @@
+---
+/**
+ * AboutServices.astro — Seção "My Services" da About.
+ * Layout base do Figma: label esquerda + grid 2x2 de categorias direita.
+ * Padrão consistente com AboutStory/AboutApproach (border-top preta, container grid).
+ */
+import ArrowRight from '../ArrowRight.astro';
+
+const categories = [
+  {
+    label: 'DEVELOPMENT',
+    items: ['Webflow', 'Astro', 'WordPress', 'GSAP', 'React.js', 'Vanilla JS'],
+  },
+  {
+    label: 'DESIGN',
+    items: ['Webdesign', 'Visual Systems & Layouts', 'UI/UX', 'Digital Design'],
+  },
+  {
+    label: 'SEO',
+    items: ['Technical SEO', 'Core Web Vitals', 'On-page Optimization', 'Structured Data'],
+  },
+];
+---
+
+<section class="about_services">
+  <div class="about_services-contain">
+    <div class="line-reveal line-reveal--top"></div>
+    <div class="about_services-grid">
+      <div class="about_services-left">
+        <h2 class="about_services-label fadeUp-mask"><span class="fadeUp">My Services</span></h2>
+      </div>
+      <div class="about_services-right">
+        <div class="about_services-cats">
+          {categories.map((cat) => (
+            <div class="about_services-cat">
+              <span class="about_services-cat-label">{cat.label}</span>
+              <ul class="about_services-list">
+                {cat.items.map((it) => <li>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <a class="about_services-link arrow-link" href="/template-test#work">
+          <span class="showText">
+            <span>
+              See Work <ArrowRight />
+              <span>See Work <ArrowRight /></span>
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about_services {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .about_services-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+    position: relative;
+  }
+
+  /* Mobile: coluna única */
+  .about_services-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-top: 3rem;
+  }
+
+  .about_services-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .about_services-right {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .about_services-cats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    row-gap: 3rem;
+  }
+
+  .about_services-cat {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .about_services-cat-label {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    color: var(--color-background-2);
+  }
+
+  .about_services-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .about_services-list li {
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .about_services-link {
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  /* Tablet: 2 colunas iguais no grid principal */
+  @media (min-width: 580px) {
+    .about_services-contain {
+      padding: 5rem 0 8rem;
+    }
+    .about_services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding-top: 4rem;
+    }
+    .about_services-label {
+      font-size: 4.4rem;
+    }
+    .about_services-cats {
+      gap: 4rem;
+      row-gap: 4rem;
+    }
+  }
+
+  /* Desktop: label 6.4rem, grid 62.5 | 1fr, categorias 2x2 */
+  @media (min-width: 1024px) {
+    .about_services-contain {
+      padding: 6rem 0 10rem;
+    }
+    .about_services-grid {
+      grid-template-columns: 62.5rem 1fr;
+      padding-top: 5rem;
+    }
+    .about_services-label {
+      font-size: 6.4rem;
+      letter-spacing: -0.05em;
+    }
+    .about_services-right {
+      gap: 4rem;
+      max-width: 56rem;
+    }
+    .about_services-cats {
+      gap: 5rem;
+      row-gap: 5rem;
+    }
+    .about_services-cat-label {
+      font-size: 1.3rem;
+    }
+    .about_services-list li {
+      font-size: 1.8rem;
+      line-height: 1.45;
+    }
+    .about_services-link {
+      font-size: 1.8rem;
+    }
+  }
+</style>

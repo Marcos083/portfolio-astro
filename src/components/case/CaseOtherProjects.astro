@@ -1,0 +1,153 @@
+---
+/**
+ * CaseOtherProjects.astro — Other Projects section (Figma 1:1031).
+ * "Other Projects" heading + grid de 3 cards 407×413 (desktop).
+ * Cards têm imagem cover + nome do projeto + "See Project →" link.
+ */
+
+import ArrowRight from '../ArrowRight.astro';
+
+interface OtherProject {
+  name: string;
+  imageSrc: string;
+  imageAlt: string;
+  href: string;
+}
+
+interface Props {
+  projects: [OtherProject, OtherProject, OtherProject];
+}
+
+const { projects } = Astro.props;
+---
+
+<section class="case_other">
+  <div class="case_other-contain">
+    <h2 class="case_other-title">Other Projects</h2>
+    <div class="case_other-grid">
+      {projects.map((p) => (
+        <a class="case_other-card" href={p.href}>
+          <div class="case_other-image">
+            <img src={p.imageSrc} alt={p.imageAlt} loading="lazy" />
+          </div>
+          <div class="case_other-meta">
+            <span class="case_other-name">{p.name}</span>
+            <span class="case_other-link arrow-link">See Project <ArrowRight /></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .case_other {
+    width: 100%;
+    padding: 3rem 1.5rem 2rem;
+    margin-top: 6rem;
+  }
+
+  .case_other-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .case_other-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 4.4rem; /* mobile */
+    font-weight: var(--type-h1-weight);
+    line-height: 1;
+    letter-spacing: var(--type-h1-ls);
+    color: var(--color-text);
+  }
+
+  /* Mobile: cards empilhados */
+  .case_other-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .case_other-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+  }
+
+  .case_other-card:hover {
+    opacity: 0.85;
+  }
+
+  .case_other-image {
+    width: 100%;
+    aspect-ratio: 407 / 340;
+    overflow: hidden;
+    background: var(--color-background-2);
+  }
+
+  .case_other-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .case_other-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .case_other-name {
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .case_other-link {
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: var(--color-background-2);
+  }
+
+  /* Tablet — 2 cards por linha */
+  @media (min-width: 580px) {
+    .case_other-title {
+      font-size: var(--type-h1-size);
+    }
+    .case_other-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  /* Desktop — 3 cards por linha */
+  @media (min-width: 1024px) {
+    .case_other {
+      padding: 5rem 1.5rem 2rem;
+    }
+    .case_other-contain {
+      gap: 4rem;
+    }
+    .case_other-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+    .case_other-image {
+      aspect-ratio: 407 / 340;
+    }
+  }
+</style>

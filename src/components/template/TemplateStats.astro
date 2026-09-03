@@ -1,0 +1,219 @@
+---
+/**
+ * TemplateStats.astro — Stats section (277:164) + Connect (277:182)
+ * Grid 633 | 617 = 63.3rem | 61.7rem.
+ */
+---
+
+<section class="stats_section" id="about">
+  <div class="stats_contain">
+    <div class="stats_content">
+      <div class="stats_intro">
+        <p class="stats_intro-text">
+          I design and develop. From layout to production, no handoff, no gap between vision and result.
+        </p>
+      </div>
+
+      <div class="stats_pillars-contain">
+        <div class="stats_pillars">
+          <div class="stats_pillar">
+            <h3 class="stats_pillar-title">Webflow Developer</h3>
+            <p class="stats_pillar-body">
+              I build full websites in Webflow. CMS, interactions, responsive. Ready to publish, ready for the client to manage.
+            </p>
+          </div>
+          <div class="stats_pillar">
+            <h3 class="stats_pillar-title">Creative Developer</h3>
+            <p class="stats_pillar-body">
+              When the project demands more, I go to code. Astro, GSAP, custom motion. No platform limits.
+            </p>
+          </div>
+          <div class="stats_pillar">
+            <h3 class="stats_pillar-title">Webdesigner</h3>
+            <p class="stats_pillar-body">
+              Every detail is intentional. Typography, spacing, motion. Nothing is left to default.
+            </p>
+          </div>
+        </div>
+        <a class="stats_link" href="#about-full">
+          About <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="connect_section" id="contact">
+      <div class="connect_content">
+        <div class="connect_divider"></div>
+        <p class="connect_text">Let's talk about your next project.</p>
+        <div class="connect_divider"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats_section {
+    width: 100%;
+    padding: 0 1.5rem 5rem;
+  }
+
+  .stats_contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding-top: 4rem;
+  }
+
+  /* Mobile: 1 coluna, intro em cima */
+  .stats_content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding-bottom: 3rem;
+  }
+
+  .stats_intro {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Tablet: 2 colunas iguais */
+  @media (min-width: 580px) {
+    .stats_contain {
+      padding-top: 5rem;
+    }
+    .stats_content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding-bottom: 5rem;
+    }
+  }
+
+  /* Desktop: mantém 63.3 | 1fr */
+  @media (min-width: 1024px) {
+    .stats_contain {
+      padding-top: 6rem;
+    }
+    .stats_content {
+      grid-template-columns: 63.3rem 1fr;
+      padding-bottom: 6.4rem;
+    }
+    .stats_intro {
+      width: 63.3rem;
+    }
+  }
+
+  .stats_intro-text {
+    margin: 0;
+    max-width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--type-h5-size);
+    font-weight: var(--type-h5-weight);
+    line-height: var(--type-h5-lh);
+    letter-spacing: var(--type-h5-ls);
+    color: var(--color-text);
+  }
+
+  @media (min-width: 1024px) {
+    .stats_intro-text {
+      max-width: 32.5rem;
+    }
+  }
+
+  .stats_pillars-contain {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    .stats_pillars-contain {
+      width: 61.7rem;
+    }
+  }
+
+  .stats_pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .stats_pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-divider-lines);
+  }
+
+  .stats_pillar:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .stats_pillar-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-h1-size);
+    font-weight: var(--type-h1-weight);
+    line-height: var(--type-h1-lh);
+    letter-spacing: var(--type-h1-ls);
+    color: var(--color-text);
+  }
+
+  .stats_pillar-body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-h10-size);
+    font-weight: var(--type-h10-weight);
+    line-height: var(--type-h10-lh);
+    letter-spacing: var(--type-h10-ls);
+    color: var(--color-text);
+  }
+
+  .stats_link {
+    font-family: var(--font-sans);
+    font-size: var(--type-text-link-size);
+    font-weight: var(--type-text-link-weight);
+    line-height: var(--type-text-link-lh);
+    letter-spacing: var(--type-text-link-ls);
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-text);
+    padding-bottom: 0.1rem;
+    align-self: flex-start;
+  }
+
+  .stats_link:hover {
+    opacity: 0.6;
+  }
+
+  /* ---- Connect with us ---- */
+  .connect_section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .connect_content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .connect_divider {
+    height: 1px;
+    background: #172D1A;
+    width: 100%;
+  }
+
+  .connect_text {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-h5-size);
+    font-weight: var(--type-h5-weight);
+    line-height: var(--type-h5-lh);
+    letter-spacing: var(--type-h5-ls);
+    color: var(--color-text);
+  }
+</style>

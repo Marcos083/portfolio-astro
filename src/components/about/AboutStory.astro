@@ -1,0 +1,130 @@
+---
+/**
+ * AboutStory.astro — Seção "The Story" da About.
+ * Layout base do Figma: grid 625 | 625 (label esquerda, corpo direita).
+ * Toque Awwwards: hierarquia tipográfica precisa, hairline divider no topo,
+ * body em size maior que h10 pra ter presença como bio pessoal.
+ */
+---
+
+<section class="about_story">
+  <div class="about_story-contain">
+    <div class="line-reveal line-reveal--top"></div>
+    <div class="about_story-grid">
+      <div class="about_story-left">
+        <h2 class="about_story-label fadeUp-mask"><span class="fadeUp">The Story</span></h2>
+      </div>
+      <div class="about_story-right">
+        <p class="about_story-para">
+          I collect websites the way some people collect records. Sites
+          where the type breathes, the scroll doesn't just move but
+          reveals, the button remembers you touched it. Building those,
+          for other people, is what I do.
+        </p>
+        <p class="about_story-para">
+          I work remote from Goiás, Brazil, with founders and small teams
+          who care how a product feels the moment it opens. Recent work
+          includes an edtech reaching 500K+ students, a compliance firm
+          rebuilding for market authority, and a wedding platform with
+          automated PIX payments. Different stakes, same standard.
+        </p>
+        <p class="about_story-para">
+          Between projects, I'm always consuming art. Digital work,
+          mostly. It's how I keep the next thing I ship a step ahead of
+          the last.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about_story {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .about_story-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+    position: relative;
+  }
+
+  /* Mobile: coluna única, label em cima */
+  .about_story-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-top: 3rem;
+  }
+
+  .about_story-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .about_story-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    max-width: 56rem;
+  }
+
+  .about_story-para {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  /* Tablet: 2 colunas iguais */
+  @media (min-width: 580px) {
+    .about_story-contain {
+      padding: 5rem 0 8rem;
+    }
+    .about_story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding-top: 4rem;
+    }
+    .about_story-label {
+      font-size: 4.4rem;
+    }
+    .about_story-para {
+      font-size: 2rem;
+    }
+  }
+
+  /* Desktop: mantém 62.5rem | 1fr, label H1 style, body 24px */
+  @media (min-width: 1024px) {
+    .about_story-contain {
+      padding: 6rem 0 10rem;
+    }
+    .about_story-grid {
+      grid-template-columns: 62.5rem 1fr;
+      padding-top: 5rem;
+    }
+    .about_story-label {
+      font-size: 6.4rem;
+      letter-spacing: -0.05em;
+    }
+    .about_story-right {
+      max-width: 56rem;
+      gap: 2.8rem;
+    }
+    .about_story-para {
+      font-size: 2.4rem;
+      line-height: 1.4;
+    }
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+/**
+ * CaseNav.astro — Nav das páginas de case study (Figma 1:995).
+ * Reusa TemplateNav no topo + adiciona um big case logo (147×91) abaixo.
+ * Props: logoSrc (path pro logo do case), logoAlt.
+ */
+import TemplateNav from '../template/TemplateNav.astro';
+
+interface Props {
+  logoSrc?: string;
+  logoAlt?: string;
+  logoText?: string;
+  /** Altura da logo em rem (desktop). Default: 9.1. Wordmarks largos como "mobilitex" precisam menor (~4). */
+  logoHeight?: number;
+}
+
+const { logoSrc, logoAlt, logoText, logoHeight = 9.1 } = Astro.props;
+
+// Escala relativa pra manter proporção em tablet e mobile
+const tabletHeight = logoHeight * (6 / 9.1);
+const mobileHeight = logoHeight * (4.4 / 9.1);
+---
+
+<TemplateNav />
+<div class="case_nav-logo">
+  <div class="case_nav-logo-contain">
+    {logoSrc ? (
+      <img
+        class="case_nav-logo-img"
+        src={logoSrc}
+        alt={logoAlt || logoText || ''}
+        style={`--logo-h-desktop: ${logoHeight}rem; --logo-h-tablet: ${tabletHeight}rem; --logo-h-mobile: ${mobileHeight}rem;`}
+      />
+    ) : (
+      <span
+        class="case_nav-logo-text"
+        style={`--logo-h-desktop: ${logoHeight}rem; --logo-h-tablet: ${tabletHeight}rem; --logo-h-mobile: ${mobileHeight}rem;`}
+      >{logoText}</span>
+    )}
+  </div>
+</div>
+
+<style>
+  .case_nav-logo {
+    width: 100%;
+    padding: 5rem 1.5rem 1rem;
+    background: var(--color-background);
+  }
+
+  .case_nav-logo-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .case_nav-logo-img {
+    height: var(--logo-h-desktop, 9.1rem);
+    width: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .case_nav-logo-text {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--logo-h-desktop, 9.1rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--color-text);
+  }
+
+  /* Tablet — menor */
+  @media (min-width: 580px) and (max-width: 1023px) {
+    .case_nav-logo-img {
+      height: var(--logo-h-tablet, 6rem);
+    }
+    .case_nav-logo-text {
+      font-size: var(--logo-h-tablet, 6rem);
+    }
+    .case_nav-logo {
+      padding: 3rem 1.5rem 1rem;
+    }
+  }
+
+  /* Mobile — ainda menor */
+  @media (max-width: 579px) {
+    .case_nav-logo-img {
+      height: var(--logo-h-mobile, 4.4rem);
+    }
+    .case_nav-logo-text {
+      font-size: var(--logo-h-mobile, 4.4rem);
+    }
+    .case_nav-logo {
+      padding: 2rem 1.5rem 1rem;
+    }
+  }
+</style>

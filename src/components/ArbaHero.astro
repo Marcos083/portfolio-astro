@@ -1,0 +1,176 @@
+---
+/**
+ * ArbaHero.astro — from Figma layer: section_hero
+ *
+ * Figma specs:
+ *   section_hero: 1440×804, flex col, items-center, justify-center, overflow clip, bg image
+ *   hero_component: 1200px wide, flex row, items-center
+ *   hero_content: flex col, gap 32px
+ *   hero_heading: flex col, gap 24px
+ *     H1: Rethink Sans Medium, 72px, line-height 1.1, #FDFEFF, max-w 926px
+ *     Body: Poppins Regular, 19.2px, line-height 1.5, #FDFEFF, max-w 608px
+ *   hero_cta: flex row
+ *     Button: bg #00B45F, rounded-12, pl-24 pr-6 py-6, gap 12
+ *       Text: Poppins Medium, 16px, #1B1C1C
+ *       Icon box: bg white, rounded-8, 50×50, arrow 24×24 centered
+ */
+---
+
+<section class="section_hero">
+  <img
+    class="section_hero-bg"
+    src="/arba/hero-bg.png"
+    alt="Equipe em reunião corporativa"
+    loading="eager"
+  />
+
+  <div class="hero_component">
+    <div class="hero_content">
+      <div class="hero_heading">
+        <h1 class="hero_h1">
+          Saúde mental corporativa não é benefício.
+          <br />
+          É gestão de risco.
+        </h1>
+        <p class="hero_body">
+          Estruturamos a gestão dos riscos psicossociais da sua empresa com base
+          na NR-01 — do diagnóstico ao acompanhamento contínuo, em um modelo
+          anual que protege o negócio e fortalece a cultura.
+        </p>
+      </div>
+
+      <div class="hero_cta">
+        <a href="#diagnostico" class="hero_cta-button">
+          <span class="hero_cta-label">Agende um Diagnóstico Organizacional</span>
+          <span class="hero_cta-icon">
+            <img
+              src="/arba/arrow-up-right.svg"
+              alt=""
+              width="24"
+              height="24"
+            />
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---- section_hero ---- */
+  .section_hero {
+    position: relative;
+    width: 100%;
+    height: 804px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .section_hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  /* ---- hero_component ---- */
+  .hero_component {
+    position: relative;
+    width: 1200px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* ---- hero_content ---- */
+  .hero_content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  /* ---- hero_heading ---- */
+  .hero_heading {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* ---- hero_h1 ---- */
+  .hero_h1 {
+    font-family: 'Rethink Sans', sans-serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 1.1;
+    color: #FDFEFF;
+    max-width: 926px;
+    margin: 0;
+  }
+
+  /* ---- hero_body ---- */
+  .hero_body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 19.2px;
+    line-height: 1.5;
+    color: #FDFEFF;
+    max-width: 608px;
+    margin: 0;
+  }
+
+  /* ---- hero_cta ---- */
+  .hero_cta {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .hero_cta-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #00B45F;
+    border-radius: 12px;
+    padding: 6px 6px 6px 24px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .hero_cta-button:hover {
+    opacity: 0.9;
+  }
+
+  .hero_cta-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1B1C1C;
+    white-space: nowrap;
+  }
+
+  .hero_cta-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .hero_cta-icon img {
+    width: 24px;
+    height: 24px;
+  }
+</style>

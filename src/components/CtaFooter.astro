@@ -1,0 +1,223 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<section class="cta-section" data-section="contact">
+  <!-- CTA Card -->
+  <div class="cta-card">
+    <div class="cta-top">
+      <h2 class="cta-heading">
+        LET'S BUILD<br />SOMETHING PEOPLE<br />REMEMBER
+      </h2>
+      <p class="cta-subtitle">FROM GLOBAL TECH COMPANIES TO GROWING STARTUPS</p>
+    </div>
+    <a class="cta-bottom" href="mailto:marcoscosta0920@gmail.com">
+      <svg class="cta-arrow" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 32H52M52 32L36 16M52 32L36 48" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="cta-talk">LET'S TALK</span>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer" data-section="footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <span class="footer-label">WEBSITE MADE USING:</span>
+      <div class="footer-links">
+        <span>FIGMA</span>
+        <span>WEBFLOW</span>
+        <span>GSAP</span>
+        <span>AE/LOTTIE</span>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-label" data-footer-clock>00:00:00</span>
+      <div class="footer-links">
+        <span>GOIÁS,</span>
+        <span>BRAZIL</span>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-label">CONTACT</span>
+      <div class="footer-links">
+        <a href="mailto:marcoscosta0920@gmail.com">E-MAIL</a>
+        <a href="https://linkedin.com/in/" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="https://x.com/" target="_blank" rel="noopener">X</a>
+        <a href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-label">LEGAL</span>
+      <div class="footer-links">
+        <span>DISCLAIMER</span>
+        <span>ALL RIGHTS RESERVED</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* ---- CTA Section ---- */
+  .cta-section {
+    background-color: var(--color-light);
+    padding: 0 var(--margin-page) 80px;
+  }
+
+  .cta-card {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    border: 1px solid var(--color-normal);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .cta-top {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 80px;
+  }
+
+  .cta-heading {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: clamp(32px, 4.24vw, 61.04px);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-transform: uppercase;
+  }
+
+  .cta-subtitle {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: clamp(18px, 2.17vw, 31.25px);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-transform: uppercase;
+    max-width: 586px;
+  }
+
+  .cta-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 80px;
+    border-top: 1px solid var(--color-normal);
+    text-decoration: none;
+    color: var(--color-black);
+    transition: background-color 0.3s ease;
+  }
+
+  .cta-bottom:hover {
+    background-color: var(--color-normal);
+  }
+
+  .cta-arrow {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .cta-bottom:hover .cta-arrow {
+    transform: translateX(8px);
+  }
+
+  .cta-talk {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: clamp(32px, 4.24vw, 61.04px);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  /* ---- Footer ---- */
+  .site-footer {
+    background-color: var(--color-light);
+    padding: 80px var(--margin-page) 48px;
+  }
+
+  .footer-grid {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--color-normal);
+    padding-top: 32px;
+  }
+
+  .footer-label {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-black);
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+  }
+
+  .footer-links span,
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-black);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .footer-links a:hover {
+    opacity: 0.6;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 768px) {
+    .cta-top {
+      padding: 40px;
+    }
+    .cta-bottom {
+      padding: 32px 40px;
+    }
+    .cta-arrow {
+      width: 40px;
+      height: 40px;
+    }
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+  }
+</style>
+
+<script>
+  function initFooterClock() {
+    const clock = document.querySelector<HTMLElement>('[data-footer-clock]');
+    if (!clock) return;
+
+    const update = () => {
+      const now = new Date().toLocaleTimeString('en-US', {
+        hour12: false,
+        timeZone: 'America/Sao_Paulo',
+      });
+      clock.textContent = now;
+    };
+
+    update();
+    setInterval(update, 1000);
+  }
+
+  document.addEventListener('DOMContentLoaded', initFooterClock);
+  document.addEventListener('astro:after-swap', initFooterClock);
+</script>

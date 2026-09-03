@@ -1,0 +1,168 @@
+---
+/**
+ * TemplateWork.astro — Our work section (277:155)
+ * Label "Our work" + 4 project cards with infinite media carousels.
+ */
+import TemplateProjectCard from './TemplateProjectCard.astro';
+---
+
+<section class="work_section" id="work">
+  <div class="work_head">
+    <div class="line-reveal line-reveal--top"></div>
+    <h2 class="work_label">Our work</h2>
+  </div>
+  <div class="work_list">
+    <TemplateProjectCard
+      projectName="Gabriel Granjeiro"
+      projectRole="Designer & Webflow Developer"
+      ctaHref="/cases/gabriel-granjeiro"
+      description="The personal website of Gabriel Granjeiro, CEO of Gran, an edtech with 500K+ students and Nasdaq-level recognition. The challenge: translating a high-impact trajectory into a digital experience that builds authority and connection. From design to code, I built the entire page in Webflow with a focus on performance, storytelling and conversion."
+      media={[
+        { type: 'image', src: '/cases/gabriel-granjeiro/1.webp', alt: 'Gabriel Granjeiro — full page overview' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/gabriel-granjeiro.mp4' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/3.webp', alt: 'Gabriel Granjeiro — hero section on laptop' },
+      ]}
+    />
+    <TemplateProjectCard
+      projectName="ARBA"
+      projectRole="Designer & Webflow Developer"
+      ctaHref="/cases/arba"
+      description="ARBA needed to turn regulatory compliance into market authority. I designed and developed the full website, from Figma to WordPress, with scroll-driven animations and micro-interactions that elevate the brand above the industry standard."
+      media={[
+        { type: 'image', src: '/cases/arba/1.webp', alt: 'ARBA — laptop mockup' },
+        { type: 'image', src: '/cases/arba/2.webp', alt: 'ARBA — site sections and logo' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/arba.mp4' },
+      ]}
+    />
+    <TemplateProjectCard
+      projectName="Mobilitex"
+      projectRole="Webflow Developer"
+      ctaHref="/cases/mobilitex"
+      description="Mobilitex is a leading Brazilian company in smart infrastructure for tunnels and highways. They needed to translate their technical complexity into a matching digital experience. I redesigned the interface in Webflow and built custom GSAP interactions, including a case gallery with drag, inertia, and cinematic transitions."
+      media={[
+        { type: 'image', src: '/cases/mobilitex/1.webp', alt: 'Mobilitex — mobile mockup' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/mobilitex.mp4' },
+        { type: 'image', src: '/cases/mobilitex/3.webp', alt: 'Mobilitex — desktop mockup' },
+      ]}
+    />
+    <TemplateProjectCard
+      projectName="Bia & Gabriel"
+      projectRole="Designer & Web Developer"
+      ctaHref="/cases/biagabriel"
+      description="Ana Bia and Gabriel needed a wedding platform with a gift registry and integrated PIX payments. I designed and developed the full solution in Framer with custom React components and automated reservation."
+      media={[
+        { type: 'image', src: '/cases/biagabriel/1.webp', alt: 'Bia & Gabriel — watercolor illustration' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/biagabriel.mp4' },
+        { type: 'image', src: '/cases/biagabriel/3.webp', alt: 'Bia & Gabriel — mobile mockup' },
+      ]}
+    />
+  </div>
+</section>
+
+<style>
+  .work_section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 1.5rem;
+  }
+
+  .work_head {
+    max-width: var(--page-max);
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 2rem;
+    position: relative;
+  }
+
+  .work_label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-h8-size);
+    font-weight: var(--type-h8-weight);
+    line-height: var(--type-h8-lh);
+    letter-spacing: var(--type-h8-ls);
+    color: var(--color-text);
+  }
+
+  .work_list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initCarousels() {
+    document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+      const track = carousel.querySelector<HTMLElement>('.carousel-track');
+      if (!track) return;
+
+      if ((track as any).__tween) {
+        (track as any).__tween.kill();
+      }
+
+      const slides = Array.from(track.children) as HTMLElement[];
+      const halfCount = slides.length / 2;
+      if (halfCount < 1) return;
+
+      const firstDupe = slides[halfCount];
+      const firstSlide = slides[0];
+      const moveDistance =
+        firstDupe.getBoundingClientRect().left -
+        firstSlide.getBoundingClientRect().left;
+
+      if (moveDistance <= 0) return;
+
+      const tween = gsap.to(track, {
+        x: -moveDistance,
+        duration: 25,
+        ease: 'none',
+        repeat: -1,
+      });
+
+      (track as any).__tween = tween;
+    });
+  }
+
+  function initVideos() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { rootMargin: '300px' }
+    );
+
+    document
+      .querySelectorAll<HTMLVideoElement>('[data-carousel] video[data-autoplay]')
+      .forEach((v) => observer.observe(v));
+  }
+
+  function init() {
+    initCarousels();
+    initVideos();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  document.addEventListener('astro:after-swap', init);
+
+  let resizeTimer: number | null = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(initCarousels, 300);
+  });
+</script>

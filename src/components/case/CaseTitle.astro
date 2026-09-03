@@ -1,0 +1,176 @@
+---
+/**
+ * CaseTitle.astro — Title section do case study (Figma 1:1012).
+ * Grid 2 col 625|625 (desktop):
+ *   Esq: "Case Study" label + Nome do projeto (H1 64px)
+ *   Dir: "Next Project →" link + Description + Tech stack
+ * Mobile: empilha.
+ */
+
+import ArrowRight from '../ArrowRight.astro';
+
+interface Props {
+  caseName: string;
+  description: string;
+  techStack: string[];
+  liveProjectHref: string;
+  liveProjectName?: string;
+}
+
+const {
+  caseName,
+  description,
+  techStack,
+  liveProjectHref,
+  liveProjectName = 'Live project',
+} = Astro.props;
+---
+
+<section class="case_title-section">
+  <div class="case_title-contain">
+    <div class="case_title-content">
+      <div class="case_title-left">
+        <span class="case_title-label">Case Study</span>
+        <h1 class="case_title-h1 fadeUp-mask"><span class="fadeUp">{caseName}</span></h1>
+      </div>
+      <div class="case_title-right">
+        <a class="case_title-link arrow-link" href={liveProjectHref} target="_blank" rel="noopener noreferrer">
+          <span class="showText">
+            <span>
+              {liveProjectName} <ArrowRight />
+              <span>{liveProjectName} <ArrowRight /></span>
+            </span>
+          </span>
+        </a>
+        <div class="case_title-descript">
+          <p class="case_title-para">{description}</p>
+          <p class="case_title-tech">
+            {techStack.map((item, i) => (
+              <>
+                {item}{i < techStack.length - 1 && <br />}
+              </>
+            ))}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .case_title-section {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .case_title-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 2rem 0 6rem;
+  }
+
+  /* Mobile: coluna única */
+  .case_title-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+  }
+
+  .case_title-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .case_title-label {
+    font-family: var(--font-sans);
+    font-size: var(--type-h4-size, 2.4rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--color-text);
+  }
+
+  .case_title-h1 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 4.4rem; /* mobile */
+    font-weight: var(--type-h1-weight);
+    line-height: 1;
+    letter-spacing: var(--type-h1-ls);
+    color: var(--color-text);
+  }
+
+  .case_title-right {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+  }
+
+  .case_title-link {
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-size: var(--type-text-link-size, 1.6rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .case_title-descript {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  .case_title-para {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .case_title-tech {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.03em;
+    color: var(--color-background-2);
+  }
+
+  /* Tablet — H1 maior, empilha ainda */
+  @media (min-width: 580px) {
+    .case_title-h1 {
+      font-size: var(--type-h1-size);
+    }
+    .case_title-contain {
+      padding: 3rem 0 6rem;
+    }
+  }
+
+  /* Desktop — 2 colunas 625|625, H1 grande */
+  @media (min-width: 1024px) {
+    .case_title-content {
+      display: grid;
+      grid-template-columns: 62.5rem 62.5rem;
+      gap: 0;
+    }
+    .case_title-left {
+      gap: 2rem;
+      padding-top: 1rem;
+    }
+    .case_title-right {
+      gap: 4.4rem;
+      padding-top: 1rem;
+    }
+    .case_title-h1 {
+      font-size: var(--type-h1-size); /* 6.4rem */
+      line-height: 1.1;
+    }
+  }
+</style>

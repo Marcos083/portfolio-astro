@@ -1,0 +1,126 @@
+---
+/**
+ * template-test.astro — Teste da skill figma-to-astro
+ * Implementação da página Home do template do Figma (nó 277:134)
+ *
+ * Fluid scaling (técnica victor.work):
+ *   html { font-size: X vw } → todo rem escala proporcionalmente com o viewport.
+ *   1rem = 10px @ 1280px (design base).
+ */
+import TemplateNav from '@/components/template/TemplateNav.astro';
+import HomeHero from '@/components/home/HomeHero.astro';
+import HomeManifesto from '@/components/home/HomeManifesto.astro';
+import TemplateWork from '@/components/template/TemplateWork.astro';
+import CaseConnect from '@/components/case/CaseConnect.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import GlobalEffects from '@/components/GlobalEffects.astro';
+import PageTransition from '@/components/PageTransition.astro';
+import SmoothScroll from '@/components/SmoothScroll.astro';
+import GrainOverlay from '@/components/GrainOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/template-tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marcos Costa | Webdesigner & Webflow  Developer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+
+  <body>
+    <PageTransition />
+    <TemplateNav />
+    <HomeHero />
+    <HomeManifesto />
+    <TemplateWork />
+    <CaseConnect />
+    <TemplateFooter />
+    <GlobalEffects />
+    <SmoothScroll />
+    <GrainOverlay opacity={0.28} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light only;
+  }
+
+  /* ============================================================
+     FLUID SCALING (técnica victor.work)
+     1rem escala proporcionalmente com a viewport.
+       Desktop (≥1024): 1rem = 10px @ 1280 (0.78125vw)
+       Tablet (580-1023): 1rem = 10px @ 800  (1.25vw)
+       Mobile (<580):    1rem = 10px @ 375  (2.66667vw)
+     Todo CSS dos componentes é em rem — nunca px (exceto hairlines 1px).
+     ============================================================ */
+  html {
+    font-size: 2.66667vw;
+  }
+
+  @media (min-width: 580px) and (max-width: 1023px) {
+    html {
+      font-size: 1.25vw;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 0.78125vw;
+    }
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ============================================================
+     Hero shell — Header + Intro juntos ocupam a altura restante
+     do viewport no desktop (nav é 4.6rem sticky no topo).
+     ============================================================ */
+  .hero_shell {
+    display: flex;
+    flex-direction: column-reverse; /* mobile: H1 primeiro, foto depois */
+    justify-content: space-between;
+  }
+
+  @media (min-width: 580px) {
+    .hero_shell {
+      flex-direction: column; /* tablet/desktop: foto primeiro, H1 depois */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero_shell {
+      min-height: calc(100vh - 4.6rem);
+      justify-content: space-between;
+    }
+  }
+</style>

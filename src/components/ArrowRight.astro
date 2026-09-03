@@ -1,0 +1,33 @@
+---
+/**
+ * ArrowRight.astro — Ícone arrow-right do Phosphor Icons (regular weight).
+ * Inline SVG usando currentColor pra herdar cor do parent.
+ * Size opcional em rem (default 1.6rem).
+ */
+interface Props {
+  size?: string | number;
+  strokeWidth?: number;
+}
+const { size = '1em' } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 256 256"
+  fill="currentColor"
+  aria-hidden="true"
+  focusable="false"
+  class="arrow-right-icon"
+>
+  <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
+</svg>
+
+<style>
+  .arrow-right-icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+/**
+ * CaseConnect.astro — Connect section para case study (Figma 1:1045).
+ * Reutiliza o padrão da home (divider + texto + divider). Menor padding.
+ */
+
+interface Props {
+  text?: string;
+}
+
+const { text = "Let's talk about your next project." } = Astro.props;
+---
+
+<section class="case_connect" id="contact">
+  <div class="case_connect-contain">
+    <div class="case_connect-divider"></div>
+    <p class="case_connect-text">{text}</p>
+    <div class="case_connect-divider"></div>
+  </div>
+</section>
+
+<style>
+  .case_connect {
+    width: 100%;
+    padding: 3rem 1.5rem;
+  }
+
+  .case_connect-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .case_connect-divider {
+    height: 1px;
+    background: var(--color-divider-lines);
+    width: 100%;
+  }
+
+  .case_connect-text {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-h5-size);
+    font-weight: var(--type-h5-weight);
+    line-height: var(--type-h5-lh);
+    letter-spacing: var(--type-h5-ls);
+    color: var(--color-text);
+  }
+</style>

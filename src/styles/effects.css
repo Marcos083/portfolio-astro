@@ -1,0 +1,130 @@
+/* ----------------------------------------------------------------
+   effects.css — animações reutilizáveis (WE-ON style).
+   3 efeitos:
+     1. .showText           — hover text swap (menu style)
+     2. .line-reveal        — divider expande de 0 → 100% (scale X)
+     3. .fadeUp + .fadeUp-mask — título revela por baixo do mask
+   Todos usam IntersectionObserver + classe .is-inview.
+   ---------------------------------------------------------------- */
+
+/* ============ 1. Hover text swap ============ */
+.showText {
+  display: inline-flex;
+  overflow: hidden;
+  position: relative;
+  line-height: 1;
+}
+
+.showText > span {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  transform: translateY(0%);
+  will-change: transform;
+}
+
+.showText > span > span {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateZ(0);
+}
+
+.showText:hover > span,
+.showText:focus-visible > span {
+  transform: translateY(-100%);
+}
+
+/* ============ 2. Divider scale reveal ============ */
+.line-reveal {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--color-divider);
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Estado inicial escondido — aplicado por JS. Sem transition. */
+.line-reveal[data-fx-hidden] {
+  transform: scaleX(0);
+  transition: none;
+}
+
+/* Modifier: ancorada no topo do container pai (que precisa ser position: relative) */
+.line-reveal--top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* ============ 3. Title fadeUp reveal ============ */
+.fadeUp-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.fadeUp {
+  display: block;
+  transform: translateY(0) rotate(0deg);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transform-origin: left top;
+  will-change: transform;
+}
+
+/* Estado inicial escondido — aplicado por JS. Sem transition (jump instantâneo
+   pra evitar animação inversa visível ao carregar). */
+.fadeUp[data-fx-hidden] {
+  transform: translateY(115%) rotate(4deg);
+  transition: none;
+}
+
+/* ============ 4. Arrow link — underline reveal no hover ============ */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  text-decoration: none;
+  padding-bottom: 0.4rem;
+}
+
+/* Underline como ::after com scaleX (mesmo efeito da .line-reveal) */
+.arrow-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.arrow-link:hover::after,
+.arrow-link:focus-visible::after,
+a:hover .arrow-link::after,
+a:focus-visible .arrow-link::after {
+  transform: scaleX(1);
+}
+
+/* Acessibilidade: respeita reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .showText > span,
+  .line-reveal,
+  .fadeUp {
+    transition: none !important;
+    animation: none !important;
+  }
+  .line-reveal {
+    transform: scaleX(1);
+  }
+  .fadeUp {
+    transform: translateY(0%);
+  }
+}

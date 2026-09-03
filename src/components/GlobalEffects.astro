@@ -1,0 +1,101 @@
+---
+/**
+ * GlobalEffects.astro — Include em cada page pra habilitar as animações.
+ * Estratégia com fallback graceful:
+ *   1. Elementos iniciam VISÍVEIS (se JS quebrar, tudo aparece normal)
+ *   2. JS marca data-fx-hidden IMEDIATAMENTE (esconde antes do paint)
+ *   3. IntersectionObserver adiciona .is-inview quando entram no viewport,
+ *      removendo data-fx-hidden e disparando a transição
+ */
+import '../styles/effects.css';
+---
+
+<script>
+  function initScrollReveal() {
+    const els = document.querySelectorAll<HTMLElement>('.line-reveal, .fadeUp, .intro-reveal');
+    if (!els.length) return;
+
+    // Pra .fadeUp, o elemento observado é o MASK pai (pois o .fadeUp em si
+    // fica translated fora da posição, o que confunde o IntersectionObserver).
+    const getObserveTarget = (el: HTMLElement): HTMLElement => {
+      if (el.classList.contains('fadeUp')) {
+        const mask = el.closest<HTMLElement>('.fadeUp-mask');
+        return mask || el;
+      }
+      return el;
+    };
+
+    // Safety net: força o estado final se a transição não completar em 2s
+    // (edge cases de renderização em previews, browsers com throttling agressivo)
+    const forceFinishIfStuck = (el: HTMLElement) => {
+      setTimeout(() => {
+        try {
+          const anims = el.getAnimations();
+          anims.forEach((a) => {
+            if (a.playState === 'running' || (a.currentTime as number | null) === 0 || a.currentTime === null) {
+              a.finish();
+            }
+          });
+        } catch(e) {}
+      }, 2000);
+    };
+
+    // Sem IntersectionObserver: mostra tudo direto (fallback)
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('is-inview'));
+      return;
+    }
+
+    // 1. Esconde tudo imediatamente com data-fx-hidden
+    els.forEach((el) => el.setAttribute('data-fx-hidden', ''));
+
+    // 2. Reveal: remove data-fx-hidden + add is-inview (dispara transition)
+    const reveal = (el: HTMLElement) => {
+      el.removeAttribute('data-fx-hidden');
+      el.classList.add('is-inview');
+      forceFinishIfStuck(el);
+    };
+
+    // Map do elemento observado (mask) pro alvo a revelar (fadeUp span)
+    const targetMap = new WeakMap<HTMLElement, HTMLElement>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const target = targetMap.get(entry.target as HTMLElement) || (entry.target as HTMLElement);
+            reveal(target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    els.forEach((el) => {
+      const observeEl = getObserveTarget(el);
+      targetMap.set(observeEl, el);
+      const rect = observeEl.getBoundingClientRect();
+      // Elementos acima do fold: reveal imediato com pequeno stagger visual
+      if (rect.top < window.innerHeight * 0.95 && rect.bottom > 0) {
+        const pt = document.querySelector('[data-pt]');
+        if (pt && pt.getAttribute('data-pt-mode') !== 'idle') {
+          window.addEventListener('page-reveal-start', () => {
+            setTimeout(() => reveal(el), 80);
+          }, { once: true });
+        } else {
+          setTimeout(() => reveal(el), 80);
+        }
+      } else {
+        observer.observe(observeEl);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>

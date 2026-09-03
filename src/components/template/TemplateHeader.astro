@@ -1,0 +1,68 @@
+---
+/**
+ * TemplateHeader.astro — Foto do Marcos.
+ * Desktop (277:135): 372×372 alinhada à esquerda no shell, atrelada ao 100vh.
+ * Tablet   (1:249):  297×297 no topo, alinhada à esquerda.
+ * Mobile   (1:379):  345×345 (full-width do container), depois do H1.
+ */
+---
+
+<section class="header_section">
+  <div class="header_contain">
+    <div class="header_logo-row">
+      <img
+        class="header_photo"
+        src="/template/marcos-nav.webp"
+        alt="Marcos Costa"
+        width="372"
+        height="372"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .header_section {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .header_contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 1.5rem 0 0;
+  }
+
+  .header_logo-row {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* Mobile: foto full-width do container, quadrada */
+  .header_photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Tablet: 297×297 alinhada à esquerda */
+  @media (min-width: 580px) {
+    .header_photo {
+      width: 29.7rem;
+      height: 29.7rem;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  /* Desktop: 372×372, ancorada ao 100vh via hero_shell */
+  @media (min-width: 1024px) {
+    .header_photo {
+      width: 37.2rem;
+      height: 37.2rem;
+      max-width: min(37.2rem, 45vh);
+      max-height: min(37.2rem, 45vh);
+    }
+  }
+</style>

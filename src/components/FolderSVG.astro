@@ -1,0 +1,327 @@
+---
+/**
+ * FOLDER SVG COMPONENT — 242×178px
+ * Adapted from folder-prototype.html
+ * Light variant: back Normal, tab Black, front Light
+ * All text as HTML overlays (not SVG <text>)
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['folder-wrapper', className]} data-scramble-to="OPEN">
+  <div class="folder-container">
+
+    <!-- Counter badge -->
+    <div class="folder-count">04</div>
+
+    <!-- Tab label -->
+    <div class="folder-tab-label">Work</div>
+
+    <!-- Meta info -->
+    <div class="folder-meta">
+      <div class="folder-meta-left">
+        <span>Portfolio</span><br>
+        <span>2026</span>
+      </div>
+      <div class="folder-meta-right">
+        <span>Design</span><br>
+        <span>Development</span>
+      </div>
+    </div>
+
+    <!-- Hint -->
+    <div class="folder-hint">Explore Projects</div>
+
+    <!-- SVG: pure geometry -->
+    <svg class="folder-svg" viewBox="0 0 242 178" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="back-panel" x="0" y="22" width="242" height="156" rx="2.5"/>
+      <path class="tab-shape" d="M0 4C0 1.79086 1.79086 0 4 0H90C92.2091 0 94 1.79086 94 4V22H0V4Z"/>
+      <rect class="front-panel" x="0" y="36" width="242" height="142" rx="2"/>
+    </svg>
+
+    <!-- Media thumbnail on hover -->
+    <div class="folder-media">
+      <video
+        src=""
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      ></video>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+  .folder-wrapper {
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+    width: 340px;
+  }
+
+  .folder-container {
+    position: relative;
+    width: 340px;
+    height: 250px;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .folder-svg {
+    position: absolute;
+    inset: 0;
+    width: 340px;
+    height: 250px;
+    overflow: visible;
+    filter: drop-shadow(0 1px 3px rgba(2,2,2,0.04));
+    transition: filter 0.5s ease;
+  }
+
+  .folder-wrapper:hover .folder-svg {
+    filter: drop-shadow(0 8px 24px rgba(2,2,2,0.07));
+  }
+
+  .back-panel  { fill: var(--color-black); stroke: var(--color-light); stroke-width: 0.75; }
+  .tab-shape   { fill: var(--color-black); }
+  .front-panel { fill: var(--color-light); stroke: var(--color-black); stroke-width: 0.75; }
+
+  .folder-tab-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 132px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-light);
+    z-index: 3;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .folder-meta {
+    position: absolute;
+    top: 56px;
+    left: 17px;
+    right: 17px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .folder-meta span {
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-grey);
+    line-height: 1.7;
+    user-select: none;
+  }
+
+  .folder-meta-right {
+    text-align: right;
+  }
+
+  .folder-hint {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-darker);
+    opacity: 0.55;
+    z-index: 3;
+    user-select: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .folder-wrapper:hover .folder-hint {
+    opacity: 0;
+  }
+
+  .folder-media {
+    position: absolute;
+    top: 80px;
+    left: 14px;
+    right: 14px;
+    bottom: 26px;
+    overflow: hidden;
+    opacity: 0;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .folder-media video,
+  .folder-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.05) brightness(1.02);
+  }
+
+  .folder-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+    background-size: 128px;
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .folder-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: var(--color-black);
+    color: var(--color-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+  }
+
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initFolder() {
+    const wrapper = document.querySelector('.folder-wrapper');
+    if (!wrapper) return;
+
+    const container = wrapper.querySelector('.folder-container') as HTMLElement;
+    const frontPanel = container.querySelector('.front-panel') as SVGElement;
+    const tabShape = container.querySelector('.tab-shape') as SVGElement;
+    const backPanel = container.querySelector('.back-panel') as SVGElement;
+    const tabLabel = container.querySelector('.folder-tab-label') as HTMLElement;
+    const meta = container.querySelector('.folder-meta') as HTMLElement;
+    const hint = container.querySelector('.folder-hint') as HTMLElement;
+    const media = container.querySelector('.folder-media') as HTMLElement;
+    const video = media?.querySelector('video') as HTMLVideoElement;
+    const countBadge = container.querySelector('.folder-count') as HTMLElement;
+
+    // Text scramble
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/\\|';
+    let isScrambling = false;
+
+    function scramble(el: HTMLElement, target: string, duration = 0.45) {
+      if (isScrambling) return;
+      isScrambling = true;
+      const original = el.textContent || '';
+      const len = Math.max(original.length, target.length);
+      const steps = 10;
+      const tl = gsap.timeline({ onComplete: () => { isScrambling = false; } });
+
+      for (let i = 0; i <= steps; i++) {
+        const p = i / steps;
+        tl.to({}, {
+          duration: duration / steps,
+          onStart: () => {
+            let r = '';
+            for (let j = 0; j < len; j++) {
+              const cp = j / len;
+              if (p > cp + 0.2) r += target[j] || '';
+              else if (p > cp * 0.5) r += chars[Math.floor(Math.random() * chars.length)];
+              else r += (el.textContent || '')[j] || chars[Math.floor(Math.random() * chars.length)];
+            }
+            el.textContent = r;
+          }
+        });
+      }
+      tl.set({}, { onComplete: () => { el.textContent = target; } });
+    }
+
+    // Hover timeline
+    const hoverTl = gsap.timeline({ paused: true });
+    hoverTl
+      .to(frontPanel, { y: 14, rotation: -1, transformOrigin: '0% 0%', duration: 0.55, ease: 'expo.out' }, 0)
+      .to(tabShape, { y: -4, duration: 0.5, ease: 'expo.out' }, 0)
+      .to(tabLabel, { y: -4, duration: 0.5, ease: 'expo.out' }, 0)
+      .to(backPanel, { scaleY: 1.012, transformOrigin: '50% 100%', duration: 0.55, ease: 'expo.out' }, 0)
+      .to(media, { opacity: 1, y: -2, duration: 0.55, ease: 'power2.out' }, 0.05)
+      .to(meta, { opacity: 0.35, duration: 0.4, ease: 'power2.out' }, 0)
+      .to(hint, { opacity: 0, y: 3, duration: 0.3, ease: 'power2.out' }, 0)
+      .to(countBadge, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, 0.08);
+
+    wrapper.addEventListener('mouseenter', () => {
+      hoverTl.play();
+      scramble(tabLabel, (wrapper as HTMLElement).dataset.scrambleTo || 'OPEN');
+      if (video?.src) { video.currentTime = 0; video.play().catch(() => {}); }
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      hoverTl.reverse();
+      scramble(tabLabel, 'Work', 0.35);
+      if (video) video.pause();
+    });
+
+    // Magnetic tilt
+    wrapper.addEventListener('mousemove', (e: Event) => {
+      const me = e as MouseEvent;
+      const rect = container.getBoundingClientRect();
+      const x = (me.clientX - rect.left) / rect.width;
+      const y = (me.clientY - rect.top) / rect.height;
+      gsap.to(container, {
+        rotateX: (y - 0.5) * -7,
+        rotateY: (x - 0.5) * 7,
+        duration: 0.6,
+        ease: 'power2.out',
+        transformPerspective: 800
+      });
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      gsap.to(container, { rotateX: 0, rotateY: 0, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
+    });
+
+    // Click → scroll to cases
+    wrapper.addEventListener('click', () => {
+      gsap.to(container, {
+        scale: 0.96, duration: 0.1, ease: 'power2.in',
+        onComplete: () => {
+          gsap.to(container, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.5)' });
+          const cases = document.querySelector('[data-section="work"]');
+          if (cases) cases.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Entrance
+    gsap.from(container, { y: 24, opacity: 0, scale: 0.97, duration: 0.8, ease: 'power3.out', delay: 0.5 });
+  }
+
+  // Init on load and after Barba transitions
+  document.addEventListener('DOMContentLoaded', initFolder);
+  document.addEventListener('astro:after-swap', initFolder);
+</script>

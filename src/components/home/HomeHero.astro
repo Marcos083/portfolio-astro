@@ -1,0 +1,343 @@
+---
+/**
+ * HomeHero.astro — Hero da home.
+ *
+ * Efeito de entrada do display (inspirado em leonidkostetskyi.com):
+ *   Cada linha é splittada em chars wrappados em .char > .char-inner.
+ *   Estado inicial: opacity 0 + translateX(110%).
+ *   Ao entrar (preloader done ou intersection) anima com stagger por char
+ *   e delay por linha, usando cubic-bezier(0.16, 1, 0.3, 1).
+ *
+ * Layout desktop:
+ *   [Nav]
+ *   ─ padding-top 12rem ─
+ *   [WEB DESIGNER]             [Foto 213×213]
+ *   [& WEBFLOW DEV]            gap 2.4rem
+ *   [FRONT-END]                [Intro word-reveal]
+ *   ─ divider bottom ─
+ */
+
+const displayLines = ['WEB DESIGNER', '& WEBFLOW DEV', 'FRONT-END'];
+
+const introText =
+  "Hey, I'm Marcos. I design and develop websites where every detail is intentional.";
+const introWords = introText.split(' ');
+---
+
+<section class="home-hero" data-home-hero>
+  <div class="home-hero_contain">
+    <div class="home-hero_body">
+      <div class="home-hero_left">
+        <h1 class="home-hero_display" data-hero-display>
+          {displayLines.map((line, li) => (
+            <div class="home-hero_display-line" data-line-index={li}>
+              {Array.from(line).map((ch) => (
+                <span class="home-hero_char">
+                  <span class="home-hero_char-inner">{ch === ' ' ? ' ' : ch}</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </h1>
+      </div>
+
+      <aside class="home-hero_right">
+        <div class="home-hero_photo">
+          <img src="/template/marcos-nav.webp" alt="Marcos Costa" width="213" height="213" />
+        </div>
+        <p class="home-hero_intro intro-reveal">
+          {introWords.map((word, index) => (
+            <Fragment><span class="word-reveal" style={`--word-index: ${index};`}>{word}</span> </Fragment>
+          ))}
+        </p>
+      </aside>
+    </div>
+
+    <div class="line-reveal line-reveal--bottom home-hero_divider"></div>
+  </div>
+</section>
+
+<style>
+  .home-hero {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .home-hero_contain {
+    max-width: var(--page-max);
+    margin: 0 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-hero_body {
+    display: flex;
+    flex-direction: column-reverse; /* mobile: display primeiro, foto depois */
+    gap: 3.2rem;
+    padding-top: 4rem;
+    padding-bottom: 3.2rem;
+    width: 100%;
+    align-items: space-between;
+  }
+
+  .home-hero_left {
+    flex: 0 0 auto;
+    min-width: 0;
+    text-align: left;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .home-hero_right {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    align-items: flex-end;
+    align-self: flex-end;
+  }
+
+  /* ───── Display ───── */
+  .home-hero_display {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+    color: var(--color-text);
+    text-transform: uppercase;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left;
+  }
+
+  .home-hero_display-line {
+    display: block;
+    /* 4rem é o maior tamanho em que a linha mais longa ("& WEBFLOW DEV")
+       ainda cabe nos 345px de conteúdo do mobile com `white-space: nowrap`.
+       Em 4.4rem ela media 370px e era cortada na borda direita. */
+    font-size: 4rem; /* mobile — 40px @375 */
+    line-height: 1.05;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Cada char: janela flex-inline; corta o inner deslocado à direita */
+  .home-hero_char {
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 1.05;
+    vertical-align: baseline;
+  }
+
+  /* Char-inner: o que animamos */
+  .home-hero_char-inner {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(110%);
+    will-change: transform, opacity;
+    transition:
+      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Estado animado — display recebe .is-in */
+  .home-hero_display.is-in .home-hero_char-inner {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Photo */
+  .home-hero_photo {
+    width: 16rem;
+    height: 16rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .home-hero_photo img {
+    width: 100%;
+    height: 150%;
+    object-fit: cover;
+    object-position: center 32%;
+    filter: grayscale(100%) contrast(1.02);
+  }
+
+  /* Intro */
+  .home-hero_intro {
+    margin: 0;
+    width: 22rem;
+    max-width: 100%;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: var(--type-nav-link-size);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+    color: var(--color-text);
+    text-align: right;
+  }
+
+  /* Animação Word Reveal do intro */
+  .word-reveal {
+    display: inline-block;
+    opacity: 1; /* Default state: visible (fallback) */
+    transform: translateY(0);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--word-index) * 0.03s + 0.4s);
+    will-change: opacity, transform;
+  }
+
+  .intro-reveal[data-fx-hidden] .word-reveal {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: none;
+  }
+
+  .home-hero_divider {
+    width: 100%;
+    height: 1px;
+    background: var(--color-divider);
+    transform-origin: left center;
+  }
+
+  /* ───── Tablet 580+ ───── */
+  @media (min-width: 580px) {
+    .home-hero_body {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 4rem;
+      padding-top: 6rem;
+      padding-bottom: 4rem;
+    }
+
+    .home-hero_display-line {
+      font-size: 7.2rem;
+    }
+
+    .home-hero_photo {
+      width: 21.3rem;
+      height: 21.3rem;
+    }
+
+    .home-hero_intro {
+      width: 21.2rem;
+    }
+
+    .home-hero_right {
+      align-self: flex-start;
+    }
+  }
+
+  /* ───── Desktop 1024+ ───── */
+  @media (min-width: 1024px) {
+    .home-hero {
+      min-height: calc(100vh - 4.6rem);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .home-hero_contain {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .home-hero_body {
+      flex: 1;
+      display: grid !important;
+      grid-template-columns: max-content max-content !important;
+      justify-content: space-between !important;
+      align-items: start !important;
+      width: 100% !important;
+      padding: 12rem 0 2.4rem 0 !important;
+      margin: 0 !important;
+      gap: 1.5rem;
+    }
+
+    .home-hero_display-line {
+      font-size: 10.75rem;
+    }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .home-hero_char-inner {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .word-reveal {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Stagger + trigger da animação char-split:
+   *   delay = BASE + (line * LINE_GAP) + (char * CHAR_GAP)
+   * Trigger: quando preloader entra em reveal, OU via intersection observer,
+   * OU fallback timeout.
+   */
+  function initHeroDisplay() {
+    const display = document.querySelector<HTMLElement>('[data-hero-display]');
+    if (!display) return;
+
+    const CHAR_GAP = 22;
+    const LINE_GAP = 140;
+    const BASE_DELAY = 100;
+
+    const lines = display.querySelectorAll<HTMLElement>('.home-hero_display-line');
+    lines.forEach((line, li) => {
+      const chars = line.querySelectorAll<HTMLElement>('.home-hero_char-inner');
+      chars.forEach((c, ci) => {
+        const delay = BASE_DELAY + li * LINE_GAP + ci * CHAR_GAP;
+        c.style.transitionDelay = `${delay}ms`;
+      });
+    });
+
+    let triggered = false;
+    const trigger = () => {
+      if (triggered) return;
+      triggered = true;
+      requestAnimationFrame(() => display.classList.add('is-in'));
+    };
+
+    // Se preloader ainda ativo, esperar o evento page-reveal-start
+    const preloader = document.querySelector<HTMLElement>('[data-pt]');
+    const preloaderActive =
+      preloader &&
+      preloader.getAttribute('data-pt-mode') !== 'idle' &&
+      preloader.dataset.ptDone !== 'true';
+
+    if (preloaderActive) {
+      window.addEventListener('page-reveal-start', trigger, { once: true });
+      setTimeout(trigger, 4000); // fallback
+    } else {
+      // Sem preloader OU já terminou: IntersectionObserver
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              trigger();
+              io.disconnect();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      io.observe(display);
+      // Fallback caso o observer não dispare rápido
+      setTimeout(trigger, 1500);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroDisplay);
+  } else {
+    initHeroDisplay();
+  }
+  document.addEventListener('astro:after-swap', initHeroDisplay);
+</script>

@@ -1,0 +1,433 @@
+---
+/**
+ * MY WORK SECTION — case studies with infinite carousel
+ *
+ * Each case: left info panel + right media carousel (3 items, infinite loop).
+ * Carousel: GSAP-driven continuous marquee with hover pause.
+ * Videos: IntersectionObserver-controlled autoplay (muted, looped).
+ */
+
+interface MediaItem {
+  type: 'image' | 'video';
+  src: string;
+}
+
+interface CaseDetail {
+  label: string;
+  text: string;
+}
+
+interface Project {
+  number: string;
+  name: string;
+  href: string;
+  details: CaseDetail[];
+  media: MediaItem[];
+}
+
+const projects: Project[] = [
+  {
+    number: '01',
+    name: 'MOBILITEX',
+    href: '#',
+    details: [
+      { label: 'Role', text: 'Web Designer & Webflow Developer' },
+      { label: 'Year', text: '2026' },
+      { label: 'Tech Stack', text: 'Webflow, GSAP, Figma' },
+      { label: 'Overview', text: 'A modern mobility platform with smooth micro-interactions and conversion-focused design.' },
+    ],
+    media: [
+      { type: 'image', src: '/cases/mobilitex/1.webp' },
+      { type: 'video', src: '/cases/mobilitex/2.mp4' },
+      { type: 'image', src: '/cases/mobilitex/3.webp' },
+    ],
+  },
+  {
+    number: '02',
+    name: 'GABRIEL GRANJEIRO',
+    href: '#',
+    details: [
+      { label: 'Role', text: 'Web Designer & Webflow Developer' },
+      { label: 'Year', text: '2026' },
+      { label: 'Tech Stack', text: 'Webflow, GSAP, Figma' },
+      { label: 'Overview', text: 'Personal brand website for the CEO of one of Latin America\'s leading EdTech platforms.' },
+    ],
+    media: [
+      { type: 'image', src: '/cases/gabriel-granjeiro/1.webp' },
+      { type: 'video', src: '/cases/gabriel-granjeiro/2.mp4' },
+      { type: 'image', src: '/cases/gabriel-granjeiro/3.webp' },
+    ],
+  },
+  {
+    number: '03',
+    name: 'ARBA',
+    href: '#',
+    details: [
+      { label: 'Role', text: 'Web Designer & Webflow Developer' },
+      { label: 'Year', text: '2026' },
+      { label: 'Tech Stack', text: 'Webflow, Figma' },
+      { label: 'Overview', text: 'Corporate platform focused on compliance, mental health regulation, and organizational culture.' },
+    ],
+    media: [
+      { type: 'image', src: '/cases/arba/1.webp' },
+      { type: 'image', src: '/cases/arba/2.webp' },
+      { type: 'video', src: '/cases/arba/3.mp4' },
+    ],
+  },
+  {
+    number: '04',
+    name: 'BIA E GABRIEL',
+    href: '#',
+    details: [
+      { label: 'Role', text: 'Web Designer & Developer' },
+      { label: 'Year', text: '2026' },
+      { label: 'Tech Stack', text: 'Astro, Figma' },
+      { label: 'Overview', text: 'Elegant wedding website with watercolor illustrations and a warm, editorial aesthetic.' },
+    ],
+    media: [
+      { type: 'image', src: '/cases/biagabriel/1.webp' },
+      { type: 'video', src: '/cases/biagabriel/2.mp4' },
+      { type: 'image', src: '/cases/biagabriel/3.webp' },
+    ],
+  },
+];
+---
+
+<section class="my-work" data-section="work">
+  <!-- Title viewport -->
+  <div class="work-title">
+    <h2 class="work-title-text">MY WORK</h2>
+  </div>
+
+  <!-- Case study cards -->
+  {projects.map((project) => (
+    <article class="case-card" data-case-card>
+      <div class="case-inner">
+        <!-- Left: project info -->
+        <div class="case-info">
+          <div class="case-header">
+            <span class="case-number">{project.number}</span>
+            <span class="case-name">{project.name}</span>
+            <a class="case-cta" href={project.href}>VIEW PROJECT</a>
+          </div>
+
+          <div class="case-details">
+            {project.details.map((detail, i) => (
+              <div class={`case-detail ${i < project.details.length - 1 ? 'has-divider' : ''}`}>
+                <h3 class="case-detail-label">{detail.label}</h3>
+                <p class="case-detail-text">{detail.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: infinite carousel -->
+        <div class="case-media" data-carousel>
+          <div class="carousel-track">
+            {/* Original set */}
+            {project.media.map((item) => (
+              <div class="carousel-slide">
+                {item.type === 'image' ? (
+                  <img src={item.src} alt={project.name} loading="lazy" decoding="async" />
+                ) : (
+                  <video muted loop playsinline preload="metadata" data-autoplay>
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                )}
+              </div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {project.media.map((item) => (
+              <div class="carousel-slide" aria-hidden="true">
+                {item.type === 'image' ? (
+                  <img src={item.src} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <video muted loop playsinline preload="metadata" data-autoplay>
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </article>
+  ))}
+</section>
+
+<style>
+  .my-work {
+    position: relative;
+    background-color: var(--color-normal);
+  }
+
+  /* ---- Title viewport ---- */
+  .work-title {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .work-title-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(80px, 12.5vw, 180px);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-align: center;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  /* ---- Case study card ---- */
+  .case-card {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .case-inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding-left: var(--margin-page);
+    gap: 129px;
+  }
+
+  /* ---- Left: project info ---- */
+  .case-info {
+    flex: 0 0 551px;
+    max-width: 551px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .case-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .case-number {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-black);
+  }
+
+  .case-name {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-h4);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-transform: uppercase;
+  }
+
+  .case-cta {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--color-light);
+    background-color: var(--color-black);
+    padding: 16px;
+    border-radius: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .case-cta:hover {
+    opacity: 0.85;
+  }
+
+  .case-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .case-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 24px;
+  }
+
+  .case-detail:first-child {
+    padding-top: 0;
+  }
+
+  .case-detail.has-divider {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-black);
+  }
+
+  .case-detail-label {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-h5);
+    line-height: 1.1;
+    color: var(--color-black);
+  }
+
+  .case-detail-text {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--color-darker);
+  }
+
+  /* ---- Right: carousel ---- */
+  .case-media {
+    flex: 1 1 auto;
+    align-self: stretch;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 8px;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .carousel-slide img,
+  .carousel-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 1200px) {
+    .case-inner {
+      gap: 64px;
+    }
+    .case-info {
+      flex: 0 0 auto;
+      max-width: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .case-inner {
+      flex-direction: column;
+      gap: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .case-info {
+      flex: none;
+      width: 100%;
+      max-width: none;
+      padding: 0 var(--margin-page);
+      padding-bottom: 32px;
+    }
+
+    .case-header {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .case-media {
+      flex: none;
+      width: 100%;
+      height: 60vh;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initCarousels() {
+    document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+      const track = carousel.querySelector<HTMLElement>('.carousel-track');
+      if (!track) return;
+
+      if ((track as any).__carouselTween) {
+        (track as any).__carouselTween.kill();
+      }
+
+      const slides = Array.from(track.children) as HTMLElement[];
+      const halfCount = slides.length / 2;
+
+      if (halfCount < 1) return;
+
+      const firstDupe = slides[halfCount];
+      const firstSlide = slides[0];
+      const moveDistance =
+        firstDupe.getBoundingClientRect().left -
+        firstSlide.getBoundingClientRect().left;
+
+      const tween = gsap.to(track, {
+        x: -moveDistance,
+        duration: 30,
+        ease: 'none',
+        repeat: -1,
+      });
+
+      (track as any).__carouselTween = tween;
+
+      carousel.addEventListener('mouseenter', () => {
+        gsap.to(tween, { timeScale: 0, duration: 0.8, ease: 'power2.out' });
+      });
+      carousel.addEventListener('mouseleave', () => {
+        gsap.to(tween, { timeScale: 1, duration: 0.8, ease: 'power2.in' });
+      });
+    });
+  }
+
+  function initVideos() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+
+    document
+      .querySelectorAll<HTMLVideoElement>('[data-carousel] video[data-autoplay]')
+      .forEach((v) => observer.observe(v));
+  }
+
+  function init() {
+    initCarousels();
+    initVideos();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('astro:after-swap', init);
+
+  let resizeTimer: number | null = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(initCarousels, 300);
+  });
+</script>

@@ -1,0 +1,214 @@
+---
+/**
+ * AboutClients.astro — Seção "Selected Clients" (substitui Awards do template).
+ * Layout: label esquerda + lista tipo Awards direita (nome, setor, ano, →).
+ * Cada linha vira link pro live project.
+ */
+
+const clients = [
+  { name: 'Gran',           sector: 'Edtech · 500K+ students',    year: '2025', href: 'https://gabriel-granjeiro-f2a20d.webflow.io/' },
+  { name: 'Mobilitex',      sector: 'Smart infrastructure',        year: '2024', href: 'https://mobilitex.com.br/' },
+  { name: 'ARBA',           sector: 'Regulatory compliance',       year: '2024', href: 'https://www.arbaconsultoria.com.br/' },
+  { name: 'Bia & Gabriel',  sector: 'Wedding platform',            year: '2024', href: 'https://anabiaegabriel.com.br/' },
+];
+---
+
+<section class="about_clients">
+  <div class="about_clients-contain">
+    <div class="line-reveal line-reveal--top"></div>
+    <div class="about_clients-grid">
+      <div class="about_clients-left">
+        <h2 class="about_clients-label fadeUp-mask"><span class="fadeUp">Selected Clients</span></h2>
+      </div>
+      <div class="about_clients-right">
+        {clients.map((c, i) => (
+          <>
+            {i > 0 && <div class="about_clients-divider"></div>}
+            <a class="about_clients-item" href={c.href} target="_blank" rel="noopener noreferrer">
+              <span class="about_clients-name">{c.name}</span>
+              <span class="about_clients-sector">{c.sector}</span>
+              <span class="about_clients-year">{c.year}</span>
+              <span class="about_clients-arrow" aria-hidden="true">→</span>
+            </a>
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about_clients {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .about_clients-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+    position: relative;
+  }
+
+  /* Mobile: coluna única */
+  .about_clients-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-top: 3rem;
+  }
+
+  .about_clients-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .about_clients-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .about_clients-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 1.2rem;
+    align-items: baseline;
+    padding: 1.6rem 0;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease, transform 0.3s ease;
+  }
+
+  .about_clients-item:hover {
+    opacity: 0.7;
+  }
+
+  .about_clients-name {
+    grid-column: 1;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .about_clients-sector {
+    grid-column: 1;
+    grid-row: 2;
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--color-background-2);
+    margin-top: 0.4rem;
+  }
+
+  .about_clients-year {
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-background-2);
+  }
+
+  .about_clients-arrow {
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    color: var(--color-text);
+  }
+
+  .about_clients-divider {
+    height: 1px;
+    width: 100%;
+    background: var(--color-divider-lines);
+  }
+
+  /* Tablet: 2 colunas iguais, layout do item em linha */
+  @media (min-width: 580px) {
+    .about_clients-contain {
+      padding: 5rem 0 8rem;
+    }
+    .about_clients-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding-top: 4rem;
+    }
+    .about_clients-label {
+      font-size: 4.4rem;
+    }
+    .about_clients-item {
+      grid-template-columns: 1fr 12rem auto;
+      gap: 2rem;
+      align-items: center;
+      padding: 2rem 0;
+    }
+    .about_clients-name {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .about_clients-sector {
+      display: block;
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: 0.4rem;
+    }
+    .about_clients-name {
+      font-size: 2rem;
+    }
+    .about_clients-year {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+    }
+    .about_clients-arrow {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+      align-self: center;
+    }
+  }
+
+  /* Desktop: 62.5 | 1fr, tipografia mais generosa */
+  @media (min-width: 1024px) {
+    .about_clients-contain {
+      padding: 6rem 0 10rem;
+    }
+    .about_clients-grid {
+      grid-template-columns: 62.5rem 1fr;
+      padding-top: 5rem;
+    }
+    .about_clients-label {
+      font-size: 6.4rem;
+      letter-spacing: -0.05em;
+    }
+    .about_clients-right {
+      max-width: 56rem;
+    }
+    .about_clients-item {
+      grid-template-columns: 1fr 8rem 2rem;
+      gap: 2.4rem;
+      padding: 2.4rem 0;
+    }
+    .about_clients-name {
+      font-size: 2.4rem;
+    }
+    .about_clients-sector {
+      font-size: 1.5rem;
+    }
+    .about_clients-year {
+      font-size: 1.8rem;
+    }
+    .about_clients-arrow {
+      font-size: 1.8rem;
+    }
+  }
+</style>

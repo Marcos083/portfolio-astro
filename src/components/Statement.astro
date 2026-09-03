@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import polaroid from '../assets/images/statement/polaroid.png';
+---
+
+<section class="statement" data-section="statement">
+  <h2 class="statement-heading">Every pixel</h2>
+
+  <div class="statement-polaroid">
+    <Image
+      src={polaroid}
+      alt="Marcos Costa"
+      widths={[520, 800, 1040]}
+      sizes="(max-width: 768px) 80vw, 520px"
+      quality={88}
+      format="webp"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="statement-bottom">
+    <p class="statement-text">
+      I believe great websites are born when design and development speak the same language — every detail intentional, every interaction earned.
+    </p>
+    <span class="statement-side-label">Marcos Costa</span>
+  </div>
+</section>
+
+<style>
+  .statement {
+    position: relative;
+    background-color: var(--color-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px var(--margin-page) 120px;
+    overflow: hidden;
+  }
+
+  .statement-heading {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: clamp(64px, 8.89vw, 128px);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  /* ---- Polaroid frame ---- */
+  .statement-polaroid {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    background-color: #dededc;
+    padding: 36px 36px 100px;
+    margin-top: -20px;
+    z-index: 1;
+  }
+
+  .statement-polaroid img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ---- Bottom text area ---- */
+  .statement-bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 40px;
+    gap: 40px;
+  }
+
+  .statement-text {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-black);
+    max-width: 480px;
+  }
+
+  .statement-side-label {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--color-black);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .statement {
+      padding: 48px var(--margin-page) 80px;
+    }
+
+    .statement-polaroid {
+      max-width: 90%;
+      padding: 20px 20px 64px;
+    }
+
+    .statement-bottom {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .statement-side-label {
+      writing-mode: horizontal-tb;
+    }
+  }
+</style>

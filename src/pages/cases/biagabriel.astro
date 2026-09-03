@@ -1,0 +1,136 @@
+---
+/**
+ * /cases/biagabriel — Case Study Ana Bia & Gabriel (wedding site)
+ * Layout do case study template. Slot 2 usa a imagem da home (mobile mockup),
+ * Slot 3 usa o vídeo da home.
+ */
+import CaseNav from '@/components/case/CaseNav.astro';
+import CaseTitle from '@/components/case/CaseTitle.astro';
+import CaseImages from '@/components/case/CaseImages.astro';
+import CaseOtherProjects from '@/components/case/CaseOtherProjects.astro';
+import CaseConnect from '@/components/case/CaseConnect.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import GlobalEffects from '@/components/GlobalEffects.astro';
+import PageTransition from '@/components/PageTransition.astro';
+import SmoothScroll from '@/components/SmoothScroll.astro';
+import GrainOverlay from '@/components/GrainOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../../styles/template-tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bia & Gabriel | Marcos Costa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+
+  <body>
+    <PageTransition />
+    <CaseNav logoSrc="/cases/biagabriel/study/logo.webp" logoAlt="Bia & Gabriel logo" />
+
+    <CaseTitle
+      caseName="Bia & Gabriel"
+      description="Ana Bia and Gabriel needed a wedding platform with a gift registry and integrated PIX payments. I designed and developed the full solution in Framer with custom React components and automated reservation."
+      techStack={[
+        'Framer',
+        'React (custom code)',
+        'PIX integration',
+        'Automated reservation',
+      ]}
+      liveProjectHref="https://anabiaegabriel.com.br/"
+      liveProjectName="Live project"
+    />
+
+    <CaseImages
+      media={[
+        { type: 'image', src: '/cases/biagabriel/study/image-1.webp', alt: 'Bia & Gabriel — watercolor hero illustration' },
+        { type: 'image', src: '/cases/biagabriel/3.webp',           alt: 'Bia & Gabriel — mobile site mockup' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/biagabriel.mp4' },
+        { type: 'image', src: '/cases/biagabriel/study/image-4.webp', alt: 'Bia & Gabriel — gift registry mockup' },
+        { type: 'image', src: '/cases/biagabriel/study/image-5.webp', alt: 'Bia & Gabriel — dress code page' },
+        { type: 'image', src: '/cases/biagabriel/study/image-6.webp', alt: 'Bia & Gabriel — book cover mockup' },
+      ]}
+    />
+
+    <CaseOtherProjects
+      projects={[
+        {
+          name: 'Gabriel Granjeiro',
+          imageSrc: '/cases/gabriel-granjeiro/1.webp',
+          imageAlt: 'Gabriel Granjeiro project preview',
+          href: '/cases/gabriel-granjeiro',
+        },
+        {
+          name: 'ARBA',
+          imageSrc: '/cases/arba/1.webp',
+          imageAlt: 'ARBA project preview',
+          href: '/cases/arba',
+        },
+        {
+          name: 'Mobilitex',
+          imageSrc: '/cases/mobilitex/1.webp',
+          imageAlt: 'Mobilitex project preview',
+          href: '/cases/mobilitex',
+        },
+      ]}
+    />
+
+    <CaseConnect />
+
+    <TemplateFooter />
+    <GlobalEffects />
+    <SmoothScroll />
+    <GrainOverlay opacity={0.28} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light only;
+  }
+
+  html {
+    font-size: 2.66667vw;
+  }
+  @media (min-width: 580px) and (max-width: 1023px) {
+    html {
+      font-size: 1.25vw;
+    }
+  }
+  @media (min-width: 1024px) {
+    html {
+      font-size: 0.78125vw;
+    }
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+</style>

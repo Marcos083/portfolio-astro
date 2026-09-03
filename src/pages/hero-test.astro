@@ -1,0 +1,310 @@
+---
+/**
+ * /hero-test — Hero 100vh fiel ao Figma frame 131:1507.
+ *
+ * Base do design: 1280px de largura.
+ * Todas as medidas escalam proporcionalmente via clamp(min, Xvw, max)
+ * pra manter a mesma perspectiva em qualquer viewport desktop
+ * (13", 27", 32"+).
+ *
+ * Tokens:
+ *   #172D1A             — verde escuro (texto/border/links)
+ *   #FFFFFF             — background
+ *   Instrument Sans     — display / intro / nav links
+ *   JetBrains Mono Bold — logo "MARCOS · COSTA"
+ *   Display 89.61 / Nav 20 / Intro 20 / Logo 18 (px @ 1280w)
+ *   Photo 213 / Intro-text 212 wide
+ *   Gap foto→intro 24 / Padding nav→content 120
+ */
+import GrainOverlay from '@/components/GrainOverlay.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero Test | Marcos Costa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="ht-shell">
+      <!-- Nav header -->
+      <header class="ht-nav">
+        <div class="ht-nav-logo-wrap">
+          <div class="ht-nav-logo">
+            <span>MARCOS</span>
+            <span class="ht-nav-dot"></span>
+            <span>COSTA</span>
+          </div>
+        </div>
+        <div class="ht-nav-links-wrap">
+          <nav class="ht-nav-links">
+            <a href="#">Work</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Body: display esquerda + right column (photo + intro) -->
+      <div class="ht-body">
+        <div class="ht-body-left">
+          <div class="ht-display">
+            <p class="ht-display-l1">WEB DESIGNER</p>
+            <p class="ht-display-l2">&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CREATIVE DEV</p>
+            <p class="ht-display-l3">DEVELOPER</p>
+          </div>
+        </div>
+
+        <aside class="ht-body-right">
+          <div class="ht-photo">
+            <img src="/template/marcos-nav.webp" alt="Marcos Costa" />
+          </div>
+          <p class="ht-intro">
+            Hey, I'm Marcos. I design and develop websites where every detail is intentional.
+          </p>
+        </aside>
+      </div>
+
+      <!-- Divider final -->
+      <div class="ht-divider"></div>
+    </div>
+
+    <GrainOverlay opacity={0.32} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    /* Cores */
+    --ht-green: #172D1A;
+    --ht-bg: #ffffff;
+
+    /* Fonts */
+    --ht-font-sans: 'Instrument Sans', system-ui, sans-serif;
+    --ht-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Escalas — base 1280px */
+    --ht-pad: clamp(15px, 1.17vw, 30px);
+    --ht-nav-h: clamp(46px, 3.6vw, 80px);
+    --ht-content-pt: clamp(80px, 9.375vw, 200px);
+    --ht-photo-size: clamp(180px, 16.64vw, 400px);
+    --ht-intro-w: clamp(180px, 16.56vw, 400px);
+    --ht-photo-intro-gap: clamp(16px, 1.875vw, 48px);
+    --ht-nav-gap: clamp(24px, 3.9vw, 80px);
+
+    /* Fontes */
+    --ht-fz-display: clamp(48px, 7vw, 180px);
+    --ht-fz-nav: clamp(14px, 1.56vw, 32px);
+    --ht-fz-logo: clamp(14px, 1.41vw, 28px);
+    --ht-fz-intro: clamp(14px, 1.56vw, 32px);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ht-bg);
+    color: var(--ht-green);
+    font-family: var(--ht-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * { box-sizing: border-box; }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ───── Shell (100vh, flex col) ───── */
+  .ht-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--ht-pad);
+    position: relative;
+  }
+
+  /* ───── Nav header ───── */
+  .ht-nav {
+    display: flex;
+    align-items: center;
+    height: var(--ht-nav-h);
+    flex-shrink: 0;
+  }
+
+  .ht-nav-logo-wrap {
+    display: flex;
+    align-items: center;
+    flex: 1 0 0;
+    min-width: 0;
+    height: 100%;
+    padding: 12px 20px 10px 0;
+    border-bottom: 1px solid var(--ht-green);
+  }
+
+  .ht-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--ht-font-mono);
+    font-weight: 700;
+    font-size: var(--ht-fz-logo);
+    line-height: 1.5;
+    color: var(--ht-green);
+    white-space: nowrap;
+  }
+
+  .ht-nav-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ht-green);
+    display: inline-block;
+    margin: 0 2px;
+  }
+
+  .ht-nav-links-wrap {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1 0 0;
+    max-width: 615px;
+    min-width: 0;
+    height: 100%;
+    padding: 12px 0 10px 20px;
+    border-bottom: 1px solid var(--ht-green);
+    background: var(--ht-bg);
+  }
+
+  .ht-nav-links {
+    display: flex;
+    gap: var(--ht-nav-gap);
+    align-items: flex-end;
+  }
+
+  .ht-nav-links a {
+    font-family: var(--ht-font-sans);
+    font-weight: 400;
+    font-size: var(--ht-fz-nav);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    padding-bottom: 4px;
+    transition: opacity 0.2s ease;
+  }
+
+  .ht-nav-links a:hover { opacity: 0.55; }
+
+  /* ───── Body: display + right column ───── */
+  .ht-body {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: var(--ht-content-pt);
+    padding-bottom: var(--ht-photo-intro-gap);
+    gap: var(--ht-pad);
+  }
+
+  .ht-body-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ht-body-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ht-photo-intro-gap);
+    flex-shrink: 0;
+    width: var(--ht-photo-size);
+  }
+
+  /* Display escalonado */
+  .ht-display {
+    font-family: var(--ht-font-sans);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+    color: var(--ht-green);
+    text-transform: uppercase;
+  }
+
+  .ht-display p {
+    margin: 0;
+    font-size: var(--ht-fz-display);
+    white-space: pre;
+  }
+
+  .ht-display-l2,
+  .ht-display-l3 {
+    padding-left: clamp(30px, 9.6vw, 240px);
+  }
+
+  /* Photo */
+  .ht-photo {
+    width: var(--ht-photo-size);
+    height: var(--ht-photo-size);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .ht-photo img {
+    width: 100%;
+    height: 150%;
+    object-fit: cover;
+    object-position: center 32%;
+    filter: grayscale(100%) contrast(1.02);
+  }
+
+  /* Intro text */
+  .ht-intro {
+    margin: 0;
+    width: var(--ht-intro-w);
+    max-width: 100%;
+    font-family: var(--ht-font-sans);
+    font-weight: 400;
+    font-size: var(--ht-fz-intro);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+    color: var(--ht-green);
+  }
+
+  /* ───── Divider bottom ───── */
+  .ht-divider {
+    height: 1px;
+    background: var(--ht-green);
+    flex-shrink: 0;
+  }
+
+  /* ───── Mobile ───── */
+  @media (max-width: 768px) {
+    :root {
+      --ht-photo-size: 160px;
+      --ht-intro-w: 100%;
+      --ht-content-pt: 60px;
+      --ht-nav-gap: 24px;
+    }
+
+    .ht-shell {
+      min-height: auto;
+    }
+
+    .ht-body {
+      flex-direction: column;
+      padding-bottom: 48px;
+    }
+
+    .ht-body-right {
+      width: 100%;
+      align-items: flex-end;
+    }
+
+    .ht-intro {
+      width: 220px;
+    }
+  }
+</style>

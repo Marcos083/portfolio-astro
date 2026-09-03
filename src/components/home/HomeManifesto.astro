@@ -1,0 +1,253 @@
+---
+/**
+ * HomeManifesto.astro — Nova seção "manifesto + core tools" pra home.
+ * Layout inspirado nos prints de referência:
+ *   Parte A: small body copy à esquerda + BIG display manifesto à direita
+ *   Parte B: label "Core Tools" à esquerda + row de 4 tool cards à direita
+ * Fundo cinza claro sutil pra separar da intro.
+ */
+
+const coreTools = [
+  {
+    name: 'Webflow',
+    desc: 'My daily driver. Where most client projects live. Flexible enough to design freely, structured enough for the client to update it without me. The right trade-off for most of the work.',
+  },
+  {
+    name: 'Astro',
+    desc: 'For projects that need to be built from scratch. Editorial sites, portfolios, and layouts where the design has to breathe fully. Astro is where I write the site line by line and keep every decision under my control.',
+  },
+  {
+    name: 'GSAP',
+    desc: 'Motion isn\'t decoration. It\'s how a site tells you it\'s alive. Scroll, hover, transitions. This is where a page stops loading and starts breathing.',
+  },
+  {
+    name: 'Figma',
+    desc: 'Where the thinking happens. Design systems, tokens, wireframes, iterations. Every project starts here before a single line of code.',
+  },
+];
+---
+
+<section class="home_manifesto">
+  <div class="home_manifesto-contain">
+    <div class="line-reveal line-reveal--top"></div>
+
+    <div class="home_manifesto-top">
+      <div class="home_manifesto-body">
+        <p>
+          Started as a designer. Learned to code because I wanted my designs
+          to ship the way I meant them to. Today I do both, for founders and
+          small teams who care how their product feels, not just what it does.
+        </p>
+      </div>
+      <div class="home_manifesto-display fadeUp-mask">
+        <h2 class="fadeUp">
+          Half designer, half developer, fully accountable for both. That's
+          how I ship websites where every detail survives the trip from
+          concept to production.
+        </h2>
+      </div>
+    </div>
+
+    <div class="home_manifesto-tools">
+      <div class="home_manifesto-tools-label">
+        <span>Core Tools</span>
+      </div>
+      <div class="home_manifesto-tools-grid">
+        {coreTools.map((tool) => (
+          <div class="home_manifesto-tool">
+            <h3 class="home_manifesto-tool-name">{tool.name}</h3>
+            <p class="home_manifesto-tool-desc">{tool.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .home_manifesto {
+    width: 100%;
+    padding: 0 1.5rem;
+    background: var(--color-background);
+  }
+
+  .home_manifesto-contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+    position: relative;
+  }
+
+  /* ---- Top: display manifesto em cima, body copy abaixo (mobile) ---- */
+  .home_manifesto-top {
+    display: flex;
+    flex-direction: column-reverse; /* mobile: display primeiro, body depois */
+    gap: 3rem;
+    align-items: flex-end; /* body vai pra direita no mobile */
+  }
+
+  .home_manifesto-body {
+    max-width: 22rem;
+  }
+
+  .home_manifesto-body p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .home_manifesto-display h2 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 3.6rem; /* mobile — 36px @ 375 */
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  /* ---- Bottom: Core Tools label + 4-tool grid ---- */
+  .home_manifesto-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .home_manifesto-tools-label {
+    max-width: 22rem;
+  }
+
+  .home_manifesto-tools-label span {
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .home_manifesto-tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .home_manifesto-tool {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .home_manifesto-tool-name {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 4.4rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+  }
+
+  .home_manifesto-tool-desc {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    max-width: 32rem;
+  }
+
+  /* Tablet */
+  @media (min-width: 580px) {
+    .home_manifesto-contain {
+      padding: 5rem 0 8rem;
+      gap: 10rem;
+    }
+
+    /* Top vira grid: body esq (narrow) + display dir (wide) */
+    .home_manifesto-top {
+      display: grid;
+      grid-template-columns: 22rem 1fr;
+      gap: 6rem;
+      align-items: flex-end;
+    }
+
+    .home_manifesto-body {
+      max-width: 100%;
+    }
+
+    .home_manifesto-display h2 {
+      font-size: 7.2rem;
+    }
+
+    /* Tools: label esq + grid 2 col */
+    .home_manifesto-tools {
+      display: grid;
+      grid-template-columns: 22rem 1fr;
+      gap: 6rem;
+      align-items: flex-start;
+    }
+
+    .home_manifesto-tools-label {
+      max-width: 100%;
+    }
+
+    .home_manifesto-tools-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  /* Desktop: display manifesto bem grande + tools 4 colunas */
+  @media (min-width: 1024px) {
+    .home_manifesto-contain {
+      padding: 6rem 0 10rem;
+      gap: 14rem;
+    }
+
+    .home_manifesto-top {
+      grid-template-columns: 26rem 1fr;
+      gap: 8rem;
+    }
+
+    .home_manifesto-body p {
+      font-size: 1.4rem;
+      line-height: 1.5;
+    }
+
+    .home_manifesto-display h2 {
+      font-size: 6.4rem; /* 64px @ desktop 1280 (mesmo do H1 do sistema) */
+      letter-spacing: -0.05em;
+    }
+
+    .home_manifesto-tools {
+      grid-template-columns: 26rem 1fr;
+      gap: 8rem;
+    }
+
+    .home_manifesto-tools-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+    }
+
+    .home_manifesto-tool-name {
+      font-size: 4.4rem;
+    }
+
+    .home_manifesto-tool-desc {
+      font-size: 1.4rem;
+      max-width: none;
+    }
+  }
+</style>

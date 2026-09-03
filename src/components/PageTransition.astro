@@ -1,0 +1,289 @@
+---
+/**
+ * PageTransition.astro — Preloader inicial + Transição entre páginas.
+ * Efeito tile-wave inspirado no inkfishnyc.com.
+ *
+ * Fluxo:
+ *   1. Load inicial: tiles cobrindo tudo (preloader) + wordmark + LOADING [%]
+ *   2. Após load real: tiles colapsam do topo (reveal)
+ *   3. Navegação: tiles sobem do bottom (cover) → fetch/swap → colapsam (reveal)
+ *
+ * Usa Astro ClientRouter (astro:transitions).
+ * O overlay tem transition:persist pra sobreviver aos swaps de DOM.
+ */
+const COLS = 11;
+const ROWS = 8;
+const TILE_COUNT = COLS * ROWS;
+const tiles = Array.from({ length: TILE_COUNT }, (_, i) => ({
+  i,
+  col: i % COLS,
+}));
+---
+
+<div class="pt" data-pt data-pt-mode="loading" transition:persist>
+  <div class="pt-tiles" style={`--pt-cols: ${COLS};`}>
+    {tiles.map((t) => (
+      <div class="pt-tile" style={`--pt-col: ${t.col};`}></div>
+    ))}
+  </div>
+  <div class="pt-content">
+    <div class="pt-inner">
+      <h1 class="pt-logo">
+        <span>MARCOS</span>
+        <span class="pt-dot"></span>
+        <span>COSTA</span>
+      </h1>
+      <div class="pt-status">
+        <span>LOADING</span>
+        <span data-pt-pct>[0%]</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pt {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    color: #fff;
+  }
+
+  /* Tiles grid full-viewport */
+  .pt-tiles {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--pt-cols), 1fr);
+    background: transparent;
+  }
+
+  .pt-tile {
+    width: calc(100% + 1px);
+    height: calc(100% + 1px);
+    background: #09120B;
+    box-shadow: 0 0 0 0.5px #09120B;
+    transform: scaleY(0);
+    transform-origin: 0 100%;
+    transition: transform 0.55s cubic-bezier(0.7, 0, 0.3, 1);
+    transition-delay: calc(var(--pt-col) * 22ms);
+  }
+
+  /* Loading: tiles cobrindo tudo (estado inicial preloader) */
+  .pt[data-pt-mode='loading'] .pt-tile {
+    transform: scaleY(1);
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+
+  /* Covering: tiles sobem do bottom pra cobrir (antes de trocar página) */
+  .pt[data-pt-mode='covering'] .pt-tile {
+    transform: scaleY(1);
+    transform-origin: 0 100%;
+  }
+
+  /* Revealing: tiles colapsam pro top (revelando página nova) */
+  .pt[data-pt-mode='revealing'] .pt-tile {
+    transform: scaleY(0);
+    transform-origin: 0 0;
+    /* Reverse stagger no reveal (direita pra esquerda) pra sensação de wave contínua */
+    transition-delay: calc((var(--pt-cols) - var(--pt-col)) * 22ms);
+  }
+
+  /* Idle: tiles totalmente colapsados (sem overlay visível) */
+  .pt[data-pt-mode='idle'] .pt-tile {
+    transform: scaleY(0);
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+
+  /* ---- Content (wordmark + status) ---- */
+  .pt-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .pt[data-pt-mode='loading'] .pt-content {
+    opacity: 1;
+    transition-delay: 0.15s;
+  }
+
+  .pt-inner {
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+
+  .pt-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .pt-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .pt-status {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    color: #fff;
+  }
+
+  @media (min-width: 580px) {
+    .pt-inner { gap: 1.4rem; }
+    .pt-logo { font-size: 5rem; gap: 1rem; }
+    .pt-dot { width: 0.8rem; height: 0.8rem; }
+    .pt-status { font-size: 1.4rem; }
+  }
+
+  @media (min-width: 1024px) {
+    .pt-inner { gap: 1.6rem; }
+    .pt-logo { font-size: 8rem; gap: 1.6rem; }
+    .pt-dot { width: 1.2rem; height: 1.2rem; }
+    .pt-status { font-size: 1.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pt-tile { transition: none !important; }
+    .pt-content { transition: none !important; }
+  }
+</style>
+
+<script>
+  // Espera pra transições completarem (soma stagger máximo + duração)
+  const COVER_DURATION = 750;   // ~550ms + 200ms stagger extra
+  const REVEAL_DURATION = 750;
+
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  function initPreloader() {
+    const pt = document.querySelector<HTMLElement>('[data-pt]');
+    const pctEl = document.querySelector<HTMLElement>('[data-pt-pct]');
+    if (!pt || !pctEl) return;
+
+    // Se já rodou nessa sessão (persist), pula preloader
+    if (pt.dataset.ptDone === 'true') {
+      pt.setAttribute('data-pt-mode', 'idle');
+      document.documentElement.style.overflow = '';
+      return;
+    }
+
+    // Trava scroll durante preloader
+    document.documentElement.style.overflow = 'hidden';
+
+    let progress = 0;
+    let realReady = document.readyState === 'complete';
+
+    const applyProgress = (pct: number) => {
+      pctEl.textContent = `[${Math.floor(pct)}%]`;
+    };
+
+    const finish = async () => {
+      applyProgress(100);
+      await wait(400);
+      window.dispatchEvent(new CustomEvent('page-reveal-start'));
+      pt.setAttribute('data-pt-mode', 'revealing');
+      await wait(REVEAL_DURATION);
+      pt.setAttribute('data-pt-mode', 'idle');
+      pt.dataset.ptDone = 'true';
+      document.documentElement.style.overflow = '';
+    };
+
+    window.addEventListener('load', () => { realReady = true; });
+
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(100, now - last);
+      last = now;
+      const target = realReady ? 100 : Math.min(90, progress + (dt / 40));
+      progress += (target - progress) * 0.12;
+      applyProgress(progress);
+      if (progress >= 99.5) {
+        finish();
+        return;
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Timeout de segurança
+    setTimeout(() => {
+      if (pt.getAttribute('data-pt-mode') === 'loading') finish();
+    }, 6000);
+  }
+
+  // Page-to-page transition hooks (Astro ClientRouter)
+  function setupNavTransitions() {
+    document.addEventListener('astro:before-preparation', (event: any) => {
+      const pt = document.querySelector<HTMLElement>('[data-pt]');
+      const pctEl = document.querySelector<HTMLElement>('[data-pt-pct]');
+      if (!pt || !pctEl) return;
+
+      const originalLoader = event.loader;
+      event.loader = async () => {
+        // Trava scroll + play cover
+        document.documentElement.style.overflow = 'hidden';
+        pctEl.textContent = '[0%]';
+        pt.setAttribute('data-pt-mode', 'covering');
+        // Fake progress durante cover
+        let pct = 0;
+        const progressTimer = setInterval(() => {
+          pct = Math.min(90, pct + 8);
+          pctEl.textContent = `[${Math.floor(pct)}%]`;
+        }, 60);
+        // Espera cover completar
+        await wait(COVER_DURATION);
+        // Executa o loader original (fetch da página nova)
+        await originalLoader();
+        clearInterval(progressTimer);
+        pctEl.textContent = '[100%]';
+      };
+    });
+
+    document.addEventListener('astro:after-swap', async () => {
+      const pt = document.querySelector<HTMLElement>('[data-pt]');
+      if (!pt) return;
+      // Página nova já swapou. Play reveal.
+      await wait(150);
+      window.dispatchEvent(new CustomEvent('page-reveal-start'));
+      pt.setAttribute('data-pt-mode', 'revealing');
+      await wait(REVEAL_DURATION);
+      pt.setAttribute('data-pt-mode', 'idle');
+      document.documentElement.style.overflow = '';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPreloader);
+  } else {
+    initPreloader();
+  }
+  setupNavTransitions();
+</script>

@@ -1,0 +1,128 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Home | Marcos Costa',
+  description = 'Creative developer crafting digital experiences that move businesses forward. Webflow development, web design, and SEO.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+
+  <title>{title}</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Global CSS -->
+  <style>
+    @import '@/styles/global.css';
+  </style>
+
+  <!--
+    Inverter cursor styles — kept in is:global to bypass Astro's component
+    scoping (we need to match elements outside this layout) and to avoid
+    any Tailwind utility-prefix collisions on the `invert-` namespace.
+  -->
+  <style is:global>
+    /* Inverter cursor — hidden by default, only visible while over a hover
+       target. Mix-blend-mode: difference inverts the colors of whatever is
+       behind. Each dot is a perfect white square with no border-radius and
+       no SVG filter applied, so the shape is never distorted. */
+    .mc-invert-cursor-wrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      z-index: 45;
+      opacity: 0;
+      transition: opacity 0.18s ease-out;
+    }
+
+    .mc-invert-cursor-wrapper.is-active {
+      opacity: 1;
+    }
+
+    .mc-invert-cursor-stage {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Each spawned dot — solid opaque square. Trail dots aren't faded; they
+       just sit at opacity 1 for their lifetime then are removed by JS. */
+    .mc-invert-cursor-dot {
+      position: absolute;
+      width: var(--mc-cursor-size, 50px);
+      height: var(--mc-cursor-size, 50px);
+      background-color: #FFFFFF;
+      border-radius: 0;
+      opacity: 1;
+    }
+
+    /* Round only the trail's endpoints — head (last spawned) + tail (oldest).
+       The DOM order matches spawn order, so :first-child is the oldest trail
+       dot and :last-child is the current head. The middle dots stay sharp,
+       which makes the trail look like a "pill" of tiled squares. */
+    .mc-invert-cursor-stage > .mc-invert-cursor-dot:first-child,
+    .mc-invert-cursor-stage > .mc-invert-cursor-dot:last-child {
+      border-radius: 4px;
+    }
+
+    @media (hover: none) {
+      .mc-invert-cursor-wrapper { display: none; }
+    }
+  </style>
+</head>
+
+<body data-barba="wrapper">
+  <!-- Page transition overlay -->
+  <div class="transition-overlay" aria-hidden="true"></div>
+
+  <!--
+    Inverter cursor (Lorenzo Dal Dosso-style):
+    Fixed white square that follows the mouse with `mix-blend-mode: difference`,
+    so colors invert anywhere the cursor passes (black text → light, bege bg → dark).
+    The SVG <filter id="invert-cursor-gooey"> applies a Gaussian blur + threshold
+    color-matrix so the square "gels" with nearby targets (the gooey/metaball
+    effect that makes pixel-like dots appear between letters).
+  -->
+  <div class="mc-invert-cursor-wrapper" aria-hidden="true">
+    <!-- Empty stage — dots are spawned dynamically by JS, fade via CSS,
+         and get removed from the DOM once invisible. Mirrors Lorenzo's setup. -->
+    <div class="mc-invert-cursor-stage"></div>
+  </div>
+
+  <!-- Main content wrapper for Barba.js -->
+  <main data-barba="container" data-barba-namespace="home">
+    <slot />
+  </main>
+
+  <!-- Core scripts -->
+  <script>
+    import { initSmoothScroll } from '@/scripts/smooth-scroll';
+    import { initPageTransitions } from '@/scripts/transitions';
+    import { initInvertCursor } from '@/scripts/invert-cursor';
+
+    // Initialize on first load
+    initSmoothScroll();
+    initPageTransitions();
+    initInvertCursor();
+  </script>
+</body>
+</html>

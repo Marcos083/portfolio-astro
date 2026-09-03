@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* ================================================
+   MARCOS COSTA — PORTFOLIO DESIGN TOKENS
+   Extracted from Figma file: KCPPLke2ij06qujeE6Kwee
+   ================================================ */
+
+@theme {
+  /* ---- Colors (from Figma styles) ---- */
+  --color-light: #FCFCFB;        /* Primary/Light */
+  --color-light-active: #F6F6F3;  /* Primary/Light :active — photo borders */
+  --color-normal: #E1E1D7;        /* Primary/Normal — main bg */
+  --color-darker: #4F4F4B;        /* Primary/Darker — secondary text */
+  --color-black: #020202;         /* Primary/Black — headings, strong */
+  --color-grey: #7a7a70;          /* Grey — meta, subtle text */
+
+  /* ---- Typography ---- */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  /* ---- Type Scale (from Figma — Major Third 1.25) ---- */
+  --text-xsmall: 10.24px;   /* body/xsmall */
+  --text-small: 12.8px;     /* body/small */
+  --text-body: 16px;        /* body/body */
+  --text-h5: 25px;          /* heading/h5 */
+  --text-h4: 31.25px;       /* heading/h4 */
+  --text-h2: 48.83px;       /* heading/h2 */
+  --text-h1: 61.04px;       /* heading/h1 */
+  --text-display-sm: 128px; /* Statement "Every pixel" */
+  --text-display-md: 148px; /* Section titles (SERVICES, MARCOS/COSTA) */
+  --text-display-lg: 180px; /* MY WORK */
+
+  /* ---- Spacing (8px grid) ---- */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+  --spacing-5xl: 128px;
+  --spacing-6xl: 192px;
+
+  /* ---- Page Layout (from Figma: 48px margin, 1344px content) ---- */
+  --margin-page: 48px;
+  --margin-page-mobile: 20px;
+  --content-width: 1344px;
+  --page-width: 1440px;
+
+  /* ---- Easing (GSAP-matching) ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* ---- Letter spacing ---- */
+  --tracking-tight: 0.02em;
+  --tracking-normal: 0.04em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.12em;
+  --tracking-widest: 0.16em;
+}
+
+/* ================================================
+   BASE RESET & DEFAULTS
+   ================================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+}
+
+body {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--text-body);
+  background-color: var(--color-normal);
+  color: var(--color-black);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* ---- Lenis smooth scroll ---- */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ================================================
+   NOISE / GRAIN TEXTURE OVERLAY
+   Figma: Effect(type: NOISE, radius: 4)
+   ================================================ */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: multiply;
+}
+
+/* ================================================
+   TYPOGRAPHY CLASSES (matching Figma text styles)
+   ================================================ */
+
+/* Display — section titles (MY WORK, SERVICES, MARCOS COSTA) */
+.text-display-lg { font-size: var(--text-display-lg); font-weight: 700; line-height: 1.1; }
+.text-display-md { font-size: var(--text-display-md); font-weight: 700; line-height: 1.1; }
+.text-display-sm { font-size: var(--text-display-sm); font-weight: 400; line-height: 1.1; }
+
+/* Headings — Figma uses Regular (400) weight for headings */
+.text-h1 { font-size: var(--text-h1); font-weight: 400; line-height: 1.1; }
+.text-h2 { font-size: var(--text-h2); font-weight: 400; line-height: 1.1; }
+.text-h4 { font-size: var(--text-h4); font-weight: 400; line-height: 1.1; }
+.text-h5 { font-size: var(--text-h5); font-weight: 400; line-height: 1.1; }
+
+/* Body */
+.text-body   { font-size: var(--text-body);   font-weight: 400; line-height: 1.5; }
+.text-small  { font-size: var(--text-small);  font-weight: 400; line-height: 1.5; }
+.text-xsmall { font-size: var(--text-xsmall); font-weight: 400; line-height: 1.5; }
+
+/* Serif display — for editorial accents (Instrument Serif) */
+.text-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ================================================
+   LAYOUT UTILITIES
+   ================================================ */
+
+.page-container {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding-left: var(--margin-page);
+  padding-right: var(--margin-page);
+}
+
+.content-width {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+/* ================================================
+   SELECTION & SCROLLBAR
+   ================================================ */
+
+::selection {
+  background-color: var(--color-black);
+  color: var(--color-light);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-normal);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-grey);
+  border-radius: 3px;
+}
+
+/* ================================================
+   PAGE TRANSITIONS (Barba.js)
+   ================================================ */
+
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: var(--color-black);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  pointer-events: none;
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --margin-page: var(--margin-page-mobile);
+  }
+}
+
+.intro_section{
+  margin-left: 0;
+  padding-bottom: 7.rem;
+  padding-top: 10px;
+  margin-bottom: 0rem;
+}
+
+.template_nav{
+  border-style: solid;
+  border-width: 0;
+  border-bottom-width: 1;
+  border-color: var(--color-black);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-black);
+}

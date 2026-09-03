@@ -1,0 +1,178 @@
+---
+/**
+ * WORK TRANSITION — "Circle Zoom Reveal" (Figma "Seção 4", node 90:196)
+ *
+ * A solid black circle with running "KEEP SCROLLING" text fully wrapping its
+ * edge, centered on a clean off-white section. On scroll the circle grows and
+ * crossfades black → light, revealing MY WORK seamlessly.
+ *
+ * - The fill grows via animated `clip-path: circle()` (vector-crisp edge — no
+ *   bitmap pixelation that `transform: scale` on a div would cause).
+ * - The text is SVG, so it scales in sync with the circle (vectors don't
+ *   pixelate) and stays glued to the growing edge before fading out.
+ * - `textLength` + `lengthAdjust="spacing"` distributes the words evenly around
+ *   the full circumference, so "KEEP SCROLLING" completes the circle with no gap.
+ */
+const keepText = 'KEEP SCROLLING • '.repeat(3);
+
+// Text path radius 80 (inset from clip edge 104 → ~12px margin for letters).
+const TEXT_CIRCUMFERENCE = Math.round(2 * Math.PI * 80); // 503
+---
+
+<section class="work-transition" data-work-transition aria-label="Keep scrolling to my work">
+  <!-- Full-bleed fill, clipped to a circle that grows. Crisp edge at any size. -->
+  <div class="circle-fill" data-circle-fill></div>
+
+  <!-- Running text on top — SVG, scales with the circle, then fades out. -->
+  <div class="circle-text-wrap" data-circle-textwrap>
+    <svg class="circle-svg" viewBox="0 0 208 208" data-circle-text>
+      <defs>
+        <path id="circle-text-path" d="M 104,24 A 80,80 0 1 1 103.99,24 Z" fill="none" />
+      </defs>
+      <text textLength={TEXT_CIRCUMFERENCE} lengthAdjust="spacing">
+        <textPath href="#circle-text-path" startOffset="0">{keepText}</textPath>
+      </text>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .work-transition {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--color-light);
+  }
+
+  /* ---- Growing fill (clip-path → always crisp) ---- */
+  .circle-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-black); /* crossfades to --color-normal on zoom */
+    clip-path: circle(104px at 50% 50%);
+    will-change: clip-path, background-color;
+    z-index: 1;
+  }
+
+  /* ---- Running text overlay ---- */
+  .circle-text-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 208px;
+    height: 208px;
+    margin-left: -104px;
+    margin-top: -104px;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .circle-svg {
+    width: 208px;
+    height: 208px;
+    overflow: visible;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  .circle-svg text {
+    font-family: var(--font-mono);
+    font-size: 17.36px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--color-light); /* white text on the black circle */
+  }
+
+  @media (max-width: 768px) {
+    .circle-fill { clip-path: circle(80px at 50% 50%); }
+    .circle-text-wrap {
+      width: 160px;
+      height: 160px;
+      margin-left: -80px;
+      margin-top: -80px;
+    }
+    .circle-svg { width: 160px; height: 160px; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initWorkTransition() {
+    ScrollTrigger.getAll().forEach((t) => {
+      if ((t.vars as { id?: string }).id === 'work-circle-zoom') t.kill();
+    });
+
+    const section = document.querySelector('.work-transition') as HTMLElement | null;
+    const fill = document.querySelector('[data-circle-fill]') as HTMLElement | null;
+    const textWrap = document.querySelector('[data-circle-textwrap]') as HTMLElement | null;
+    const text = document.querySelector('[data-circle-text]') as SVGElement | null;
+    if (!section || !fill || !textWrap) return;
+
+    // Continuous spin of the running text (independent of scroll)
+    if (text) {
+      gsap.to(text, {
+        rotation: 360,
+        transformOrigin: 'center center',
+        duration: 24,
+        ease: 'none',
+        repeat: -1,
+      });
+    }
+
+    const targetColor =
+      getComputedStyle(document.documentElement).getPropertyValue('--color-normal').trim() ||
+      '#E1E1D7';
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const baseR = isMobile ? 80 : 104;
+    const maxR = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight) / 2) + 60;
+    const maxScale = maxR / baseR; // text scales by the same factor as the fill
+
+    // Proxy drives the clip-path radius so the edge re-rasterizes crisply.
+    const clip = { r: baseR };
+    const applyClip = () => {
+      fill.style.clipPath = `circle(${clip.r}px at 50% 50%)`;
+    };
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: 'work-circle-zoom',
+        trigger: section,
+        start: 'top top',
+        end: () => `+=${window.innerHeight * 1.8}`, // ~2.8×vh pin
+        pin: true,
+        pinSpacing: true,
+        scrub: 1.4,
+        anticipatePin: 1,
+        refreshPriority: 1,
+      },
+    });
+
+    // Hold + spin through the first ~18%, then grow.
+    // FILL — clip radius grows (crisp), power2.in "dive in".
+    tl.to(clip, { r: maxR, duration: 0.82, ease: 'power2.in', onUpdate: applyClip }, 0.18);
+
+    // TEXT — scales by the SAME factor so it stays glued to the growing edge
+    // (SVG = vector, no pixelation), then fades out as the circle swells.
+    tl.to(textWrap, { scale: maxScale, duration: 0.82, ease: 'power2.in' }, 0.18);
+    if (text) {
+      tl.to(text, { opacity: 0, duration: 0.34, ease: 'power1.in' }, 0.22);
+    }
+
+    // COLOR — crossfade black → light, settling before the zoom ends so the
+    // screen is already MY WORK's color when the pin releases (seamless).
+    tl.to(fill, { backgroundColor: targetColor, duration: 0.55, ease: 'power1.inOut' }, 0.3);
+    tl.set(fill, { backgroundColor: targetColor }, 0.92);
+  }
+
+  document.addEventListener('DOMContentLoaded', initWorkTransition);
+  document.addEventListener('astro:after-swap', initWorkTransition);
+</script>

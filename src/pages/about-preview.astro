@@ -1,0 +1,56 @@
+---
+/**
+ * /about-preview — Preview isolado das seções The Story + Approach da About.
+ * Só pra visualização antes de aprovar e integrar na página About completa.
+ */
+import TemplateNav from '@/components/template/TemplateNav.astro';
+import AboutStory from '@/components/about/AboutStory.astro';
+import AboutApproach from '@/components/about/AboutApproach.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import '../styles/template-tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About preview | Marcos Costa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <TemplateNav />
+    <AboutStory />
+    <AboutApproach />
+    <TemplateFooter />
+  </body>
+</html>
+
+<style is:global>
+  :root { color-scheme: light only; }
+
+  html { font-size: 2.66667vw; }
+  @media (min-width: 580px) and (max-width: 1023px) { html { font-size: 1.25vw; } }
+  @media (min-width: 1024px) { html { font-size: 0.78125vw; } }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * { box-sizing: border-box; }
+  img { display: block; max-width: 100%; }
+</style>

@@ -1,0 +1,98 @@
+---
+/**
+ * SmoothScroll.astro — Lenis smooth scroll global.
+ * Hide native scrollbar + interpola scroll suavemente ao estilo inkfishnyc.com.
+ * Include no <body> de cada page (ou via Layout compartilhado).
+ */
+---
+
+<style is:global>
+  /* Esconde scrollbar mas mantém funcionalidade */
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  /* Lenis wrapper defaults */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  import Lenis from 'lenis';
+
+  let lenis: any;
+
+  function initLenis() {
+    if (lenis) {
+      lenis.destroy();
+    }
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      smoothWheel: true,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Expose pra outros scripts (ex: nav mobile lock)
+    (window as any).__lenis = lenis;
+
+    // Intercept qualquer anchor link com # (pra usar Lenis smooth scroll)
+    document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href') || '';
+        const hashIndex = href.indexOf('#');
+        if (hashIndex === -1) return;
+        const hash = href.slice(hashIndex);
+        const path = href.slice(0, hashIndex);
+
+        // Se aponta pra rota diferente da atual, deixa Astro/browser navegar
+        if (path && path !== window.location.pathname) {
+          return;
+        }
+
+        const target = document.querySelector<HTMLElement>(hash);
+        if (!target) return;
+
+        e.preventDefault();
+        lenis.scrollTo(target, {
+          offset: -20,
+          duration: 2.5,
+          easing: (t: number) => t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2, // easeInOutCubic
+        });
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLenis);
+  } else {
+    initLenis();
+  }
+  // Reinit após page swap do Astro ClientRouter
+  document.addEventListener('astro:after-swap', initLenis);
+</script>

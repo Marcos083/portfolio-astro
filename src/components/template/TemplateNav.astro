@@ -1,0 +1,327 @@
+---
+/**
+ * TemplateNav.astro — Nav header
+ * Desktop/Tablet: logo left + 3 links right.
+ * Mobile: logo + hamburger toggle → fullscreen drawer with staggered links.
+ */
+---
+
+<nav class="template_nav" data-nav>
+  <div class="nav_contain">
+    <div class="nav_logotype">
+      <a class="nav_logo" href="/template-test" aria-label="Marcos Costa — Home">
+        <span class="nav_logo-name">MARCOS</span>
+        <span class="nav_logo-dot"></span>
+        <span class="nav_logo-name">COSTA</span>
+      </a>
+    </div>
+    <div class="nav_links">
+      <a class="nav_link showText" href="/template-test#work"><span>Work<span>Work</span></span></a>
+      <a class="nav_link showText" href="/about"><span>About<span>About</span></span></a>
+      <a class="nav_link showText" href="#contact"><span>Contact<span>Contact</span></span></a>
+    </div>
+    <button
+      class="nav_toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+      aria-label="Open menu"
+      data-nav-toggle
+    >
+      <span class="nav_toggle-icon" aria-hidden="true">
+        <span class="nav_toggle-bar"></span>
+        <span class="nav_toggle-bar"></span>
+      </span>
+    </button>
+  </div>
+
+  <div class="nav_drawer" id="nav-drawer" data-nav-drawer>
+    <div class="nav_drawer-inner">
+      <a class="nav_drawer-link" href="/template-test#work" data-nav-close data-link-index="0">
+        <span class="nav_drawer-link-text">Work</span>
+      </a>
+      <a class="nav_drawer-link" href="/about" data-nav-close data-link-index="1">
+        <span class="nav_drawer-link-text">About</span>
+      </a>
+      <a class="nav_drawer-link" href="#contact" data-nav-close data-link-index="2">
+        <span class="nav_drawer-link-text">Contact</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .template_nav {
+    width: 100%;
+    padding: 0 1.5rem;
+    background: var(--color-background);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .nav_contain {
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4.6rem;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  /* ---- Logo ---- */
+  .nav_logotype {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav_logo {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--color-text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nav_logo-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--color-text);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ---- Nav links (tablet + desktop) ---- */
+  .nav_links {
+    display: none;
+    align-items: center;
+    gap: 5rem;
+  }
+
+  .nav_link {
+    font-family: var(--font-sans);
+    font-size: var(--type-nav-link-size);
+    font-weight: var(--type-nav-link-weight);
+    line-height: var(--type-nav-link-lh);
+    letter-spacing: var(--type-nav-link-ls);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav_link:hover {
+    opacity: 0.6;
+  }
+
+  /* ──────────────────────────────────────────
+     HAMBURGER — duas barras iguais, 2rem
+     ────────────────────────────────────────── */
+  .nav_toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 2.8rem;
+    height: 2.8rem;
+    cursor: pointer;
+    color: var(--color-text);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 52;
+  }
+
+  .nav_toggle-icon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    gap: 0.5rem;
+  }
+
+  .nav_toggle-bar {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    border-radius: 1px;
+    transform-origin: center center;
+    transition:
+      transform 0.5s cubic-bezier(0.77, 0, 0.175, 1),
+      opacity 0.3s ease;
+    will-change: transform;
+  }
+
+  /* X state */
+  .nav_toggle[aria-expanded='true'] .nav_toggle-bar:nth-child(1) {
+    transform: translateY(calc(0.25rem + 0.75px)) rotate(45deg);
+  }
+
+  .nav_toggle[aria-expanded='true'] .nav_toggle-bar:nth-child(2) {
+    transform: translateY(calc(-0.25rem - 0.75px)) rotate(-45deg);
+  }
+
+  /* ──────────────────────────────────────────
+     DRAWER — clip-path reveal from top
+     ────────────────────────────────────────── */
+  .nav_drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 51;
+    pointer-events: none;
+    background: var(--color-background);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: clip-path;
+  }
+
+  .nav_drawer.is-open {
+    pointer-events: auto;
+    clip-path: inset(0 0 0% 0);
+  }
+
+  .nav_drawer-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 1.5rem 3rem;
+    height: 100%;
+    gap: 0;
+  }
+
+  .nav_drawer-link {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 4.8rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    text-decoration: none;
+    padding: 1.6rem 0;
+    overflow: hidden;
+  }
+
+  .nav_drawer-link-text {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+  }
+
+  .nav_drawer.is-open .nav_drawer-link-text {
+    transform: translateY(0);
+  }
+
+  .nav_drawer.is-open [data-link-index="0"] .nav_drawer-link-text { transition-delay: 0.2s; }
+  .nav_drawer.is-open [data-link-index="1"] .nav_drawer-link-text { transition-delay: 0.28s; }
+  .nav_drawer.is-open [data-link-index="2"] .nav_drawer-link-text { transition-delay: 0.36s; }
+
+  /* Closing: links recolhem rápido ANTES do clip-path fechar */
+  .nav_drawer:not(.is-open) .nav_drawer-link-text {
+    transform: translateY(110%);
+    transition: transform 0.25s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  /* Link hover — dim siblings */
+  .nav_drawer-link {
+    transition: opacity 0.25s ease;
+  }
+
+  .nav_drawer-inner:hover .nav_drawer-link {
+    opacity: 0.35;
+  }
+
+  .nav_drawer-inner:hover .nav_drawer-link:hover {
+    opacity: 1;
+  }
+
+  /* ---- Tablet + Desktop: show links, hide toggle ---- */
+  @media (min-width: 580px) {
+    .nav_links {
+      display: flex;
+    }
+    .nav_toggle,
+    .nav_drawer {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav_drawer,
+    .nav_drawer-link-text,
+    .nav_toggle-bar {
+      transition-duration: 0.01s !important;
+      transition-delay: 0s !important;
+    }
+  }
+</style>
+
+<script>
+  function initNav() {
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+    if (!nav) return;
+    const toggle = nav.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+    const drawer = nav.querySelector<HTMLElement>('[data-nav-drawer]');
+    if (!toggle || !drawer) return;
+
+    let isOpen = false;
+
+    const setOpen = (open: boolean) => {
+      isOpen = open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      drawer.setAttribute('aria-hidden', String(!open));
+
+      if (open) {
+        drawer.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        (window as any).__lenis?.stop();
+      } else {
+        drawer.classList.remove('is-open');
+        document.body.style.overflow = '';
+        (window as any).__lenis?.start();
+      }
+    };
+
+    toggle.addEventListener('click', () => setOpen(!isOpen));
+
+    nav.querySelectorAll<HTMLElement>('[data-nav-close]').forEach((el) => {
+      el.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) setOpen(false);
+    });
+
+    const mq = window.matchMedia('(min-width: 580px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches && isOpen) setOpen(false);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+  document.addEventListener('astro:after-swap', initNav);
+</script>

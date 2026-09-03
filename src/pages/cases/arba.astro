@@ -1,0 +1,136 @@
+---
+/**
+ * /cases/arba — Case Study da ARBA
+ * Mesmo layout do gabriel-granjeiro (Figma 1:994 → 87:1491).
+ * Image 3 (2ª fileira, direita) é o vídeo da ARBA da home.
+ */
+import CaseNav from '@/components/case/CaseNav.astro';
+import CaseTitle from '@/components/case/CaseTitle.astro';
+import CaseImages from '@/components/case/CaseImages.astro';
+import CaseOtherProjects from '@/components/case/CaseOtherProjects.astro';
+import CaseConnect from '@/components/case/CaseConnect.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import GlobalEffects from '@/components/GlobalEffects.astro';
+import PageTransition from '@/components/PageTransition.astro';
+import SmoothScroll from '@/components/SmoothScroll.astro';
+import GrainOverlay from '@/components/GrainOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../../styles/template-tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARBA | Marcos Costa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+
+  <body>
+    <PageTransition />
+    <CaseNav logoSrc="/cases/arba/study/logo.webp" logoAlt="ARBA logo" />
+
+    <CaseTitle
+      caseName="ARBA"
+      description="ARBA needed to turn regulatory compliance into market authority. I designed and developed the full website, from Figma to WordPress, with scroll-driven animations and micro-interactions that elevate the brand above the industry standard."
+      techStack={[
+        'WordPress',
+        'Figma',
+        'GSAP',
+        'Custom scroll interactions',
+      ]}
+      liveProjectHref="https://www.arbaconsultoria.com.br/"
+      liveProjectName="Live project"
+    />
+
+    <CaseImages
+      media={[
+        { type: 'image', src: '/cases/arba/study/image-1.webp', alt: 'ARBA — hero visual' },
+        { type: 'image', src: '/cases/arba/study/image-2.webp', alt: 'ARBA — typography specimen' },
+        { type: 'video', src: 'https://github.com/Marcos083/portfolio-assets/releases/download/v1/arba.mp4' },
+        { type: 'image', src: '/cases/arba/study/image-4.webp', alt: 'ARBA — full mockup' },
+        { type: 'image', src: '/cases/arba/study/image-5.webp', alt: 'ARBA — content section' },
+        { type: 'image', src: '/cases/arba/study/image-6.webp', alt: 'ARBA — device mockup' },
+      ]}
+    />
+
+    <CaseOtherProjects
+      projects={[
+        {
+          name: 'Gabriel Granjeiro',
+          imageSrc: '/cases/gabriel-granjeiro/1.webp',
+          imageAlt: 'Gabriel Granjeiro project preview',
+          href: '/cases/gabriel-granjeiro',
+        },
+        {
+          name: 'Mobilitex',
+          imageSrc: '/cases/mobilitex/1.webp',
+          imageAlt: 'Mobilitex project preview',
+          href: '/cases/mobilitex',
+        },
+        {
+          name: 'Bia & Gabriel',
+          imageSrc: '/cases/biagabriel/1.webp',
+          imageAlt: 'Bia & Gabriel project preview',
+          href: '/cases/biagabriel',
+        },
+      ]}
+    />
+
+    <CaseConnect />
+
+    <TemplateFooter />
+    <GlobalEffects />
+    <SmoothScroll />
+    <GrainOverlay opacity={0.28} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light only;
+  }
+
+  html {
+    font-size: 2.66667vw;
+  }
+  @media (min-width: 580px) and (max-width: 1023px) {
+    html {
+      font-size: 1.25vw;
+    }
+  }
+  @media (min-width: 1024px) {
+    html {
+      font-size: 0.78125vw;
+    }
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+</style>

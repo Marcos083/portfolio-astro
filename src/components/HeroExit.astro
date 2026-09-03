@@ -1,0 +1,132 @@
+---
+/**
+ * HERO EXIT ARTBOARD — visual snapshot of hero-bottom.
+ *
+ * Used as the artboard that occupies the camera-track on the 3D scene's
+ * pin engagement moment, then tilts/translates away as Bio enters.
+ * Visually mirrors hero-bottom (portrait + name row) so the pin transition
+ * is seamless — at scroll = end-of-hero, the real hero-bottom scrolls
+ * off-screen and this artboard renders at identity transform looking the same.
+ */
+import { Image } from 'astro:assets';
+import heroImage from '../assets/images/hero/Hero image 2.png';
+---
+
+<div class="hex-frame" data-hero-exit data-cursor="text">
+  <div class="hex-portrait">
+    <Image
+      src={heroImage}
+      alt="Marcos Costa — Portrait"
+      widths={[768, 1024, 1440, 1920, 2560]}
+      sizes="100vw"
+      quality={90}
+      format="webp"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <div class="hex-name-row">
+    <span class="hex-name-text">MARCOS</span>
+
+    <!-- Cases reel video — excluded from the invert cursor -->
+    <div class="hex-video" data-cursor="none">
+      <div class="hex-video-container">
+        <video muted loop playsinline autoplay preload="metadata" id="hero-cases-video">
+          <!-- Add src when you have the cases reel video -->
+        </video>
+        <div class="hex-video-grain"></div>
+      </div>
+    </div>
+
+    <span class="hex-name-text">COSTA</span>
+  </div>
+</div>
+
+<style>
+  /* The frame fills the artboard (whose parent is the camera-track viewport) */
+  .hex-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-color: var(--color-normal);
+  }
+
+  /* Full-bleed portrait — same treatment as hero-bottom */
+  .hex-portrait {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hex-portrait img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(100%) contrast(1.08) brightness(1.02);
+  }
+
+  /* Name row mirrors .hero-name-row exactly */
+  .hex-name-row {
+    position: absolute;
+    bottom: 0;
+    left: var(--margin-page);
+    right: var(--margin-page);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 3.33vw;
+  }
+
+  .hex-name-text {
+    font-size: 10.28vw;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-black);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .hex-video {
+    flex: 0 0 auto;
+    width: 20.21vw;
+    aspect-ratio: 291 / 138;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hex-video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-normal);
+  }
+
+  .hex-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.05);
+  }
+
+  .hex-video-container video:not([src]),
+  .hex-video-container video[src=''] {
+    display: none;
+  }
+
+  .hex-video-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+    background-size: 128px;
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+</style>

@@ -1,0 +1,686 @@
+---
+/**
+ * HERO SECTION — Two blocks
+ *
+ * Hero Top: Navbar + Roles + Folder CTA (bg: Normal, 423px from Figma)
+ * Hero Bottom: Full-bleed portrait + "MARCOS [video] COSTA" display type
+ *
+ * Figma nodes: 15:209 (Hero Top), 39:273 (Seção 2)
+ * Layout: 1440px, 48px margins, 1344px content
+ */
+import FolderSVG from './FolderSVG.astro';
+---
+
+<!-- ====== HERO TOP ====== -->
+<section class="hero-top" data-section="hero">
+
+  <!-- Film grain overlay — Ilford HP5 style -->
+  <canvas class="hero-grain" aria-hidden="true"></canvas>
+
+  <!-- Navbar -->
+  <nav class="hero-nav">
+    <a href="/" class="nav-logo">
+      <span class="logo-text" data-text="MARCOS">MARCOS</span>
+      <span class="nav-dot"></span>
+      <span class="logo-text" data-text="COSTA">COSTA</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="mailto:marcoscosta0920@gmail.com" class="nav-link" aria-label="Email">
+        <span class="nav-link-inner">
+          <span class="nav-link-text">Email</span>
+          <span class="nav-link-icon">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.5 4L6 5.5L8.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 10H2C1.44771 10 1 9.5523 1 9V3C1 2.44771 1.44771 2 2 2H10C10.5523 2 11 2.44771 11 3V6.42855" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M11 8.55555H7.85C6.05 8.55555 6.05 11 7.85 11M9.425 10.1111L11 8.55555L9.425 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </span>
+      </a>
+      <span class="nav-sep">/</span>
+      <a href="https://linkedin.com/in/" class="nav-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <span class="nav-link-inner">
+          <span class="nav-link-text">In</span>
+          <span class="nav-link-icon">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.5 4V8C10.5 9.3807 9.3807 10.5 8 10.5H4C2.61929 10.5 1.5 9.3807 1.5 8V4C1.5 2.61929 2.61929 1.5 4 1.5H8C9.3807 1.5 10.5 2.61929 10.5 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 8.5V6.75V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5.5 8.5V6.875M5.5 6.875V5M5.5 6.875C5.5 5 8.5 5 8.5 6.875V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 3.505L3.505 3.49944" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </span>
+      </a>
+      <span class="nav-sep">/</span>
+      <a href="https://x.com/" class="nav-link" target="_blank" rel="noopener" aria-label="X / Twitter">
+        <span class="nav-link-inner">
+          <span class="nav-link-text">X</span>
+          <span class="nav-link-icon">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.40993 10.3842L1.87662 1.98418C1.72335 1.78712 1.86378 1.5 2.11342 1.5H3.35331C3.44588 1.5 3.53328 1.54274 3.59011 1.61582L10.1234 10.0158C10.2767 10.2129 10.1363 10.5 9.88663 10.5H8.64678C8.55418 10.5 8.46678 10.4573 8.40993 10.3842Z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 1.5L2 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </span>
+      </a>
+      <span class="nav-sep">/</span>
+      <a href="https://instagram.com/" class="nav-link" target="_blank" rel="noopener" aria-label="Instagram">
+        <span class="nav-link-inner">
+          <span class="nav-link-text">IG</span>
+          <span class="nav-link-icon">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 8C7.10455 8 8 7.10455 8 6C8 4.89543 7.10455 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10455 4.89543 8 6 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1.5 8V4C1.5 2.61929 2.61929 1.5 4 1.5H8C9.3807 1.5 10.5 2.61929 10.5 4V8C10.5 9.3807 9.3807 10.5 8 10.5H4C2.61929 10.5 1.5 9.3807 1.5 8Z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8.75 3.255L8.755 3.24944" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Content: Roles + Folder + Location -->
+  <div class="hero-content">
+
+    <div class="hero-roles" data-animate="stagger">
+      WEBFLOW DEVELOPER<br>WEB DESIGNER<br>CREATIVE DEVELOPER<br>FREELANCE DESIGN</p>
+    </div>
+
+    <div class="hero-folder" data-animate="entrance">
+      <FolderSVG />
+    </div>
+
+    <div class="hero-location" data-animate="stagger">
+      GOIÁS,<br>BRAZIL
+      <p class="hero-time" id="hero-clock"></p>
+    </div>
+
+  </div>
+
+</section>
+
+<!--
+  HERO BOTTOM has moved into the 3D scene (see index.astro → .hero-artboard).
+  It now lives inside the camera-track as the artboard that tilts away during
+  the scroll transition to the Bio section, so it is no longer rendered here.
+-->
+
+<style>
+  /* ================================================
+     HERO TOP
+     ================================================ */
+  .hero-top {
+    position: relative;
+    height: 520px;
+    background-color: var(--color-normal);
+    overflow: visible;
+  }
+
+  /* ---- Film grain — organic Ilford HP5 ---- */
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* ---- Navbar ---- */
+  .hero-nav {
+    position: absolute;
+    top: 32px;
+    left: var(--margin-page);
+    right: var(--margin-page);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-black);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+  }
+
+  .logo-text {
+    position: relative;
+    display: inline-block;
+    transition: text-shadow 0.3s ease;
+  }
+
+  /* Chromatic aberration — film misregistration on hover */
+  .nav-logo:hover .logo-text {
+    text-shadow:
+      -1.5px 0 rgba(255, 0, 0, 0.35),
+       1.5px 0 rgba(0, 100, 255, 0.3);
+  }
+
+  .nav-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--color-black);
+    display: inline-block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.5s ease;
+  }
+
+  .nav-logo:hover .nav-dot {
+    transform: scale(1.8);
+    box-shadow: 0 0 6px rgba(2, 2, 2, 0.2);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-link {
+    position: relative;
+    font-size: var(--text-small);
+    font-weight: 400;
+    color: var(--color-darker);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--color-black);
+  }
+
+  .nav-link-inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 14px;
+  }
+
+  .nav-link-text {
+    white-space: nowrap;
+  }
+
+  .nav-link-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+
+  .nav-link-icon svg {
+    display: block;
+    color: var(--color-black);
+  }
+
+  /* Underline — draws in on hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--color-black);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .nav-sep {
+    font-size: var(--text-small);
+    color: var(--color-darker);
+    user-select: none;
+  }
+
+  /* ---- Hero Content (Roles + Folder + Location) ---- */
+  .hero-content {
+    position: absolute;
+    bottom: 24px;
+    left: var(--margin-page);
+    right: var(--margin-page);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .hero-roles {
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-black);
+    text-transform: uppercase;
+  }
+
+  .hero-folder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 5;
+  }
+
+  .hero-location {
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-black);
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  /* ================================================
+     HERO BOTTOM
+     ================================================ */
+  .hero-bottom {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ---- Portrait ---- */
+  .hero-portrait {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-portrait img {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(100%) contrast(1.08) brightness(1.02);
+  }
+
+  /* ---- MARCOS [video] COSTA display row ---- */
+  .hero-name-row {
+    position: absolute;
+    bottom: 0;
+    left: var(--margin-page);
+    right: var(--margin-page);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 3.33vw; /* 48px @ 1440 */
+  }
+
+  .hero-name-text {
+    font-size: 10.28vw; /* 148px @ 1440 — scales proportionally */
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-black);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* ---- Video between name ---- */
+  .hero-name-video {
+    flex: 0 0 auto;
+    width: 20.21vw; /* 291px @ 1440 — scales with text */
+    aspect-ratio: 291 / 138;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-normal);
+  }
+
+  .hero-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.05);
+  }
+
+  .hero-video-container video:not([src]),
+  .hero-video-container video[src=""] {
+    display: none;
+  }
+
+  .hero-video-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+    background-size: 128px;
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ================================================
+     RESPONSIVE
+     ================================================ */
+  @media (max-width: 768px) {
+    .hero-top {
+      height: auto;
+      min-height: 100svh;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .hero-nav {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 0 var(--margin-page);
+    }
+
+    .hero-content {
+      position: relative;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 48px;
+      padding: 48px var(--margin-page);
+    }
+
+    .hero-folder {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      transform: none;
+      align-self: center;
+    }
+
+    .hero-location {
+      text-align: left;
+      align-self: flex-end;
+    }
+
+    .hero-bottom {
+      height: auto;
+      min-height: 80svh;
+    }
+
+    .hero-name-row {
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      padding-bottom: 24px;
+    }
+
+    .hero-name-text {
+      font-size: clamp(48px, 12vw, 100px);
+    }
+
+    .hero-name-video {
+      width: 200px;
+      height: 95px;
+      order: -1;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Film grain — organic canvas-based (Ilford HP5 style)
+  function initFilmGrain() {
+    const canvas = document.querySelector('.hero-grain') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Small off-screen buffer for performance (tiles across canvas)
+    const grainSize = 128;
+    const buffer = document.createElement('canvas');
+    buffer.width = grainSize;
+    buffer.height = grainSize;
+    const bCtx = buffer.getContext('2d')!;
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function generateGrain() {
+      const imageData = bCtx.createImageData(grainSize, grainSize);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        // Organic grain: clustered, not uniform
+        // Gaussian-ish distribution for more natural film look
+        const r1 = Math.random();
+        const r2 = Math.random();
+        const gaussian = Math.sqrt(-2 * Math.log(r1)) * Math.cos(2 * Math.PI * r2);
+        const v = Math.min(255, Math.max(0, 128 + gaussian * 80));
+
+        data[i] = v;     // R
+        data[i + 1] = v; // G
+        data[i + 2] = v; // B
+        data[i + 3] = 255;
+      }
+
+      bCtx.putImageData(imageData, 0, 0);
+    }
+
+    function render() {
+      generateGrain();
+
+      // Tile the small grain buffer across the full canvas
+      const pattern = ctx!.createPattern(buffer, 'repeat');
+      if (pattern) {
+        ctx!.fillStyle = pattern;
+        ctx!.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Flicker: regenerate grain every ~100ms (10fps) for analog feel
+    render();
+    setInterval(render, 100);
+  }
+
+  function initHeroAnimations() {
+    initFilmGrain();
+
+    // Live clock
+    const clockEl = document.getElementById('hero-clock');
+    if (clockEl) {
+      function updateClock() {
+        const now = new Date();
+        clockEl.textContent = now.toLocaleTimeString('en-US', {
+          hour12: true,
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    // Entrance animations — Hero Top
+    const roles = document.querySelector('.hero-roles');
+    if (roles) {
+      gsap.from(roles.children, {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power3.out',
+        delay: 0.2,
+      });
+    }
+
+    const location = document.querySelector('.hero-location');
+    if (location) {
+      gsap.from(location.children, {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power3.out',
+        delay: 0.3,
+      });
+    }
+
+    const nav = document.querySelector('.hero-nav');
+    if (nav) {
+      gsap.from(nav, {
+        y: -15,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        delay: 0.1,
+      });
+    }
+
+    // NOTE: Hero-bottom (portrait + name) entrance + parallax now live in the
+    // 3D scene (index.astro). They were removed here when hero-bottom moved
+    // into the camera-track artboard.
+
+    // Logo — scramble + chromatic aberration on hover
+    const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#&';
+
+    const logoEl = document.querySelector('.nav-logo');
+    if (logoEl) {
+      const logoTexts = logoEl.querySelectorAll('.logo-text');
+      let logoTween: gsap.core.Timeline | null = null;
+
+      logoEl.addEventListener('mouseenter', () => {
+        if (logoTween) logoTween.kill();
+        logoTween = gsap.timeline();
+
+        logoTexts.forEach((el) => {
+          const original = (el as HTMLElement).dataset.text || '';
+          const len = original.length;
+          const steps = 5;
+
+          for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            logoTween!.to({}, {
+              duration: 0.03,
+              onStart: () => {
+                let r = '';
+                for (let j = 0; j < len; j++) {
+                  if (progress > (j / len) + 0.3) {
+                    r += original[j];
+                  } else {
+                    r += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                  }
+                }
+                (el as HTMLElement).textContent = r;
+              },
+            }, i === 0 ? 0 : '>');
+          }
+          logoTween!.set({}, { onComplete: () => { (el as HTMLElement).textContent = original; } });
+        });
+      });
+
+      logoEl.addEventListener('mouseleave', () => {
+        if (logoTween) logoTween.kill();
+        // Restore original text immediately
+        logoTexts.forEach((el) => {
+          (el as HTMLElement).textContent = (el as HTMLElement).dataset.text || '';
+        });
+      });
+    }
+
+    // Nav links — scramble text → reveal icon on hover
+
+    document.querySelectorAll('.nav-link').forEach((link) => {
+      const textEl = link.querySelector('.nav-link-text') as HTMLElement;
+      const iconEl = link.querySelector('.nav-link-icon') as HTMLElement;
+      if (!textEl || !iconEl) return;
+
+      const originalText = textEl.textContent || '';
+      let scrambleTween: gsap.core.Timeline | null = null;
+
+      link.addEventListener('mouseenter', () => {
+        if (scrambleTween) scrambleTween.kill();
+
+        const len = originalText.length;
+        const steps = 4;
+        scrambleTween = gsap.timeline();
+
+        // Scramble phase — fast
+        for (let i = 0; i <= steps; i++) {
+          scrambleTween.to({}, {
+            duration: 0.025,
+            onStart: () => {
+              let r = '';
+              for (let j = 0; j < len; j++) {
+                r += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+              }
+              textEl.textContent = r;
+            },
+          });
+        }
+
+        // Swap — hide text, show icon
+        scrambleTween.to(textEl, { opacity: 0, duration: 0.08, ease: 'power2.in' });
+        scrambleTween.to(iconEl, { opacity: 1, duration: 0.12, ease: 'power2.out' }, '-=0.04');
+      });
+
+      link.addEventListener('mouseleave', () => {
+        if (scrambleTween) scrambleTween.kill();
+
+        scrambleTween = gsap.timeline();
+
+        // Hide icon
+        scrambleTween.to(iconEl, { opacity: 0, duration: 0.08, ease: 'power2.in' });
+
+        // Scramble back — fast
+        const len = originalText.length;
+        const steps = 3;
+        scrambleTween.set(textEl, { opacity: 1 });
+        for (let i = 0; i <= steps; i++) {
+          const progress = i / steps;
+          scrambleTween.to({}, {
+            duration: 0.025,
+            onStart: () => {
+              let r = '';
+              for (let j = 0; j < len; j++) {
+                if (progress > (j / len) + 0.2) {
+                  r += originalText[j];
+                } else {
+                  r += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                }
+              }
+              textEl.textContent = r;
+            },
+          });
+        }
+        scrambleTween.set({}, { onComplete: () => { textEl.textContent = originalText; } });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initHeroAnimations);
+  document.addEventListener('astro:after-swap', initHeroAnimations);
+</script>

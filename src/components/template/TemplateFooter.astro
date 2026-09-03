@@ -1,0 +1,231 @@
+---
+/**
+ * TemplateFooter.astro — Footer section (277:187)
+ * Content grid 625 | 616 = 62.5rem | 61.6rem.
+ */
+---
+
+<footer class="footer_section">
+  <div class="footer_contain">
+    <div class="footer_content">
+      <div class="footer_logo">
+        <img
+          class="footer_logo-photo"
+          src="/template/marcos-nav.webp"
+          alt="Marcos Costa"
+          width="134"
+          height="134"
+        />
+      </div>
+
+      <div class="footer_text">
+        <div class="footer_col footer_col--office">
+          <div class="footer_block">
+            <span class="footer_label">OFFICE</span>
+            <span class="footer_value">Goiás, Brazil</span>
+          </div>
+
+          <div class="footer_block">
+            <span class="footer_label">CONTACT</span>
+            <div class="footer_contact-links">
+              <a class="footer_link" href="tel:+5561995009265">(61) 99500-9265</a>
+              <a class="footer_link" href="mailto:marcoscosta0920@gmail.com">marcoscosta0920@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer_col footer_col--social">
+          <span class="footer_label">SOCIAL</span>
+          <ul class="footer_social">
+            <li><a class="footer_link" href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a class="footer_link" href="https://behance.net/" target="_blank" rel="noopener">Behance</a></li>
+            <li><a class="footer_link" href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer_display">
+      <span class="footer_display-name">MARCOS</span>
+      <span class="footer_display-dot"></span>
+      <span class="footer_display-name">COSTA</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer_section {
+    width: 100%;
+    padding: 0 1.5rem;
+    padding-top: 3rem;
+  }
+
+  .footer_contain {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  /* Mobile: tudo empilhado */
+  .footer_content {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    padding-bottom: 12.7rem;
+  }
+
+  .footer_logo img {
+    width: 13.4rem;
+    height: 13.4rem;
+    object-fit: cover;
+    display: block;
+  }
+
+  .footer_text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6.2rem;
+  }
+
+  /* Tablet: logo | (office/contact + social) */
+  @media (min-width: 580px) {
+    .footer_content {
+      display: grid;
+      grid-template-columns: 15.4rem 1fr;
+      gap: 0;
+      padding-bottom: 10rem;
+    }
+    .footer_text {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 6rem;
+    }
+  }
+
+  /* Desktop: mantém 62.5 | 1fr */
+  @media (min-width: 1024px) {
+    .footer_content {
+      grid-template-columns: 62.5rem 1fr;
+    }
+    .footer_text {
+      gap: 22.7rem;
+    }
+  }
+
+  .footer_col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer_col--office {
+    gap: 6rem;
+  }
+
+  .footer_col--social {
+    gap: 3rem;
+  }
+
+  .footer_block {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .footer_contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .footer_label {
+    font-family: var(--font-paragraph);
+    font-size: var(--type-paragraph-size);
+    font-weight: var(--type-paragraph-weight);
+    line-height: var(--type-paragraph-lh);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .footer_value {
+    font-family: var(--font-sans);
+    font-size: var(--type-h10-size);
+    font-weight: var(--type-h10-weight);
+    line-height: var(--type-h10-lh);
+    letter-spacing: var(--type-h10-ls);
+    color: var(--color-text);
+  }
+
+  .footer_link {
+    font-family: var(--font-sans);
+    font-size: var(--type-h10-size);
+    font-weight: var(--type-h10-weight);
+    line-height: var(--type-h10-lh);
+    letter-spacing: var(--type-h10-ls);
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .footer_social {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer_social a {
+    text-decoration: none;
+  }
+
+  /* ---- Big display "MARCOS • COSTA" — escala com o container ---- */
+  .footer_display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 4.4rem; /* mobile — cabe em 345px de container */
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .footer_display-dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    background: var(--color-text);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin: 0 0.4rem;
+  }
+
+  @media (min-width: 580px) {
+    .footer_display {
+      font-size: 9.5rem;
+      padding-bottom: 3rem;
+    }
+    .footer_display-dot {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin: 0 0.9rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer_display {
+      font-size: 15.8rem;
+    }
+    .footer_display-dot {
+      width: 2.6rem;
+      height: 2.6rem;
+      margin: 0 1.2rem;
+    }
+  }
+</style>

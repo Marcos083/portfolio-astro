@@ -1,0 +1,144 @@
+---
+/**
+ * /cases/gabriel-granjeiro — Case Study do Gabriel Granjeiro
+ * Layout: nav + logo do case → title → image stack (6 imgs) → other projects → connect → footer
+ * Baseado no Figma 1:994 (Desktop 1280).
+ */
+import CaseNav from '@/components/case/CaseNav.astro';
+import CaseTitle from '@/components/case/CaseTitle.astro';
+import CaseImages from '@/components/case/CaseImages.astro';
+import CaseOtherProjects from '@/components/case/CaseOtherProjects.astro';
+import CaseConnect from '@/components/case/CaseConnect.astro';
+import TemplateFooter from '@/components/template/TemplateFooter.astro';
+import GlobalEffects from '@/components/GlobalEffects.astro';
+import PageTransition from '@/components/PageTransition.astro';
+import SmoothScroll from '@/components/SmoothScroll.astro';
+import GrainOverlay from '@/components/GrainOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../../styles/template-tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gabriel Granjeiro | Marcos Costa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+
+  <body>
+    <PageTransition />
+    <CaseNav
+      logoSrc="/cases/gabriel-granjeiro/study/logo.webp"
+      logoAlt="Gabriel Granjeiro logo"
+    />
+
+    <CaseTitle
+      caseName="Gabriel Granjeiro"
+      description="The personal website of Gabriel Granjeiro, CEO of Gran, an edtech with 500K+ students and Nasdaq-level recognition. The challenge: translating a high-impact trajectory into a digital experience that builds authority and connection. From design to code, I built the entire page in Webflow with a focus on performance, storytelling and conversion."
+      techStack={[
+        'Webflow',
+        'Client-First (Finsweet)',
+        'GSAP',
+        'JavaScript (ES5/Vanilla)',
+      ]}
+      liveProjectHref="https://gabriel-granjeiro-f2a20d.webflow.io/"
+      liveProjectName="Live project"
+    />
+
+    <CaseImages
+      media={[
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-1.webp', alt: 'Gabriel Granjeiro — hero visual with title overlay' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-2.webp', alt: 'Gabriel Granjeiro — typography specimen' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-3.webp', alt: 'Gabriel Granjeiro — GG monogram on blue' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-4.webp', alt: 'Gabriel Granjeiro — book showcase mockup' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-5.webp', alt: 'Gabriel Granjeiro — bio and awards section' },
+        { type: 'image', src: '/cases/gabriel-granjeiro/study/image-6.webp', alt: 'Gabriel Granjeiro — device mockup' },
+      ]}
+    />
+
+    <CaseOtherProjects
+      projects={[
+        {
+          name: 'ARBA',
+          imageSrc: '/cases/arba/1.webp',
+          imageAlt: 'ARBA project preview',
+          href: '/cases/arba',
+        },
+        {
+          name: 'Mobilitex',
+          imageSrc: '/cases/mobilitex/1.webp',
+          imageAlt: 'Mobilitex project preview',
+          href: '/cases/mobilitex',
+        },
+        {
+          name: 'Bia & Gabriel',
+          imageSrc: '/cases/biagabriel/1.webp',
+          imageAlt: 'Bia & Gabriel project preview',
+          href: '/cases/biagabriel',
+        },
+      ]}
+    />
+
+    <CaseConnect />
+
+    <TemplateFooter />
+    <GlobalEffects />
+    <SmoothScroll />
+    <GrainOverlay opacity={0.28} blend="multiply" animated={true} speed={0.5} frames={10} />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light only;
+  }
+
+  /* ============================================================
+     FLUID SCALING — mesmo do template-test
+     ============================================================ */
+  html {
+    font-size: 2.66667vw;
+  }
+
+  @media (min-width: 580px) and (max-width: 1023px) {
+    html {
+      font-size: 1.25vw;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 0.78125vw;
+    }
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+</style>

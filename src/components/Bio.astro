@@ -1,0 +1,222 @@
+---
+/**
+ * BIO SECTION — pixel-perfect from Figma (node 33:260, "Seção 3")
+ *
+ * Layout (reference canvas 1440×1024):
+ *   - Centered statement paragraph (JetBrains Mono, 48.83px / --text-h2)
+ *   - 4 polaroid photos pinned at the corners, each DRAGGABLE so the visitor
+ *     can rearrange them. The PNGs already include the polaroid frame.
+ *
+ * Lives inside .bio-artboard (the 3D scroll-transition slot in index.astro).
+ * The .bio surface is `transform-style: flat` so internal z-index stacking
+ * works normally while the parent artboard still tilts in 3D.
+ *
+ * Images optimized via astro:assets <Image> (PNG → WebP, responsive densities).
+ */
+import { Image } from 'astro:assets';
+
+// Polaroid sources (already framed). Names mirror the Figma export.
+import pCouple from '../assets/images/bio/Frame 35.png';      // top-left
+import pWaterfall from '../assets/images/bio/Frame 32.png';   // top-right
+import pStripes from '../assets/images/bio/Frame 32-1.png';   // bottom-left
+import pThumbs from '../assets/images/bio/Frame 32-2.png';    // bottom-right
+
+// Per-polaroid placement, CORNER-ANCHORED so the composition holds across
+// aspect ratios (the Figma frame is 1440×1024 but the real viewport is wider).
+// Values derived from Figma: width as % of 1440, capped at the Figma px size
+// so photos never balloon on large screens.
+const polaroids = [
+  { src: pCouple,    alt: 'Marcos with a friend',      anchor: { top: 10.06, left: 5.42 },   width: 17.05, max: 246, tilt: -3 },
+  { src: pWaterfall, alt: 'Marcos at a waterfall',     anchor: { top: 23.63, right: 5.10 },  width: 15.39, max: 222, tilt: 4 },
+  { src: pStripes,   alt: 'Marcos walking outdoors',   anchor: { bottom: 14.02, left: 7.57 }, width: 14.91, max: 215, tilt: 3 },
+  { src: pThumbs,    alt: 'Marcos giving a thumbs up', anchor: { bottom: 0.91, right: 3.56 }, width: 16.37, max: 236, tilt: -4 },
+];
+
+// Build inline anchor CSS (left|right + top|bottom) from each polaroid.
+const posCss = (p: typeof polaroids[number]) =>
+  Object.entries(p.anchor).map(([k, v]) => `${k}:${v}%`).join(';');
+---
+
+<section class="bio" data-section="bio">
+  <!-- Centered statement -->
+  <div class="bio-statement">
+    <p>
+      Hey, I'm Marcos. A Brazil based Webflow developer and web designer who
+      crafts digital experiences that move businesses forward — where design
+      and code are one.
+    </p>
+  </div>
+
+  <!-- Draggable polaroids -->
+  {polaroids.map((p, i) => (
+    <div
+      class="bio-polaroid"
+      data-polaroid
+      style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
+    >
+      <Image
+        src={p.src}
+        alt={p.alt}
+        widths={[260, 520]}
+        sizes="20vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+      />
+    </div>
+  ))}
+</section>
+
+<style>
+  .bio {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-light);
+    overflow: hidden;
+    /* Flatten internal stacking so polaroid z-index works while the parent
+       .bio-artboard keeps preserve-3d for the scroll transition. */
+    transform-style: flat;
+  }
+
+  /* ---- Centered statement ---- */
+  .bio-statement {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 46%;            /* 662 / 1440 */
+    max-width: 662px;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;  /* let drags pass through if a polaroid overlaps */
+  }
+
+  .bio-statement p {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: clamp(26px, 3.39vw, 48.83px); /* 48.83px @ 1440 = --text-h2 */
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: var(--color-black);
+    word-break: break-word;
+  }
+
+  /* ---- Draggable polaroids ---- */
+  .bio-polaroid {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;       /* enable pointer drag on touch */
+    z-index: 2;
+    transform: rotate(var(--rest-tilt, 0deg));
+    transition: box-shadow 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    filter: drop-shadow(0 6px 16px rgba(2, 2, 2, 0.08));
+  }
+
+  .bio-polaroid:hover {
+    filter: drop-shadow(0 12px 28px rgba(2, 2, 2, 0.14));
+  }
+
+  .bio-polaroid.is-dragging {
+    cursor: grabbing;
+    /* No transition while dragging — follow the pointer 1:1 */
+    transition: box-shadow 0.3s ease;
+    filter: drop-shadow(0 22px 44px rgba(2, 2, 2, 0.22));
+  }
+
+  .bio-polaroid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;     /* drag handled by the wrapper */
+  }
+
+  /* ---- Mobile: stack the statement, scale polaroids down ---- */
+  @media (max-width: 768px) {
+    .bio-statement {
+      width: 86%;
+    }
+    .bio-polaroid {
+      width: 34% !important;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Polaroid drag — pointer-based, delta-driven so it's robust to the parent
+   * artboard's transforms. Accumulates a translate offset on top of each
+   * polaroid's Figma-anchored left/top. A velocity tilt adds life while
+   * dragging, then settles back to the rest tilt on release. Dragged item
+   * jumps to the top of the stack.
+   */
+  function initBioDrag() {
+    const polaroids = Array.from(
+      document.querySelectorAll('[data-polaroid]'),
+    ) as HTMLElement[];
+    if (!polaroids.length) return;
+
+    let zCounter = 10;
+
+    polaroids.forEach((el) => {
+      // Accumulated translation (persists across drags)
+      let offsetX = 0;
+      let offsetY = 0;
+      const restTilt = parseFloat(getComputedStyle(el).getPropertyValue('--rest-tilt')) || 0;
+
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let lastX = 0;
+
+      const apply = (tilt: number) => {
+        el.style.transform =
+          `translate(${offsetX}px, ${offsetY}px) rotate(${tilt}deg)`;
+      };
+
+      // Seed the inline transform so the rest tilt is preserved
+      apply(restTilt);
+
+      el.addEventListener('pointerdown', (e: PointerEvent) => {
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        lastX = e.clientX;
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-dragging');
+        el.style.zIndex = String(++zCounter);
+      });
+
+      el.addEventListener('pointermove', (e: PointerEvent) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        // Velocity-based tilt (clamped) for a natural "thrown photo" feel
+        const vx = e.clientX - lastX;
+        lastX = e.clientX;
+        const tilt = Math.max(-10, Math.min(10, restTilt + vx * 0.5));
+        el.style.transform =
+          `translate(${offsetX + dx}px, ${offsetY + dy}px) rotate(${tilt}deg)`;
+      });
+
+      const end = (e: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        offsetX += e.clientX - startX;
+        offsetY += e.clientY - startY;
+        el.classList.remove('is-dragging');
+        // Settle back to rest tilt (CSS transition handles the easing)
+        apply(restTilt);
+      };
+
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initBioDrag);
+  document.addEventListener('astro:after-swap', initBioDrag);
+</script>

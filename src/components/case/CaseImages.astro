@@ -1,0 +1,133 @@
+---
+/**
+ * CaseImages.astro — Image Stack do case study (Figma 78:2686).
+ * Desktop: 1250 wide, 590 tall cada bloco, gap 15.
+ *   Image 1 (full) → Row [Image 2 + Image 3] → Image 4 (full) → Row [Image 5 + Image 6]
+ * Tablet/Mobile: tudo empilha em coluna única (imagens full-width, mantendo ratio).
+ */
+
+interface CaseMedia {
+  type?: 'image' | 'video';
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  media: [CaseMedia, CaseMedia, CaseMedia, CaseMedia, CaseMedia, CaseMedia];
+}
+
+const { media } = Astro.props;
+const [m1, m2, m3, m4, m5, m6] = media;
+
+const isVideo = (m: CaseMedia) => m.type === 'video';
+---
+
+<section class="case_images-section">
+  <div class="case_images-stack">
+    <div class="case_image case_image--full">
+      {isVideo(m1) ? (
+        <video muted loop playsinline preload="metadata" autoplay><source src={m1.src} type="video/mp4" /></video>
+      ) : (
+        <img src={m1.src} alt={m1.alt || ''} loading="lazy" />
+      )}
+    </div>
+
+    <div class="case_image-row">
+      <div class="case_image case_image--half">
+        {isVideo(m2) ? (
+          <video muted loop playsinline preload="metadata" autoplay><source src={m2.src} type="video/mp4" /></video>
+        ) : (
+          <img src={m2.src} alt={m2.alt || ''} loading="lazy" />
+        )}
+      </div>
+      <div class="case_image case_image--half">
+        {isVideo(m3) ? (
+          <video muted loop playsinline preload="metadata" autoplay><source src={m3.src} type="video/mp4" /></video>
+        ) : (
+          <img src={m3.src} alt={m3.alt || ''} loading="lazy" />
+        )}
+      </div>
+    </div>
+
+    <div class="case_image case_image--full">
+      {isVideo(m4) ? (
+        <video muted loop playsinline preload="metadata" autoplay><source src={m4.src} type="video/mp4" /></video>
+      ) : (
+        <img src={m4.src} alt={m4.alt || ''} loading="lazy" />
+      )}
+    </div>
+
+    <div class="case_image-row">
+      <div class="case_image case_image--half">
+        {isVideo(m5) ? (
+          <video muted loop playsinline preload="metadata" autoplay><source src={m5.src} type="video/mp4" /></video>
+        ) : (
+          <img src={m5.src} alt={m5.alt || ''} loading="lazy" />
+        )}
+      </div>
+      <div class="case_image case_image--half">
+        {isVideo(m6) ? (
+          <video muted loop playsinline preload="metadata" autoplay><source src={m6.src} type="video/mp4" /></video>
+        ) : (
+          <img src={m6.src} alt={m6.alt || ''} loading="lazy" />
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .case_images-section {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .case_images-stack {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .case_image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .case_image img,
+  .case_image video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Mobile: tudo empilhado em coluna, ratio natural das imagens */
+  .case_image-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* Tablet + Desktop: aspect fixo + object-fit cover */
+  @media (min-width: 580px) {
+    .case_image img,
+    .case_image video {
+      height: 100%;
+      object-fit: cover;
+    }
+    .case_image--full {
+      aspect-ratio: 1250 / 590;
+    }
+    .case_image-row {
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+    .case_image--half {
+      flex: 1 1 0;
+      min-width: 0;
+      aspect-ratio: 617.5 / 590;
+    }
+  }
+</style>

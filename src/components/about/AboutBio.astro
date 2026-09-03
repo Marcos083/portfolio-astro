@@ -1,0 +1,228 @@
+---
+/**
+ * AboutBio.astro — Primeira seção da About (reutilizada do 1º portfólio, adaptada).
+ * Statement central em Instrument Sans + 5 polaroids ancoradas nos cantos,
+ * arrastáveis. Fica no topo da About, abaixo do nav.
+ */
+
+const polaroids = [
+  { src: '/about/polaroid-1.png',  alt: 'Marcos with a friend',      anchor: { top: 16,    left: 10 },    width: 17,   max: 275, tilt: -3 },
+  { src: '/about/polaroid-2.png',  alt: 'Marcos at a waterfall',     anchor: { top: 20,    right: 9 },    width: 15,   max: 250, tilt: 4 },
+  { src: '/about/polaroid-3.png',  alt: 'Marcos walking outdoors',   anchor: { bottom: 4,  left: 12 },    width: 15,   max: 250, tilt: 3 },
+  { src: '/about/polaroid-4.png',  alt: 'Marcos giving a thumbs up', anchor: { bottom: 5,  right: 9 },    width: 15,   max: 250, tilt: -4 },
+  { src: '/about/polaroid-5.webp', alt: 'Marcos portrait',           anchor: { top: 3,     left: 44 },    width: 12,   max: 210, tilt: 1 },
+];
+
+const posCss = (p: typeof polaroids[number]) =>
+  Object.entries(p.anchor).map(([k, v]) => `${k}:${v}%`).join(';');
+---
+
+<section class="about_bio" data-section="bio">
+  <div class="about_bio-statement">
+    <p>
+      Hey, I'm Marcos. A Brazil based Webflow developer and web designer who
+      crafts digital experiences that move businesses forward, where design
+      and code are one.
+    </p>
+  </div>
+
+  {polaroids.map((p) => (
+    <div
+      class="about_bio-polaroid"
+      data-polaroid
+      style={`${posCss(p)}; width:${p.width}%; max-width:${p.max}px; --rest-tilt:${p.tilt}deg;`}
+    >
+      <img src={p.src} alt={p.alt} loading="eager" decoding="async" draggable="false" />
+    </div>
+  ))}
+</section>
+
+<style>
+  .about_bio {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 70rem;
+    background: var(--color-background);
+    overflow: hidden;
+  }
+
+  /* Centered statement */
+  .about_bio-statement {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, calc(-50% + 4rem));
+    width: 60rem;
+    max-width: 90%;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .about_bio-statement p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 3.5vw, 4.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    word-break: break-word;
+  }
+
+  /* Draggable polaroids */
+  .about_bio-polaroid {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    z-index: 2;
+    transform: rotate(var(--rest-tilt, 0deg));
+    transition: box-shadow 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+    will-change: transform;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.08));
+  }
+
+  .about_bio-polaroid:hover {
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.14));
+  }
+
+  .about_bio-polaroid.is-dragging {
+    cursor: grabbing;
+    transition: box-shadow 0.3s ease;
+    filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.22));
+  }
+
+  .about_bio-polaroid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+
+  /* Mobile: reposicionar polaroids no layout collage */
+  @media (max-width: 579px) {
+    .about_bio {
+      height: auto;
+      min-height: 92vh;
+      padding: 4rem 0;
+    }
+    .about_bio-statement {
+      width: 90%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+    .about_bio-polaroid {
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+    }
+    /* Polaroid 1 — couple, top-left */
+    .about_bio-polaroid:nth-child(2) {
+      top: 10% !important;
+      left: 2% !important;
+      width: 30% !important;
+      max-width: none !important;
+    }
+    /* Polaroid 2 — waterfall, top-right */
+    .about_bio-polaroid:nth-child(3) {
+      top: 10% !important;
+      right: 0% !important;
+      width: 30% !important;
+      max-width: none !important;
+    }
+    /* Polaroid 3 — jersey, bottom-left */
+    .about_bio-polaroid:nth-child(4) {
+      bottom: 8% !important;
+      left: 6% !important;
+      width: 26% !important;
+      max-width: none !important;
+    }
+    /* Polaroid 4 — thumbs up, bottom-right */
+    .about_bio-polaroid:nth-child(5) {
+      bottom: 6% !important;
+      right: 3% !important;
+      width: 26% !important;
+      max-width: none !important;
+    }
+    /* Polaroid 5 — portrait, top center */
+    .about_bio-polaroid:nth-child(6) {
+      top: 6% !important;
+      left: 33% !important;
+      width: 28% !important;
+      max-width: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initBioDrag() {
+    const polaroids = Array.from(
+      document.querySelectorAll('[data-polaroid]'),
+    ) as HTMLElement[];
+    if (!polaroids.length) return;
+
+    let zCounter = 10;
+
+    polaroids.forEach((el) => {
+      let offsetX = 0;
+      let offsetY = 0;
+      const restTilt =
+        parseFloat(getComputedStyle(el).getPropertyValue('--rest-tilt')) || 0;
+
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let lastX = 0;
+
+      const apply = (tilt: number) => {
+        el.style.transform =
+          `translate(${offsetX}px, ${offsetY}px) rotate(${tilt}deg)`;
+      };
+
+      apply(restTilt);
+
+      el.addEventListener('pointerdown', (e: PointerEvent) => {
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        lastX = e.clientX;
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-dragging');
+        el.style.zIndex = String(++zCounter);
+      });
+
+      el.addEventListener('pointermove', (e: PointerEvent) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const vx = e.clientX - lastX;
+        lastX = e.clientX;
+        const tilt = Math.max(-10, Math.min(10, restTilt + vx * 0.5));
+        el.style.transform =
+          `translate(${offsetX + dx}px, ${offsetY + dy}px) rotate(${tilt}deg)`;
+      });
+
+      const end = (e: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        offsetX += e.clientX - startX;
+        offsetY += e.clientY - startY;
+        el.classList.remove('is-dragging');
+        apply(restTilt);
+      };
+
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBioDrag);
+  } else {
+    initBioDrag();
+  }
+  document.addEventListener('astro:after-swap', initBioDrag);
+</script>

@@ -1,0 +1,218 @@
+---
+/**
+ * Preloader.astro — Preloader inspirado no inkfishnyc.com
+ * Estrutura:
+ *   - Fundo preto full-viewport
+ *   - Centro: "MARCOS · COSTA" wordmark grande + linha "LOADING [N%]"
+ *   - Barra branca no bottom que preenche de 0 → 100% (scaleX)
+ *   - Exit: wrapper translate up + content translate down + opacity 0
+ */
+---
+
+<div class="preloader" data-preloader>
+  <div class="preloader-inner">
+    <h1 class="preloader-logo">
+      <span>MARCOS</span>
+      <span class="preloader-dot"></span>
+      <span>COSTA</span>
+    </h1>
+    <div class="preloader-status">
+      <span>LOADING</span>
+      <span data-preloader-pct>[0%]</span>
+    </div>
+  </div>
+  <div class="preloader-bar" data-preloader-bar></div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #09120B;
+    color: #fff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1.5rem;
+    transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s linear 1s;
+  }
+
+  .preloader.is-hidden {
+    transform: translate3d(0, -100vh, 0);
+    visibility: hidden;
+  }
+
+  .preloader-inner {
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease-out;
+  }
+
+  .preloader.is-hidden .preloader-inner {
+    transform: translate3d(0, 50vh, 0);
+    opacity: 0;
+  }
+
+  .preloader-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .preloader-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .preloader-status {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    color: #fff;
+  }
+
+  .preloader-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.2s linear;
+    will-change: transform;
+  }
+
+  /* Tablet: wordmark maior */
+  @media (min-width: 580px) {
+    .preloader-logo {
+      font-size: 5rem;
+      gap: 1rem;
+    }
+    .preloader-dot {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+    .preloader-status {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* Desktop: wordmark ainda maior */
+  @media (min-width: 1024px) {
+    .preloader-inner {
+      gap: 1.4rem;
+    }
+    .preloader-logo {
+      font-size: 8rem;
+      gap: 1.6rem;
+    }
+    .preloader-dot {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .preloader-status {
+      font-size: 1.4rem;
+    }
+    .preloader-bar {
+      height: 4px;
+    }
+  }
+
+  /* Respeitar reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .preloader,
+    .preloader-inner,
+    .preloader-bar {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initPreloader() {
+    const preloader = document.querySelector<HTMLElement>('[data-preloader]');
+    const pctEl = document.querySelector<HTMLElement>('[data-preloader-pct]');
+    const bar = document.querySelector<HTMLElement>('[data-preloader-bar]');
+    if (!preloader || !pctEl || !bar) return;
+
+    // Trava scroll enquanto o preloader tá visível
+    document.documentElement.style.overflow = 'hidden';
+
+    let progress = 0;
+    let realReady = document.readyState === 'complete';
+
+    const applyProgress = (pct: number) => {
+      const rounded = Math.floor(pct);
+      pctEl.textContent = `[${rounded}%]`;
+      bar.style.transform = `scaleX(${pct / 100})`;
+    };
+
+    const finish = () => {
+      applyProgress(100);
+      setTimeout(() => {
+        preloader.classList.add('is-hidden');
+        document.documentElement.style.overflow = '';
+      }, 350);
+    };
+
+    // Marca real ready no window.load
+    window.addEventListener('load', () => {
+      realReady = true;
+    });
+
+    // Fake progress smooth: sobe até 90 esperando real, aí completa
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(100, now - last);
+      last = now;
+
+      const target = realReady ? 100 : Math.min(90, progress + (dt / 40));
+      // Ease toward target
+      progress += (target - progress) * 0.12;
+
+      applyProgress(progress);
+
+      if (progress >= 99.5) {
+        finish();
+        return;
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Timeout de segurança: se algo travar, força hide em 6s
+    setTimeout(() => {
+      if (!preloader.classList.contains('is-hidden')) finish();
+    }, 6000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPreloader);
+  } else {
+    initPreloader();
+  }
+</script>

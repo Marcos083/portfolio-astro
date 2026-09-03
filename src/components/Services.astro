@@ -1,0 +1,405 @@
+---
+interface Service {
+  number: string;
+  title: string;
+  description: string;
+  items: string[];
+  rotation: number;
+}
+
+const services: Service[] = [
+  {
+    number: '01',
+    title: 'Web Development',
+    description:
+      'You deserve more than just a template. I develop fully custom Webflow websites that are fast, fluid, and packed with subtle interactions that bring your brand to life.',
+    items: [
+      'CMS Architecture',
+      'Custom Animations & Interactions',
+      'Advanced Integrations (APIs, CRM, Zapier)',
+    ],
+    rotation: -2.5,
+  },
+  {
+    number: '02',
+    title: 'Web Design',
+    description:
+      "Design isn't just visual — it's emotional. I build websites that feel personal, move with intention, and invite people to trust and take action.",
+    items: [
+      'UX & Wireframing',
+      'Visual Systems & Layouts',
+      'Conversion-Focused Design',
+    ],
+    rotation: 1.5,
+  },
+  {
+    number: '03',
+    title: 'SEO',
+    description:
+      'Visibility matters. I fine-tune every site for SEO and speed — so people discover your brand, and stay long enough to care.',
+    items: [
+      'On-Page Optimization',
+      'Technical SEO Setup',
+      'Page Speed & Accessibility Fixes',
+    ],
+    rotation: -1,
+  },
+];
+---
+
+<section class="services-section" data-section="services">
+  <!-- Title viewport -->
+  <div class="services-title">
+    <h2 class="services-title-text">SERVICES</h2>
+  </div>
+
+  <!-- Pinned cards viewport -->
+  <div class="services-pin" data-services-pin>
+    <div class="services-progress">
+      <div class="services-progress-fill" data-progress-fill></div>
+    </div>
+
+    <div class="services-cards">
+      {services.map((service) => (
+        <div class="file-card" data-rotation={service.rotation}>
+          <div class="file-card-inner">
+            <div class="card-number">{service.number}</div>
+            <div class="card-content">
+              <div class="card-service-title">{service.title}</div>
+              <div class="card-description">{service.description}</div>
+              <div class="card-divider"></div>
+              <div class="card-sub-items">
+                {service.items.map((item, i) => (
+                  <div class={`card-sub-item ${i < service.items.length - 1 ? 'has-border' : ''}`}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <svg class="card-svg" viewBox="0 0 380 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect class="card-back" x="0" y="30" width="380" height="450" rx="3" />
+              <path class="card-tab" d="M0 5C0 2.23858 2.23858 0 5 0H100C102.761 0 105 2.23858 105 5V30H0V5Z" />
+              <rect class="card-front" x="0" y="38" width="380" height="442" rx="2.5" />
+            </svg>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-section {
+    position: relative;
+    background-color: var(--color-normal);
+  }
+
+  /* ---- Title viewport ---- */
+  .services-title {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .services-title-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(80px, 10.28vw, 148px);
+    line-height: 1.1;
+    color: var(--color-black);
+    text-align: center;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  /* ---- Pinned viewport ---- */
+  .services-pin {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ---- Progress bar (bottom) ---- */
+  .services-progress {
+    position: absolute;
+    bottom: 48px;
+    left: var(--margin-page);
+    right: var(--margin-page);
+    height: 1px;
+    background: rgba(2, 2, 2, 0.1);
+    z-index: 10;
+  }
+
+  .services-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--color-black);
+    transform-origin: left;
+  }
+
+  /* ---- Cards layout ---- */
+  .services-cards {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 0 40px;
+  }
+
+  /* ---- File card (folder shape) ---- */
+  .file-card {
+    flex-shrink: 0;
+    width: 380px;
+    position: relative;
+    perspective: 800px;
+    cursor: default;
+  }
+
+  .file-card:nth-child(1) { margin-top: -60px; }
+  .file-card:nth-child(2) { margin-top: 50px; }
+  .file-card:nth-child(3) { margin-top: -20px; }
+
+  .file-card-inner {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .card-svg {
+    width: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 2px 4px rgba(2, 2, 2, 0.04));
+    transition: filter 0.5s ease;
+  }
+
+  .file-card:hover .card-svg {
+    filter: drop-shadow(0 8px 28px rgba(2, 2, 2, 0.08));
+  }
+
+  .card-back  { fill: var(--color-normal); stroke: var(--color-black); stroke-width: 0.6; }
+  .card-tab   { fill: var(--color-black); }
+  .card-front { fill: var(--color-light); stroke: var(--color-black); stroke-width: 0.6; }
+
+  .card-number {
+    position: absolute;
+    top: 6px;
+    left: 16px;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-light);
+    z-index: 3;
+    user-select: none;
+  }
+
+  .card-content {
+    position: absolute;
+    top: 48px;
+    left: 24px;
+    right: 24px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .card-service-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .card-description {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: var(--color-darker);
+    margin-bottom: 20px;
+  }
+
+  .card-divider {
+    width: 100%;
+    height: 0.5px;
+    background: var(--color-grey);
+    opacity: 0.3;
+    margin-bottom: 16px;
+  }
+
+  .card-sub-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card-sub-item {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    padding-bottom: 12px;
+  }
+
+  .card-sub-item.has-border {
+    border-bottom: 0.5px solid rgba(122, 122, 112, 0.2);
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 1100px) {
+    .services-cards {
+      gap: 20px;
+      padding: 0 20px;
+    }
+    .file-card {
+      width: 280px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .services-cards {
+      flex-direction: column;
+      gap: 32px;
+      padding: 0 var(--margin-page);
+    }
+    .file-card {
+      width: 300px;
+      margin-top: 0 !important;
+    }
+    .services-header {
+      left: var(--margin-page);
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initServices() {
+    ScrollTrigger.getAll().forEach((t) => {
+      if ((t.vars as { id?: string }).id?.startsWith('services-')) t.kill();
+    });
+
+    const cards = gsap.utils.toArray<HTMLElement>('.file-card');
+    const progressFill = document.querySelector<HTMLElement>('[data-progress-fill]');
+    const pin = document.querySelector<HTMLElement>('[data-services-pin]');
+
+    if (!cards.length || !pin) return;
+
+    cards.forEach((card) => {
+      const inner = card.querySelector<HTMLElement>('.file-card-inner');
+      const subItems = card.querySelectorAll<HTMLElement>('.card-sub-item');
+      const rotation = parseFloat(card.dataset.rotation || '0');
+      const i = cards.indexOf(card);
+
+      gsap.set(inner, {
+        opacity: 0,
+        x: 200 + i * 60,
+        y: 60,
+        scale: 0.85,
+        rotation: rotation * 3,
+      });
+      gsap.set(subItems, { opacity: 0, y: 8 });
+    });
+
+    const masterTl = gsap.timeline({
+      scrollTrigger: {
+        id: 'services-reveal',
+        trigger: pin,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.8,
+        start: 'top top',
+        end: '+=2500',
+        onUpdate: (self) => {
+          if (progressFill) {
+            gsap.set(progressFill, { width: self.progress * 100 + '%' });
+          }
+        },
+      },
+    });
+
+    const offsets = [0.02, 0.33, 0.63];
+    const subOffsets = [0.15, 0.48, 0.78];
+
+    cards.forEach((card, i) => {
+      const inner = card.querySelector('.file-card-inner');
+      const subItems = card.querySelectorAll('.card-sub-item');
+      const rotation = parseFloat(card.dataset.rotation || '0');
+
+      masterTl.to(
+        inner,
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation,
+          duration: 0.3,
+          ease: 'power3.out',
+        },
+        offsets[i],
+      );
+
+      masterTl.to(
+        subItems,
+        {
+          opacity: 0.6,
+          y: 0,
+          duration: 0.15,
+          stagger: 0.03,
+          ease: 'power2.out',
+        },
+        subOffsets[i],
+      );
+    });
+
+    masterTl.to({}, { duration: 0.1 });
+
+    cards.forEach((card) => {
+      const inner = card.querySelector<HTMLElement>('.file-card-inner');
+      const rotation = parseFloat(card.dataset.rotation || '0');
+      if (!inner) return;
+
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = inner.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+
+        gsap.to(inner, {
+          rotateX: (y - 0.5) * -5,
+          rotateY: (x - 0.5) * 5,
+          scale: 1.02,
+          duration: 0.5,
+          ease: 'power2.out',
+          transformPerspective: 800,
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(inner, {
+          rotateX: 0,
+          rotateY: 0,
+          rotation,
+          scale: 1,
+          duration: 0.7,
+          ease: 'elastic.out(1, 0.5)',
+        });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initServices);
+  document.addEventListener('astro:after-swap', initServices);
+</script>
