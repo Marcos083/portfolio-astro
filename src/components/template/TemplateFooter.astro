@@ -55,6 +55,26 @@ import navPhoto from '@/assets/template/marcos-nav.webp';
   </div>
 </footer>
 
+<script is:inline>
+(function () {
+  var el = document.querySelector('.footer_display');
+  if (!el) return;
+  function fit() {
+    el.style.fontSize = '10px';
+    el.offsetWidth;
+    var total = 0;
+    for (var i = 0; i < el.children.length; i++)
+      total += el.children[i].getBoundingClientRect().width;
+    var gap = parseFloat(getComputedStyle(el).gap) || 0;
+    total += gap * (el.children.length - 1);
+    var w = el.clientWidth;
+    if (total > 0) el.style.fontSize = (10 * w / total) + 'px';
+  }
+  document.fonts.ready.then(fit);
+  window.addEventListener('resize', fit);
+})();
+</script>
+
 <style>
   .footer_section {
     width: 100%;
@@ -182,15 +202,16 @@ import navPhoto from '@/assets/template/marcos-nav.webp';
     text-decoration: none;
   }
 
-  /* ---- Big display "MARCOS • COSTA" — escala com o container ---- */
+  /* ---- Big display "MARCOS • COSTA" — JS auto-fit preenche 100% ---- */
   .footer_display {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 0.12em;
     width: 100%;
     padding-bottom: 1.5rem;
     font-family: var(--font-mono);
-    font-size: 4.4rem; /* mobile — cabe em 345px de container */
+    font-size: 6rem;
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0;
@@ -200,34 +221,16 @@ import navPhoto from '@/assets/template/marcos-nav.webp';
   }
 
   .footer_display-dot {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 0.08em;
+    height: 0.08em;
     background: var(--color-text);
     border-radius: 50%;
     flex-shrink: 0;
-    margin: 0 0.4rem;
   }
 
   @media (min-width: 580px) {
     .footer_display {
-      font-size: 9.5rem;
       padding-bottom: 3rem;
-    }
-    .footer_display-dot {
-      width: 1.6rem;
-      height: 1.6rem;
-      margin: 0 0.9rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .footer_display {
-      font-size: 15.8rem;
-    }
-    .footer_display-dot {
-      width: 2.6rem;
-      height: 2.6rem;
-      margin: 0 1.2rem;
     }
   }
 </style>
