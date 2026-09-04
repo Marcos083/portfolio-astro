@@ -68,7 +68,7 @@ import navPhoto from '@/assets/template/marcos-nav.webp';
     var gap = parseFloat(getComputedStyle(el).gap) || 0;
     total += gap * (el.children.length - 1);
     var w = el.clientWidth;
-    if (total > 0) el.style.fontSize = (10 * w / total) + 'px';
+    if (total > 0) el.style.fontSize = (10 * w / total * 0.98) + 'px';
   }
   document.fonts.ready.then(fit);
   window.addEventListener('resize', fit);
