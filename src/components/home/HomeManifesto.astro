@@ -7,22 +7,22 @@
  * Fundo cinza claro sutil pra separar da intro.
  */
 
-const coreTools = [
+const services = [
   {
-    name: 'Webflow',
-    desc: 'My daily driver. Where most client projects live. Flexible enough to design freely, structured enough for the client to update it without me. The right trade-off for most of the work.',
+    name: 'Web Development',
+    desc: 'I build fast, structured websites that clients can manage on their own, with clean architecture, CMS, and integrations that actually work. Every project is tailored to the right platform for the job.',
   },
   {
-    name: 'Astro',
-    desc: 'For projects that need to be built from scratch. Editorial sites, portfolios, and layouts where the design has to breathe fully. Astro is where I write the site line by line and keep every decision under my control.',
+    name: 'Web Design',
+    desc: "Design isn't just visual, it's emotional. I create layouts that feel intentional, guide the user, and turn attention into action. Every project starts in Figma.",
   },
   {
-    name: 'GSAP',
-    desc: 'Motion isn\'t decoration. It\'s how a site tells you it\'s alive. Scroll, hover, transitions. This is where a page stops loading and starts breathing.',
+    name: 'SEO',
+    desc: 'A beautiful site means nothing if no one finds it. I optimize for search, speed, and accessibility so your brand gets discovered and keeps people around.',
   },
   {
-    name: 'Figma',
-    desc: 'Where the thinking happens. Design systems, tokens, wireframes, iterations. Every project starts here before a single line of code.',
+    name: 'Motion & Interactions',
+    desc: 'Movement is what makes a site feel alive. Scroll animations, page transitions, hover effects, built with GSAP to add personality without hurting performance.',
   },
 ];
 ---
@@ -50,10 +50,10 @@ const coreTools = [
 
     <div class="home_manifesto-tools">
       <div class="home_manifesto-tools-label">
-        <span>Core Tools</span>
+        <span>Services</span>
       </div>
       <div class="home_manifesto-tools-grid">
-        {coreTools.map((tool) => (
+        {services.map((tool) => (
           <div class="home_manifesto-tool">
             <h3 class="home_manifesto-tool-name">{tool.name}</h3>
             <p class="home_manifesto-tool-desc">{tool.desc}</p>
